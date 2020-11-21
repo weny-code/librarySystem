@@ -82,7 +82,6 @@ export default {
         password: [
           { required: true, message: "密码不能为空", trigger: "click" },
           { min: 8, max: 30, message: "长度在 8到 30 个字符", trigger: "blur" },
-
          {
         trigger: 'blur',
         validator: (rule, value, callback) => {
