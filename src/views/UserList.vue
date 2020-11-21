@@ -13,6 +13,44 @@
       >
     </div>
     <div class="list">
+       <el-dialog
+              title="收货地址"
+              :visible.sync="dialogTableVisible"
+            >
+              <!-- 弹出框中的表格 -->
+              <el-table :data="gridData">
+                <el-table-column
+                  property="date"
+                  label="日期"
+                  width="150"
+                ></el-table-column>
+                <el-table-column
+                  property="name"
+                  label="姓名"
+                  width="200"
+                ></el-table-column>
+                <el-table-column
+                  property="address"
+                  label="地址"
+                ></el-table-column>
+              </el-table>
+              <div slot="footer" class="dialog-footer">
+                <!-- 删除确认 -->
+                <template>
+                  <el-popconfirm title="这是一段内容确定删除吗？">
+                    <el-button
+                      type="primary"
+                      slot="reference"
+                      @click="withraw(scope.row)"
+                      >注销</el-button
+                    >
+                  </el-popconfirm>
+                </template>
+                <!-- 取消 -->
+                <el-button @click="dialogTableVisible = false">取 消</el-button>
+              </div>
+            </el-dialog>
+
       <el-table
         :data="userData"
         border
@@ -65,44 +103,7 @@
               >
             </el-popconfirm>
             <!-- 弹出框 -->
-            <el-dialog
-              title="收货地址"
-              append-to-body=true
-              :visible.sync="dialogTableVisible"
-            >
-              <!-- 弹出框中的表格 -->
-              <el-table :data="gridData">
-                <el-table-column
-                  property="date"
-                  label="日期"
-                  width="150"
-                ></el-table-column>
-                <el-table-column
-                  property="name"
-                  label="姓名"
-                  width="200"
-                ></el-table-column>
-                <el-table-column
-                  property="address"
-                  label="地址"
-                ></el-table-column>
-              </el-table>
-              <div slot="footer" class="dialog-footer">
-                <!-- 删除确认 -->
-                <template>
-                  <el-popconfirm title="这是一段内容确定删除吗？">
-                    <el-button
-                      type="primary"
-                      slot="reference"
-                      @click="withraw(scope.row)"
-                      >注销</el-button
-                    >
-                  </el-popconfirm>
-                </template>
-                <!-- 取消 -->
-                <el-button @click="dialogTableVisible = false">取 消</el-button>
-              </div>
-            </el-dialog>
+           
           </template>
         </el-table-column>
       </el-table>

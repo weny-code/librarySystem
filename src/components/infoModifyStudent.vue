@@ -1,20 +1,12 @@
 <template>
-  <div class="flex">
-    <!-- <el-form
-        :model="signIn"
-        :rules="rules"
-        class="signInForm"
-        ref="signInForm"
-        label-width="100px"
-      >
-  <table  cellspacing="0"   class="tale" border="1">
+<div class="flex">
+        <table  cellspacing="0"   class="tale" border="1">
   <th colspan="6" class="juzhong">
-      <td broder="0"  >个人资料</td>
+      <td broder="0">个人资料</td>
   </th>
-
 <tr>
   <td>姓名</td>
-  <td><input type="text" id="#nameModifyStudent" v-model="infoModeify.name" ></td>
+  <td> <input type="text"  v-model="infoModeify.name"> </td>
   <td>性别</td>
   <td>
   <input type="text" id="#nameModifyStudent" v-model="infoModeify.gender" >  
@@ -42,64 +34,77 @@
 </tr>
 </table>
 
-<el-button type="success" id="alterModifyStudent"  @click="modeifySubmit()">编辑</el-button>
- </el-form>
-  <el-form-item label="活动名称" prop="name" width="10px">
-    <el-input v-model="ruleForm.name"></el-input>
-  </el-form-item>  
-</div> -->
-
-    <el-form
-      :model="passwordModeify"
-      :rules="passwdrules"
-      class="signInForm passwordModeifyForm"
-      ref="signInForm"
-      label-width="100px"
-    >
-      <el-form-item label="修改密码" prop="userPassword">
-        <el-input
-          v-model="passwordModeify.userPassword"
-          placeholder="请输入密码"
-          type="password"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="确认密码" prop="userPassword2">
-        <el-input
-          v-model="passwordModeify.userPassword2"
-          placeholder="请确认密码"
-          type="password"
-        ></el-input>
-      </el-form-item>
-      <el-button type="primary" @click="passwordModeifySubmit(signInForm)"
-        >确认</el-button
+  
+  
+  
+      <el-form
+        :model="passwordModeify"
+        :rules="rules"
+        class="passwordModeifyForm"
+        ref="passwordModeifyForm"
+        label-width="100px"
       >
-    </el-form>
-  </div>
-</template>                                                                发DVDDVD                                                                                                   
+                <el-form-item label="修改密码" prop="userPassword">
+                    <el-input v-model="passwordModeify.userPassword" placeholder="请输入密码" type="password"></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码" prop="userPassword2">
+                    <el-input v-model="passwordModeify.userPassword2" placeholder="请确认密码" type="password"></el-input>
+                </el-form-item>
+   <el-button type="primary" @click="passwordModeifySubmit('  passwordModeifyForm')" >确认</el-button>
+     </el-form>
+
+</div>
+
+</template>                                                                                                                                                 
 <script>
 // import axios from 'axios'
 export default {
   name: "infoModeify",
+  created() {
+        //  window.addEventListener('beforeunload', e => this.tableInit(e))
+          this.$axios({
+              method:"post",
+              url:"/showUser",
+              data: {
+                userId:0
+              },
+            }).then((res)=>{
+              console.log(res);
+             let a=this.infoModeify;
+             let b=res.data;
+             a.name=b.name;
+              a.gender=b.gender;
+              a.age=b.age;
+              a.email=b.email;
+              a.birthday=b.birthday;
+              a.phone=b.phone;
+              a.address=b.address;
+              a.description=b.description; 
+            })
+            .catch(function(error){
+              console.log(error);
+            })   
+      },
+      
   data() {
     return {
       infoModeify: {
-        userld: "",
+        userId: "",
         name: "",
         gender: "",
         age: "",
         email: "",
         birthday: "",
-        phone: "",
+        phone: "s",
         address: "",
         description: "",
-        jieyu: "",
       },
       passwordModeify: {
         userPassword: "",
         userPassword2: "",
         userId: "",
       },
-      passwdrules: {
+      rules: {
         // 要以数组形式展示
         userPassword: [
           { required: true, message: "密码不能为空", trigger: "blur" },
@@ -108,26 +113,26 @@ export default {
             max: 30,
             message: "长度在 8 到 30 个字符",
             trigger: "blur",
-          },
-          {
-            trigger: "blur",
-            validator: (rule, value, callback) => {
-              var userPassword = /(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*?])/;
-              if (!userPassword.test(value)) {
-                callback(
-                  new Error("密码必须由大小写字母、特殊字符组合,请输入8-30位")
-                );
-              } else {
-                callback();
-              }
-            },
-          },
+          }
+          // {
+          //   trigger: "blur",
+          //   validator: (rule, value, callback) => {
+          //     var userPassword = /(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*?])/;
+          //     if (!userPassword.test(value)) {
+          //       callback(
+          //         new Error("密码必须由大小写字母、特殊字符组合,请输入8-30位")
+          //       );
+          //     } else {
+          //       callback();
+          //     }
+          //   },
+          // },
         ],
         userPassword2: [
           { required: true, message: "确认密码不能为空", trigger: "blur" },
           {
             min: 8,
-            max: 40,
+            max: 30,
             message: "长度在 8 到 30 个字符",
             trigger: "blur",
           },
@@ -143,11 +148,14 @@ export default {
             },
           },
         ],
-      },
-
-      methods: {
+      }
+    }
+  },
+  methods: {
         passwordModeifySubmit(formName) {
-          this.passwordModeify.userId = this.GLOBAL.userId;
+          // this.passwordModeify.userId = this.GLOBAL.userId;
+          this.passwordModeify.userId=0;
+
           this.$refs[formName].validate((valid) => {
             if (valid) {
               this.$axios({
@@ -157,11 +165,7 @@ export default {
               })
                 .then((res) => {
                   console.log(res);
-                  if (res.data === 1) {
-                    alert("注册成功");
-                  } else if (res.data === 0) {
-                    alert("账号已经存在");
-                  }
+                  
                 })
                 .catch(function (error) {
                   console.log(error);
@@ -173,32 +177,23 @@ export default {
             }
           });
         },
-        // editOrConfirm() {
-        //      let states=document.getElementById("alterModifyStudent");
-        //       let    statesValue=states.innerHTML;
-        //           if(statesValue==="编辑"){
-        //              states.innerHTML="确认";
-        //              edituers();
-        //           }
-        //           else{
-        //             states.innerHTML="编辑";
-        //              Confirm();
-        //           }
-        //   },
-
-        //   Confirm() {console.log(this.userPassword)},
-        //   edituers() {console.log(this.userPassword)}
+        tableInit() {
+           
+        },
       },
-    };
-  },
 };
 </script>
 
 
 <style scoped>
+.inputWidth .el-input__inner {
+  width: 1em;
+}
+
 .passwordModeifyForm {
-  width: 10em;
-  margin-left: 50%;
+  width: 30em;
+  margin-left: 35%;
+  text-align: center;
 }
 #descriptionModifyStudent {
   margin-left: auto;
@@ -237,7 +232,7 @@ td input {
   width: 95%;
 }
 .signInForm {
-  width: 20em;
+  width: 60em;
   padding-top: 15em;
   margin: 0;
 }

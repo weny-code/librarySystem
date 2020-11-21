@@ -134,7 +134,8 @@ export default {
 }
 
 .main-container {
-  margin: auto;
+  position: absolute;
+  width: 100%;
 }
 .shuming {
   width: 350px;

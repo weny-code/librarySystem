@@ -25,10 +25,13 @@
         <div class="desc">国家</div>
         <el-select
           style="margin-left: 20px"
-          v-model="id1"
+
+          v-model="value1"
           clearable
           placeholder="请选择"
           @change="currentBookNation($event)"
+          @clear="noSelect(1)"
+
         >
           <el-option
             v-for="item in nationData"
@@ -45,6 +48,9 @@
           clearable
           placeholder="请选择"
           @change="currentBookType($event)"
+
+          @clear="noSelect(2)"
+
         >
           <el-option
             v-for="item in typeData"
@@ -61,6 +67,9 @@
           clearable
           placeholder="请选择"
           @change="currentBookLength($event)"
+
+          @clear="noSelect(3)"
+
         >
           <el-option
             v-for="item in lengthData"
@@ -77,6 +86,8 @@
           clearable
           placeholder="请选择"
           @change="currentBookTheme($event)"
+
+          @clear="noSelect(4)"
         >
           <el-option
             v-for="item in themeData"
@@ -88,7 +99,9 @@
         </el-select>
       </div>
       <div class="check">
-        <el-button type="success" v-on:click="queryBook()">查询</el-button>
+
+        <el-button type="success" v-on:click="queryBook">查询</el-button>
+
       </div>
     </div>
     <div class="search-container">
@@ -105,21 +118,24 @@
       <div class="booktable">
         <el-table v-model="tableData" :data="tableData" stripe>
           <el-table-column
-            prop="bookName"
+
+            prop="book.bookName"
+
             label="书名"
             width="130"
             align="center"
           >
           </el-table-column>
-          <el-table-column prop="nation" label="国家" width="130">
+
+          <el-table-column prop="book.nation" label="国家" width="130">
           </el-table-column>
-          <el-table-column prop="type" label="类型" width="130">
+          <el-table-column prop="book.type" label="类型" width="130">
           </el-table-column>
-          <el-table-column prop="length" label="篇幅" width="130">
+          <el-table-column prop="book.length" label="篇幅" width="130">
           </el-table-column>
-          <el-table-column prop="theme" label="主题" width="300">
+          <el-table-column prop="book.theme" label="主题" width="300">
           </el-table-column>
-          <el-table-column prop="storeDate" label="上架时间" width="200">
+          <el-table-column prop="book.storeDate" label="上架时间" width="200">
           </el-table-column>
           <el-table-column
             prop="status"
@@ -128,7 +144,9 @@
             header-align="center"
           >
             <template slot-scope="scope">
-              <div v-if="scope.row.status == '可借'">
+
+              <div v-if="scope.row.status == '0'">
+
                 <el-button
                   type="primary"
                   round
@@ -149,12 +167,13 @@
                   ></el-table-column>
                 </el-table>
               </el-dialog>
-              <div v-if="scope.row.status == '已借'">
+
+              <div v-if="scope.row.status == '1'">
                 <el-button type="success" disabled>已借</el-button>
               </div>
-              <div v-if="scope.row.status == '无货'">
+              <!-- <div v-if="scope.row.status == '无货'">
                 <el-button type="info" disabled>无货</el-button>
-              </div>
+              </div> -->
             </template>
           </el-table-column>
         </el-table>
@@ -182,6 +201,7 @@ export default {
   data() {
     return {
       count: null,
+      userId: "2",
       book: {
         bookId: null,
         bookName: null,
@@ -189,6 +209,7 @@ export default {
         type: null,
         length: null,
         theme: null,
+        status: null,
         // storeDate: null,
         // leftAmount: null,
         // uploadAmount: null,
@@ -205,7 +226,7 @@ export default {
       themeData: [],
       typeData: [],
       tableData: [],
-      id1: [],
+      value1: [],
       value2: [],
       value3: [],
       value4: [],
@@ -214,9 +235,10 @@ export default {
   methods: {
     getBookTable() {
       this.$axios
-        .get("/BookByPage/" + (this.currentPage - 1))
+        .get("/bookStatus/" + (this.currentPage - 1) + "/" + this.userId)
         .then((res) => {
           this.tableData = res.data;
+
           // this.count = 50;
           console.log("后端初始传来的数据：" + res.data);
           console.log("有多少本书：" + this.count);
@@ -325,7 +347,6 @@ export default {
       });
       this.book.nation = obj.nation;
       console.log("传入后端的国家：" + this.book.nation);
-      this.getSelectTheme();
     },
     currentBookLength(e) {
       let obj = {};
@@ -334,7 +355,6 @@ export default {
       });
       this.book.length = obj.length;
       console.log("传入后端的篇幅：" + this.book.length);
-      this.getSelectTheme();
     },
     currentBookTheme(e) {
       let obj = {};
@@ -343,7 +363,6 @@ export default {
       });
       this.book.theme = obj.theme;
       console.log("传入后端的主题：" + this.book.theme);
-      this.getSelectTheme();
     },
     queryBook() {
       this.$axios({
@@ -353,11 +372,25 @@ export default {
       })
         .then((res) => {
           this.tableData = res.data;
-          console.log(this.tableData.length);
+          console.log("查询得到的书籍总数" + this.tableData.length);
         })
         .catch(function (error) {
           console.log(error);
         });
+    },
+    noSelect(e) {
+      if (e == "1") {
+        this.book.nation = null;
+      } else if (e == "2") {
+        this.book.type = null;
+        this.currentType = null;
+        console.log("传入后端的类型：" + this.book.type);
+        console.log("当前书的类型ID：" + this.currentType);
+      } else if (e == "3") {
+        this.book.length = null;
+      } else if (e == "4") {
+        this.book.theme = null;
+      }
     },
   },
   created() {

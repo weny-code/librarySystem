@@ -87,29 +87,38 @@
         <!-- 按钮 -->
         <el-table-column width="150" label="借阅状态">
           <template slot-scope="scope">
-            <el-button
-              @click="handleClick(scope.row)"
-              type="primary"
-              size="small"
-              >已借</el-button
+            <el-popover
+              placement="top-start"
+              title="提示"
+              width="100"
+              trigger="hover"
+              content="点击查看借阅详情"
             >
+              <el-button
+                @click="handleClick(scope.row)"
+                type="primary"
+                size="small"
+                slot="reference"
+                >已借</el-button
+              >
+            </el-popover>
           </template>
         </el-table-column>
       </el-table>
 
       <div class="dialog">
-        <el-dialog title="提示" :visible.sync="dialogVisible" width="50%">
+        <el-dialog title="用户借阅详情" :visible.sync="dialogVisible" width="50%">
           <div>
             <el-row :gutter="20">
               <el-col :span="8"
-                ><div class="grid-content bg-purple">13152</div
-              ></el-col>
+                ><div class="grid-content bg-purple">13152</div></el-col
+              >
               <el-col :span="8"
-                ><div class="grid-content bg-purple">4542428</div
-              ></el-col>
+                ><div class="grid-content bg-purple">4542428</div></el-col
+              >
               <el-col :span="8"
-                ><div class="grid-content bg-purple">4272424</div
-              ></el-col>
+                ><div class="grid-content bg-purple">4272424</div></el-col
+              >
             </el-row>
 
             <el-table :data="tableData" style="width: 100%">
@@ -282,7 +291,7 @@ export default {
     //  })
     // },
     handleClick(book) {
-      console.log(book.bookName);
+      console.log(book);
       this.dialogVisible = true;
     },
     // searchByType(){
@@ -340,26 +349,26 @@ export default {
   margin-top: 5px;
 }
 .el-row {
-    margin-bottom: 20px;
-  }
-  .el-col {
-    border-radius: 4px;
-  }
-  .bg-purple-dark {
-    background: #99a9bf;
-  }
-  .bg-purple {
-    background: #d3dce6;
-  }
-  .bg-purple-light {
-    background: #e5e9f2;
-  }
-  .grid-content {
-    border-radius: 4px;
-    min-height: 36px;
-  }
-  .row-bg {
-    padding: 10px 0;
-    background-color: #f9fafc;
-  }
+  margin-bottom: 20px;
+}
+.el-col {
+  border-radius: 4px;
+}
+.bg-purple-dark {
+  background: #99a9bf;
+}
+.bg-purple {
+  background: #d3dce6;
+}
+.bg-purple-light {
+  background: #e5e9f2;
+}
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
+}
+.row-bg {
+  padding: 10px 0;
+  background-color: #f9fafc;
+}
 </style>
