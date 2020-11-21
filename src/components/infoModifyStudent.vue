@@ -66,13 +66,13 @@ export default {
               method:"post",
               url:"/showUser",
               data: {
-                userId:0
+                userId:this.userId.userId
               },
             }).then((res)=>{
               console.log(res);
-             let a=this.infoModeify;
-             let b=res.data;
-             a.name=b.name;
+              let a=this.infoModeify;
+              let b=res.data;
+              a.name=b.name;
               a.gender=b.gender;
               a.age=b.age;
               a.email=b.email;

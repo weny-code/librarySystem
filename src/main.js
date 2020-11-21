@@ -6,9 +6,11 @@ import axios from 'axios'
 import qs from 'qs'
 // import VueAxios from 'vue-axios'
 import 'element-ui/lib/theme-chalk/index.css';
+import userId from '../global_variable.js'
 
 
 // Vue.use(VueAxios, axios);
+Vue.prototype.userId = userId
 Vue.prototype.$axios = axios
 Vue.prototype.$qs = qs
 Vue.config.productionTip = false
