@@ -100,9 +100,7 @@
         <el-input v-model="book.bookName" placeholder="请输入关键字"></el-input>
       </div>
       <div class="search">
-        <el-button type="success" round v-on:click="searchBook(book)"
-          >搜索</el-button
-        >
+        <el-button type="success" round v-on:click="searchBook">搜索</el-button>
       </div>
     </div>
     <div class="show-container">
@@ -233,9 +231,11 @@ export default {
         });
     },
     searchBook() {
+      console.log("------------" + this.book.bookName);
+      this.count = this.getTypeCount();
       this.$axios({
         method: "post",
-        url: "/BookKeyWord",
+        url: "/BookKeyWord/" + this.userId + "/" + (this.currentPage - 1),
         data: { bookName: this.book.bookName },
       })
         .then((res) => {
@@ -260,6 +260,21 @@ export default {
       })
         .then((res) => {
           this.count = res.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    getTypeCount() {
+      console.log("------------" + this.book.bookName);
+      this.$axios({
+        method: "post",
+        url: "/BookTypeCount",
+        data: this.book,
+      })
+        .then((res) => {
+          this.count = res.data;
+          console.log("用户查询书的数量：" + this.count);
         })
         .catch(function (error) {
           console.log(error);
@@ -350,9 +365,10 @@ export default {
       console.log("传入后端的主题：" + this.book.theme);
     },
     queryBook() {
+      this.count = this.getTypeCount();
       this.$axios({
         method: "post",
-        url: "/BookType",
+        url: "/BookType/" + this.userId + "/" + (this.currentPage - 1),
         data: this.book,
       })
         .then((res) => {

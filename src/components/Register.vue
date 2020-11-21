@@ -168,6 +168,7 @@ export default {
               console.log("传入的数据=" + JSON.stringify(this.register));
               if (res.data === 1) {
                 alert("注册成功");
+                this.router.push("/SignIn");
               } else if (res.data === 0) {
                 alert("账号已经存在");
               }
