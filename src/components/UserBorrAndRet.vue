@@ -66,23 +66,23 @@
     <!-- 借阅详情 -->
     <div class="borrowInfo">
       <el-table
-        :data="tableData"
+        :data="bookData"
         :cell-style="{ textAlign: 'center' }"
         :header-cell-style="{ textAlign: 'center' }"
         class="table"
       >
-        <el-table-column prop="date" label="书名" width="150">
+        <el-table-column prop="bookName" label="书名" width="150">
         </el-table-column>
-        <el-table-column prop="name" label="国家" width="150">
+        <el-table-column prop="nation" label="国家" width="150">
         </el-table-column>
-        <el-table-column prop="address" label="类型" width="150">
+        <el-table-column prop="type" label="类型" width="150">
         </el-table-column>
 
-        <el-table-column prop="address" label="篇幅" width="150">
+        <el-table-column prop="length" label="篇幅" width="150">
         </el-table-column>
-        <el-table-column prop="address" label="主题" width="150">
+        <el-table-column prop="theme" label="主题" width="150">
         </el-table-column>
-        <el-table-column prop="address" label="上架日期" width="200">
+        <el-table-column prop="date" label="上架日期" width="200">
         </el-table-column>
         <!-- 按钮 -->
         <el-table-column width="150" label="借阅状态">
@@ -99,7 +99,7 @@
                 type="primary"
                 size="small"
                 slot="reference"
-                >已借</el-button
+                >{{boorowStatus}}</el-button
               >
             </el-popover>
           </template>
@@ -107,26 +107,26 @@
       </el-table>
 
       <div class="dialog">
-        <el-dialog title="用户借阅详情" :visible.sync="dialogVisible" width="50%">
+        <el-dialog title="用户借阅详情" :visible.sync="dialogVisible" width="50%" >
           <div>
             <el-row :gutter="20">
               <el-col :span="8"
-                ><div class="grid-content bg-purple">13152</div></el-col
+                ><div class="grid-content bg-purple">书名:{{book.bookName}}</div></el-col
               >
               <el-col :span="8"
-                ><div class="grid-content bg-purple">4542428</div></el-col
+                ><div class="grid-content bg-purple">剩余数量:{{leftNum}}</div></el-col
               >
               <el-col :span="8"
-                ><div class="grid-content bg-purple">4272424</div></el-col
+                ><div class="grid-content bg-purple">借出数量:{{borrowNum}}</div></el-col
               >
             </el-row>
 
-            <el-table :data="tableData" style="width: 100%">
-              <el-table-column prop="date" label="日期" width="180">
+            <el-table :data="borrowInfo" style="width: 100%">
+              <el-table-column prop="borrowName" label="借阅人" width="180">
               </el-table-column>
-              <el-table-column prop="name" label="姓名" width="180">
+              <el-table-column prop="borrowDate" label="借阅日期" width="180">
               </el-table-column>
-              <el-table-column prop="address" label="地址"> </el-table-column>
+              <el-table-column prop="borrowValid" label="有效期"> </el-table-column>
             </el-table>
           </div>
           <span slot="footer" class="dialog-footer">
@@ -158,6 +158,12 @@ export default {
       input: "",
       currentPage: 1,
       dialogVisible: false,
+      leftNum:"6",
+      borrowNum:"4",
+      boorowStatus:"可借",
+      book: {
+        
+      },
       nation: [
         {
           value: "选项1",
@@ -246,26 +252,55 @@ export default {
           label: "北京烤鸭",
         },
       ],
-      tableData: [
+      bookData: [
         {
           date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
+          bookName: "水浒传",
+          type: "不知道",
+          length:"长篇",
+          theme:"不知道",
+          nation:"中国"
+        },
+         {
+          date: "2016-05-02",
+          bookName: "水浒传",
+          type: "不知道",
+          length:"长篇",
+          theme:"不知道",
+          nation:"中国"
         },
         {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄",
+          date: "2016-05-02",
+          bookName: "水浒传",
+          type: "不知道",
+          length:"长篇",
+          theme:"不知道",
+          nation:"中国"
         },
         {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄",
+          date: "2016-05-02",
+          bookName: "水浒传",
+          type: "不知道",
+          length:"长篇",
+          theme:"不知道",
+          nation:"中国"
         },
+      ],
+      borrowInfo:[
         {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
+          borrowName:"黑旋风李逵",
+          borrowDate:"2019-8-8",
+          borrowValid:"30天",
+        },
+         {
+          borrowName:"黑旋风李逵",
+          borrowDate:"2019-8-8",
+          borrowValid:"30天",
+        },
+         {
+          borrowName:"黑旋风李逵",
+          borrowDate:"2019-8-8",
+          borrowValid:"30天",
         },
       ],
       value1: "",
@@ -278,7 +313,12 @@ export default {
   methods: {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      // getBookData()
     },
+    // getBookData(){
+    //   this.$axios
+    //   .get("/book")
+    // },
 
     // search(){
     //   this.$axios
@@ -292,7 +332,9 @@ export default {
     // },
     handleClick(book) {
       console.log(book);
+      this.book = book;
       this.dialogVisible = true;
+      
     },
     // searchByType(){
     //   this.$axios({
