@@ -26,7 +26,7 @@
         </el-tooltip>
       </div>
     </div>
-    <div class="operation-container" v-show="adminShow">
+    <div class="operation-container" v-show="pageList.adminShow">
       <div class="item">
         <el-card class="box-card">
           <div class="card-inner" @click="showPage(2)">
@@ -34,7 +34,7 @@
               :src="require('../assets/img/yhlb.png')"
               class="img-inner"
             ></el-image>
-            <div class="desc">用户列表</div>
+            <span class="desc">用户列表</span>
           </div>
         </el-card>
       </div>
@@ -45,7 +45,7 @@
               :src="require('../assets/img/tsjygh.png')"
               class="img-inner"
             ></el-image>
-            <div class="desc">图书借阅与归还</div>
+            <span class="desc">图书借阅与归还</span>
           </div>
         </el-card>
       </div>
@@ -56,7 +56,7 @@
               :src="require('../assets/img/gggl.png')"
               class="img-inner"
             ></el-image>
-            <div class="desc">首页公告管理</div>
+            <span class="desc">首页公告管理</span>
           </div>
         </el-card>
       </div>
@@ -67,7 +67,7 @@
               :src="require('../assets/img/sk.png')"
               class="img-inner"
             ></el-image>
-            <div class="desc">书库</div>
+            <span class="desc">书库</span>
           </div>
         </el-card>
       </div>
@@ -78,7 +78,7 @@
               :src="require('../assets/img/tj.png')"
               class="img-inner"
             ></el-image>
-            <div class="desc">图书借阅统计</div>
+            <span class="desc">图书借阅统计</span>
           </div>
         </el-card>
       </div>
@@ -86,8 +86,8 @@
         <img src="../assets/img/Admin.png" class="image" />
       </div>
     </div>
-    <bookStore v-show="!adminShow"></bookStore>
-    <userList v-show="!adminShow"></userList>
+    <bookStore v-show="pageList.bookRoomShow"></bookStore>
+    <userList v-show="pageList.userShow"></userList>
   </div>
 </template>
 
@@ -99,36 +99,67 @@ export default {
   name: "AdministratorPage",
   data() {
     return {
-      adminShow: true,
       pageIndex: "1",
+      pageList: {
+        adminShow: true,
+        userShow: false,
+        bookShow: false,
+        bookRoomShow: false,
+        testShow: false,
+        allShow: false,
+      },
     };
   },
   methods: {
     handleSelect(key) {
       this.pageIndex = key;
-      if (key == "1") {
-        this.adminShow = true;
-      } else {
-        this.showPage(this.pageIndex);
-      }
+      this.showPage(this.pageIndex);
     },
     showPage(index) {
-      console.log(index);
-      this.adminShow = false;
+      var pageName = "";
       this.pageIndex = index;
+      if (index == "1") {
+        pageName = "adminShow";
+      } else if (index == "2") {
+        pageName = "userShow";
+      } else if (index == "3") {
+        pageName = "bookShow";
+      } else if (index == "4") {
+        pageName = "bookRoomShow";
+      } else if (index == "5") {
+        pageName = "testShow";
+      } else {
+        pageName = "allShow";
+      }
+      console.log("当前页面:" + pageName);
+      console.log("当前页面页数:" + this.pageIndex);
+      for (var key in this.pageList) {
+        console.log(key);
+        if (key == pageName) {
+          this.pageList[key] = true;
+        } else {
+          this.pageList[key] = false;
+        }
+        console.log(key + "状态为" + this.pageList[key]);
+      }
     },
   },
+  created() {},
 };
 </script>
 
 <style scoped>
 .body-bg {
-  position: absolute;
+  /* position: absolute; */
   width: 100%;
   height: 100%;
-  top: 0;
+  min-width: 1500px;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  /* top: 0;
   left: 0;
-  overflow-y: auto;
+  overflow-y: auto; */
   color: #c6ddff;
 }
 
@@ -138,9 +169,10 @@ export default {
 }
 
 .navigation-container {
-  position: absolute;
+  position: relative;
   display: flex;
-  width: 100%;
+  height: auto;
+  width: auto;
   background-color: #66cccc;
   justify-content: space-between;
 }
@@ -151,17 +183,16 @@ export default {
   font-weight: bold;
   letter-spacing: 5px;
   color: white;
-  margin-top: 10px;
-  float: left;
-  margin-left: 10px;
+  padding-top: 10px;
+  /* float: left; */
+  padding-left: 10px;
   cursor: default;
 }
 
 .navigation-container .bottom {
-  float: right;
   font-size: 40px;
   margin-right: 50px;
-  margin-top: 10px;
+  padding-top: 10px;
   cursor: pointer;
   text-align: center;
 }
@@ -172,11 +203,12 @@ export default {
 
 .navigation-container .nav {
   margin-left: -150px;
+  /* margin-left: 100px; */
 }
 
 .operation-container {
   display: flex;
-  margin-top: 10%;
+  margin-top: 5%;
   margin-left: 15%;
   width: 1000px;
   /* height: 450px; */
@@ -186,7 +218,7 @@ export default {
 }
 
 .item {
-  margin: 10px 10px 10px 10px;
+  margin: 10px;
 }
 
 .item2 {
@@ -199,9 +231,9 @@ export default {
 }
 
 .card-inner {
-  width: 110px;
-  height: 110px;
-  margin-left: 100px;
+  width: 180px;
+  height: 130px;
+  margin-left: 70px;
 }
 
 .card-inner :hover {
@@ -215,8 +247,8 @@ export default {
 }
 
 .card-inner .img-inner {
-  width: 100%;
-  height: 100%;
+  width: 60%;
+  height: 80%;
   overflow: visible;
   transition: all 0.3s ease;
 }
@@ -227,10 +259,11 @@ export default {
 
 .card-inner .desc {
   font-family: "FZZhaoMFXSJF";
+  display: block;
   font-size: 25px;
   color: black;
-  margin-left: -10px;
+  margin-left: 0px;
   font-weight: bold;
-  margin-top: -2px;
+  margin-top: 0px;
 }
 </style>
