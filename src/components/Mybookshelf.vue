@@ -108,15 +108,23 @@ export default {
     onSubmit(index) {
       console.log("submit!");
       this.jiazai[index].str = true;
-      // this.$axios
-      // .get("/returnBook/this.booksList[index].bookId")
-      // .then((res) =>{
+      // this.$axios({
+      //   methods: 'post',
+      //   url: '/borrowReturn',
+      //   data:{
+      //       userId: 5,
+      //       bookId: this.booksList[index].bookId
+      //   }
+      // }) .then((res) =>{
       //     if(res.status == 200){
       //       console.log("还书成功")
+      //          this.$message("还书成功");
       //     }
       // });
     },
-    getBooksList() {},
+    getBooksList() {
+
+    },
     bookStatus(index){
     let count = this.booksList[index].bookName;
     return count;
@@ -158,11 +166,12 @@ export default {
 .info {
   margin-top: -15px;
   height: 150px;
+  text-align: left;
 }
 .fengexian {
   margin: 14px 0px;
 }
 .demo-form-inline {
-  margin-left: 480px;
+  margin-left: -10%;
 }
 </style>

@@ -8,7 +8,11 @@
       >
         <i slot="prefix" class="el-input__icon el-icon-search"></i>
       </el-input>
-      <el-button class="button" type="primary" icon="el-icon-search" @click="search"
+      <el-button
+        class="button"
+        type="primary"
+        icon="el-icon-search"
+        @click="search"
         >搜索</el-button
       >
     </div>
@@ -51,7 +55,7 @@
             :current-page.sync="currentPage1"
             :page-size="5"
             layout="prev, pager, next, jumper"
-            :total="1000"
+            :total="total1"
           >
           </el-pagination>
         </div>
@@ -122,7 +126,7 @@
         :current-page="currentPage"
         :page-size="pageSize"
         layout="total, prev, pager, next, jumper"
-        :total="400"
+        :total="total"
       >
       </el-pagination>
     </div>
@@ -135,26 +139,29 @@ export default {
     return {
       keyWord: "",
       currentPage: 1,
+      total: 0,
+      total1: 0,
       dialogTableVisible: false,
       currentPage1: 1,
       pageSize: 5,
       userName: "",
-      user:{
-        name:null,
-        index:null
+      userId: null,
+      user: {
+        name: null,
+        index: null,
       },
       userData: [
-        // {
-        // userId: 0,
-        // name: "admin",
-        // gender: " 男",
-        // age: "22",
-        // email: "741478240@qq.com",
-        // birthday: "2000-10-01",
-        // phone: "1576707",
-        // address: "广东",
-        // description: "煞笔"
-        // },
+        {
+          userId: 0,
+          name: "admin",
+          gender: " 男",
+          age: "22",
+          email: "741478240@qq.com",
+          birthday: "2000-10-01",
+          phone: "1576707",
+          address: "广东",
+          description: "煞笔",
+        },
       ],
       gridData: [
         {
@@ -206,54 +213,132 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
-      this.getUserData();
+      if (this.user.name != null) {
+        this.search();
+      } else {
+        this.getUserData();
+      }
     },
     diaHandleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage1 = val;
     },
     search() {
-      console.log("点击了搜索")
-      console.log(this.user.name)
+      console.log("点击了搜索");
+      console.log(this.user.name);
+      // this.getSearchUserCount()
+      // this.$axios({
+      //   methods:'post',
+      //   url: '/findUserByExample/'+(this.currentPage-1),
+      //   data:{
+      //     name:  this.user.name,
+      //     index:this.user.index
+      //   }
+      // })
+      //   .then((res) => {
+      //     this.userData = res.data;
+      //     console.log("请求成功");
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
+    },
+    getSearchUserCount() {
       this.$axios({
-        methods:'post',
-        url: '/findUserByExample/'+(this.currentPage-1),
-        data:{
-          name:  this.user.name,
-          index:this.user.index
-        }
+        methods: "post",
+        url: "/findUserByExampleCount",
+        data: {
+          name: this.user.name,
+        },
       })
         .then((res) => {
-          this.userData = res.data;
-          console.log("请求成功");
+          this.total = res.data;
+          console.log(this.total);
         })
         .catch((error) => {
           console.log(error);
         });
     },
+
+    getUserBorrCount() {
+      this.$axios
+        .get("/borrowCount/" + this.userId)
+        .then((res) => {
+          this.total1 = res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
     checkUser(user) {
       this.dialogTableVisible = true;
       this.userName = user.name;
+      this.userId = user.userId;
+      // this.getUserBorrCount()
       console.log(user);
+      // this.$axios({
+      //   methods: 'post',
+      //   url: '/borrowPage',
+      //   data: {
+      //     userId: user.userId,
+      //     index: this.currentPage1-1
+      //   }
+      // }).catch((error) => {
+      //   console.log(error);
+      // })
     },
     withraw(user) {
       this.open();
       console.log("111");
       this.dialogTableVisible = false;
       console.log(user);
+      // this.$axios.get("/deleteUser/" + user.userId).then((res) => {
+      //   if (res.data == 1) {
+      //     this.$alert("删除成功", "删除用户", {
+      //       confirmButtonText: "确定",
+      //       callback: (action) => {
+      //         this.$message({
+      //           type: "info",
+      //           message: `action: ${action}`,
+      //         });
+      //       },
+      //     });
+      //   } else if (res.data == 0) {
+      //     this.$alert("删除失败!!", "删除用户", {
+      //       confirmButtonText: "确定",
+      //       callback: (action) => {
+      //         this.$message({
+      //           type: "info",
+      //           message: `action: ${action}`,
+      //         });
+      //       },
+      //     });
+      //   }
+      // }).catch((error) => {
+      //   console.log(error)
+      // });
     },
-    getUserData() {
-      this.$axios
-        .get("/showUserList/" + (this.currentPage - 1))
-        .then((res) => {
-          this.userData = res.data;
-          console.log(this.userData);
-          console.log("111");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
+    // getUserData() {
+    //   this.$axios
+    //     .get("/showUserList/" + (this.currentPage - 1))
+    //     .then((res) => {
+    //       this.userData = res.data;
+    //       console.log(this.userData);
+    //       console.log("111");
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // },
+    // getAllUserCount(){
+    //   this.$axios
+    //   .post("/UserListCount")
+    //   .then((res)=>{
+    //     this.total = res.data
+    //     console.log(this.total)
+    //   })
+    // },
     //  弹出框
     open() {
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
@@ -277,7 +362,8 @@ export default {
   },
 
   created() {
-    this.getUserData();
+    // this.getAllUserCount();
+    // this.getUserData();
   },
 };
 </script>
