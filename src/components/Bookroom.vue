@@ -100,7 +100,7 @@
         <el-input v-model="book.bookName" placeholder="请输入关键字"></el-input>
       </div>
       <div class="search">
-        <el-button type="success" round v-on:click="searchBook">搜索</el-button>
+        <el-button type="success" round v-on:click="queryBook">搜索</el-button>
       </div>
     </div>
     <div class="show-container">
@@ -130,33 +130,35 @@
             header-align="center"
           >
             <template slot-scope="scope">
-              <div v-if="scope.row.status == '0'">
+              <div v-if="scope.row.status == '1'">
+                <el-button type="success" disabled>已借</el-button>
+              </div>
+              <div v-if="scope.row.book.leftAmount == '0'">
+                <el-button type="info" disabled>无货</el-button>
+              </div>
+              <div
+                v-if="
+                  scope.row.status == '0' && scope.row.book.leftAmount != '0'
+                "
+              >
                 <el-button
                   type="primary"
                   round
-                  v-on:click="showBook(), (dialogTableVisible = true)"
+                  v-on:click="showBook(scope.row), (dialogTableVisible = true)"
                   >借阅</el-button
                 >
               </div>
               <el-dialog :visible.sync="dialogTableVisible" top="10%">
-                <el-table :data="tableData">
+                <el-table :data="borrowBook">
                   <el-table-column
-                    prop="name"
+                    prop="bookName"
                     label="书名"
                     width="150"
                   ></el-table-column>
-                  <el-table-column
-                    prop="introduction"
-                    label="简介"
-                  ></el-table-column>
+                  <el-table-column prop="theme" label="简介"></el-table-column>
                 </el-table>
+                <el-button type="success" @click="borrow">借阅</el-button>
               </el-dialog>
-              <div v-if="scope.row.status == '1'">
-                <el-button type="success" disabled>已借</el-button>
-              </div>
-              <!-- <div v-if="scope.row.status == '无货'">
-                <el-button type="info" disabled>无货</el-button>
-              </div> -->
             </template>
           </el-table-column>
         </el-table>
@@ -184,7 +186,7 @@ export default {
   data() {
     return {
       count: null,
-      userId: "2",
+      userId: "1001",
       book: {
         bookId: null,
         bookName: null,
@@ -194,7 +196,7 @@ export default {
         theme: null,
         status: null,
         // storeDate: null,
-        // leftAmount: null,
+        leftAmount: null,
         // uploadAmount: null,
         // downloadAmount: null,
         // author: null,
@@ -202,8 +204,8 @@ export default {
       currentPage: 1,
       currentType: null,
       pagesize: 5,
-      booklist: [],
       dialogTableVisible: false,
+      borrowBook: { bookId: null, bookName: null },
       nationData: [],
       lengthData: [],
       themeData: [],
@@ -217,12 +219,13 @@ export default {
   },
   methods: {
     getBookTable() {
-      this.$axios
-        .get("/bookStatus/" + (this.currentPage - 1) + "/" + this.userId)
+      this.$axios({
+        method: "post",
+        url: "/BookType/" + this.userId + "/" + (this.currentPage - 1),
+        data: this.book,
+      })
         .then((res) => {
           this.tableData = res.data;
-
-          // this.count = 50;
           console.log("后端初始传来的数据：" + res.data);
           console.log("有多少本书：" + this.count);
         })
@@ -235,20 +238,22 @@ export default {
       this.count = this.getTypeCount();
       this.$axios({
         method: "post",
-        url: "/BookKeyWord/" + this.userId + "/" + (this.currentPage - 1),
+        url: "/BookType/" + this.userId + "/" + (this.currentPage - 1),
         data: { bookName: this.book.bookName },
       })
         .then((res) => {
           this.tableData = res.data;
-          console.log("传入的数据=" + JSON.stringify(this.book));
-          console.log("后端关键字搜索传来的数据：" + res.data);
+          // console.log("传入的数据=" + JSON.stringify(this.book));
+          console.log("下面的搜索得到的书籍总数" + this.tableData.length);
           // console.log("数据：" + this.$qs.stringify(this.book));
         })
         .catch(function (error) {
           console.log(error);
         });
     },
-    showBook() {},
+    showBook(e) {
+      this.borrowBook.bookName = e.bookName;
+    },
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getBookTable();
@@ -373,7 +378,7 @@ export default {
       })
         .then((res) => {
           this.tableData = res.data;
-          console.log("查询得到的书籍总数" + this.tableData.length);
+          console.log("上面的查询查询得到的书籍总数" + this.tableData.length);
         })
         .catch(function (error) {
           console.log(error);
@@ -393,13 +398,26 @@ export default {
         this.book.theme = null;
       }
     },
+    borrow() {
+      this.$axios({
+        method: "post",
+        url: "/BookType/" + this.userId + "/" + (this.currentPage - 1),
+        data: this.book,
+      })
+        .then((res) => {
+          this.tableData = res.data;
+          console.log("上面的查询查询得到的书籍总数" + this.tableData.length);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
   },
   created() {
     this.getBookTable();
     this.getBookCount();
     this.getSelectNation();
     this.getSelectLength();
-    // this.getSelectTheme();
     this.getSelectType();
   },
 };

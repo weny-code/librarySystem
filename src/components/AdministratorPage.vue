@@ -88,14 +88,16 @@
     </div>
     <bookStore v-show="pageList.bookRoomShow"></bookStore>
     <userList v-show="pageList.userShow"></userList>
+    <BookStatic v-show="pageList.allShow"></BookStatic>
   </div>
 </template>
 
 <script>
 import BookStore from "@/views/BookStore";
 import UserList from "@/views/UserList";
+import BookStatic from "@/views/BookStatic";
 export default {
-  components: { BookStore, UserList },
+  components: { BookStore, UserList, BookStatic },
   name: "AdministratorPage",
   data() {
     return {
