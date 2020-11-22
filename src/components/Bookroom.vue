@@ -113,6 +113,7 @@
             align="center"
           >
           </el-table-column>
+
           <el-table-column prop="book.nation" label="国家" width="130">
           </el-table-column>
           <el-table-column prop="book.type" label="类型" width="130">

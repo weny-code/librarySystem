@@ -5,15 +5,14 @@
       <el-breadcrumb-item><a href="/">我是借阅者</a></el-breadcrumb-item>
       <el-breadcrumb-item><a>我的书架</a></el-breadcrumb-item>
     </el-breadcrumb>
-    <div v-for="(temp, index) in user" :key="index" class="book">
+    <div v-for="(book, index) in booksList" :key="index" class="book">
       <el-form :inline="true" :model="booksList" class="demo-form-inline">
         <el-form-item>
           <el-input
             class="shuming"
-            :placeholder="booksList[index].bookName"
+            :placeholder="book.bookName"
             :disabled="true"
           ></el-input>
-          
         </el-form-item>
         <el-form-item>
           <el-button
@@ -25,25 +24,25 @@
           >
         </el-form-item>
       </el-form>
-      <div class="info" >
+      <div class="info">
         <el-card class="box-card">
-        <div v-if="booksList[index].bookName">
-        <div class="text item">
-            {{ "书名:" + booksList[index].bookName }}
+          <div>
+            <div class="text item">
+              {{ "书名:" + book.bookName }}
+            </div>
+            <div class="text item">
+              {{ "国家:" + book.nation }}
+            </div>
+            <div class="text item">
+              {{ "类型:" + book.type }}
+            </div>
+            <div class="text item">
+              {{ "篇幅:" + book.length }}
+            </div>
+            <div class="text item">
+              {{ "主题:" + booksList[index].theme }}
+            </div>
           </div>
-          <div class="text item">
-            {{ "国家:" + booksList[index].country }}
-          </div>
-          <div class="text item">
-            {{ "类型:" + booksList[index].type }}
-          </div>
-          <div class="text item">
-            {{ "篇幅:" + booksList[index].length }}
-          </div>
-          <div class="text item">
-            {{ "主题:" + booksList[index].theme }}
-          </div>
-        </div>
         </el-card>
       </div>
     </div>
@@ -54,19 +53,8 @@
 export default {
   data: function() {
     return {
-      show:"true",
-      user: [
-        {
-          value: "",
-        },
-        {
-          value: "",
-        },
-        {
-          value: "",
-        },
-      ],
-
+      show: "true",
+      userId: 1001,
       jiazai: [
         {
           str: false,
@@ -78,52 +66,70 @@ export default {
           str: false,
         },
       ],
-      booksList: [
-        {
-          bookId: 11,
-          bookName: "《水浒传》",
-          country: "中国",
-          type: "武侠",
-          length: "这么长",
-          theme: "情义",
-        },
-        {
-          bookName: "《红楼梦》",
-          country: "中国",
-          type: "不知道",
-          length: "这么长",
-          theme: "情义",
-        },
-        {
-          bookName: "",
-          // country: "",
-          // type: "",
-          // length: "",
-          // theme: "",
-        },
-      ],
+      booksList: [],
     };
   },
   methods: {
     onSubmit(index) {
       console.log("submit!");
       this.jiazai[index].str = true;
-      // this.$axios
-      // .get("/returnBook/this.booksList[index].bookId")
-      // .then((res) =>{
-      //     if(res.status == 200){
-      //       console.log("还书成功")
-      //     }
-      // });
+      console.log(index);
+      console.log(this.userId);
+      console.log(this.booksList[index].bookId);
+      console.log(this.booksList[index].id);
+
+      this.$confirm("是否要归还这本书", "还书", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$axios({
+            method: "post",
+            url: "/borrowReturn",
+            data: {
+              id: this.booksList[index].id,
+              bookId: this.booksList[index].bookId,
+            },
+          }).then((res) => {
+            console.log(this.userId);
+            console.log(this.booksList[index].bookId);
+            console.log(res.data);
+            if (res.data == 1) {
+              console.log("还书成功");
+              this.$message("还书成功");
+              this.getBooksList();
+              this.jiazai[index].str = false;
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消还书",
+          });
+          this.jiazai[index].str = false;
+        });
     },
-    getBooksList() {},
-    bookStatus(index){
-    let count = this.booksList[index].bookName;
-    return count;
-    }
+    getBooksList() {
+      this.$axios
+        .get("/borrowUserShelf/" + this.userId)
+        .then((res) => {
+          this.booksList = res.data;
+          console.log("请求成功");
+          console.log(this.booksList);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    bookStatus(index) {
+      let count = this.booksList[index].bookName;
+      return count;
+    },
   },
   created() {
-    // this.getBooksList()
+    this.getBooksList();
   },
 };
 </script>
@@ -158,11 +164,13 @@ export default {
 .info {
   margin-top: -15px;
   height: 150px;
+  text-align: left;
+  margin-left: 50px;
 }
 .fengexian {
   margin: 14px 0px;
 }
 .demo-form-inline {
-  margin-left: 480px;
+  margin-left: 15%;
 }
 </style>

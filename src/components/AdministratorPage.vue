@@ -26,6 +26,7 @@
         </el-tooltip>
       </div>
     </div>
+
     <div class="operation-container" v-show="pageList.adminShow">
       <div class="item">
         <el-card class="box-card">
@@ -34,6 +35,7 @@
               :src="require('../assets/img/yhlb.png')"
               class="img-inner"
             ></el-image>
+
             <span class="desc">用户列表</span>
           </div>
         </el-card>
@@ -45,6 +47,7 @@
               :src="require('../assets/img/tsjygh.png')"
               class="img-inner"
             ></el-image>
+
             <span class="desc">图书借阅与归还</span>
           </div>
         </el-card>
@@ -56,6 +59,7 @@
               :src="require('../assets/img/gggl.png')"
               class="img-inner"
             ></el-image>
+
             <span class="desc">首页公告管理</span>
           </div>
         </el-card>
@@ -67,6 +71,7 @@
               :src="require('../assets/img/sk.png')"
               class="img-inner"
             ></el-image>
+
             <span class="desc">书库</span>
           </div>
         </el-card>
@@ -78,6 +83,7 @@
               :src="require('../assets/img/tj.png')"
               class="img-inner"
             ></el-image>
+
             <span class="desc">图书借阅统计</span>
           </div>
         </el-card>
@@ -86,6 +92,7 @@
         <img src="../assets/img/Admin.png" class="image" />
       </div>
     </div>
+
     <bookStore v-show="pageList.bookRoomShow"></bookStore>
     <userList v-show="pageList.userShow"></userList>
     <BookStatic v-show="pageList.allShow"></BookStatic>
@@ -115,6 +122,7 @@ export default {
   methods: {
     handleSelect(key) {
       this.pageIndex = key;
+
       this.showPage(this.pageIndex);
     },
     showPage(index) {
@@ -162,6 +170,7 @@ export default {
   /* top: 0;
   left: 0;
   overflow-y: auto; */
+
   color: #c6ddff;
 }
 
@@ -185,9 +194,11 @@ export default {
   font-weight: bold;
   letter-spacing: 5px;
   color: white;
+
   padding-top: 10px;
   /* float: left; */
   padding-left: 10px;
+
   cursor: default;
 }
 
@@ -195,6 +206,7 @@ export default {
   font-size: 40px;
   margin-right: 50px;
   padding-top: 10px;
+
   cursor: pointer;
   text-align: center;
 }
@@ -205,12 +217,11 @@ export default {
 
 .navigation-container .nav {
   margin-left: -150px;
-  /* margin-left: 100px; */
 }
-
 .operation-container {
   display: flex;
   margin-top: 5%;
+
   margin-left: 15%;
   width: 1000px;
   /* height: 450px; */
@@ -251,6 +262,7 @@ export default {
 .card-inner .img-inner {
   width: 60%;
   height: 80%;
+
   overflow: visible;
   transition: all 0.3s ease;
 }
@@ -261,6 +273,7 @@ export default {
 
 .card-inner .desc {
   font-family: "FZZhaoMFXSJF";
+
   display: block;
   font-size: 25px;
   color: black;
