@@ -150,62 +150,63 @@ export default {
         name: null,
         index: null,
       },
+      user1:{},
       userData: [
-        {
-          userId: 0,
-          name: "admin",
-          gender: " 男",
-          age: "22",
-          email: "741478240@qq.com",
-          birthday: "2000-10-01",
-          phone: "1576707",
-          address: "广东",
-          description: "煞笔",
-        },
+        // {
+        //   userId: 0,
+        //   name: "admin",
+        //   gender: " 男",
+        //   age: "22",
+        //   email: "741478240@qq.com",
+        //   birthday: "2000-10-01",
+        //   phone: "1576707",
+        //   address: "广东",
+        //   description: "煞笔",
+        // },
       ],
       gridData: [
-        {
-          bookName: "三国演义",
-          nation: "中国",
-          type: "战争谋略",
-          length: "30章",
-          theme: "不知道",
-        },
-        {
-          bookName: "三国演义",
-          nation: "中国",
-          type: "战争谋略",
-          length: "30章",
-          theme: "不知道",
-        },
-        {
-          bookName: "三国演义",
-          nation: "中国",
-          type: "战争谋略",
-          length: "30章",
-          theme: "不知道",
-        },
-        {
-          bookName: "三国演义",
-          nation: "中国",
-          type: "战争谋略",
-          length: "30章",
-          theme: "不知道",
-        },
-        {
-          bookName: "三国演义",
-          nation: "中国",
-          type: "战争谋略",
-          length: "30章",
-          theme: "不知道",
-        },
-        {
-          bookName: "三国演义",
-          nation: "中国",
-          type: "战争谋略",
-          length: "30章",
-          theme: "不知道",
-        },
+        // {
+        //   bookName: "三国演义",
+        //   nation: "中国",
+        //   type: "战争谋略",
+        //   length: "30章",
+        //   theme: "不知道",
+        // },
+        // {
+        //   bookName: "三国演义",
+        //   nation: "中国",
+        //   type: "战争谋略",
+        //   length: "30章",
+        //   theme: "不知道",
+        // },
+        // {
+        //   bookName: "三国演义",
+        //   nation: "中国",
+        //   type: "战争谋略",
+        //   length: "30章",
+        //   theme: "不知道",
+        // },
+        // {
+        //   bookName: "三国演义",
+        //   nation: "中国",
+        //   type: "战争谋略",
+        //   length: "30章",
+        //   theme: "不知道",
+        // },
+        // {
+        //   bookName: "三国演义",
+        //   nation: "中国",
+        //   type: "战争谋略",
+        //   length: "30章",
+        //   theme: "不知道",
+        // },
+        // {
+        //   bookName: "三国演义",
+        //   nation: "中国",
+        //   type: "战争谋略",
+        //   length: "30章",
+        //   theme: "不知道",
+        // },
       ],
     };
   },
@@ -222,36 +223,40 @@ export default {
     diaHandleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage1 = val;
+      this.checkUser(this.user1)
     },
+    // 搜索
     search() {
       console.log("点击了搜索");
       console.log(this.user.name);
-      // this.getSearchUserCount()
-      // this.$axios({
-      //   methods:'post',
-      //   url: '/findUserByExample/'+(this.currentPage-1),
-      //   data:{
-      //     name:  this.user.name,
-      //     index:this.user.index
-      //   }
-      // })
-      //   .then((res) => {
-      //     this.userData = res.data;
-      //     console.log("请求成功");
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
+      this.getSearchUserCount()
+      this.$axios({
+        method:'post',
+        url: '/findUserByExample/'+(this.currentPage-1),
+        data:{
+          name:  this.user.name,
+          index: this.user.index
+        }
+      })
+        .then((res) => {
+          this.userData = res.data;
+          console.log("请求成功");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
+    // 得到搜索结果的总数
     getSearchUserCount() {
       this.$axios({
-        methods: "post",
+        method: "post",
         url: "/findUserByExampleCount",
         data: {
           name: this.user.name,
         },
       })
         .then((res) => {
+          console.log("得到搜索总数")
           this.total = res.data;
           console.log(this.total);
         })
@@ -259,86 +264,94 @@ export default {
           console.log(error);
         });
     },
-
+    //得到用户借阅历史总条数
     getUserBorrCount() {
       this.$axios
         .get("/borrowCount/" + this.userId)
         .then((res) => {
           this.total1 = res.data;
+          console.log(this.total1)
         })
         .catch((error) => {
           console.log(error);
         });
     },
-
+    //查看用户信息
     checkUser(user) {
       this.dialogTableVisible = true;
       this.userName = user.name;
+      this.user1 = user
       this.userId = user.userId;
-      // this.getUserBorrCount()
       console.log(user);
-      // this.$axios({
-      //   methods: 'post',
-      //   url: '/borrowPage',
-      //   data: {
-      //     userId: user.userId,
-      //     index: this.currentPage1-1
-      //   }
-      // }).catch((error) => {
-      //   console.log(error);
-      // })
+      this.$axios({
+        method: 'post',
+        url: '/borrowPage',
+        data: {
+          userId: user.userId,
+          index: this.currentPage1-1
+        }
+      }).then((res)=>{
+        this.getUserBorrCount()
+        this.gridData = res.data
+        console.log("得到用户借阅详情")
+      }).catch((error) => {
+        console.log(error);
+      })
     },
+    //注销用户
     withraw(user) {
       this.open();
       console.log("111");
       this.dialogTableVisible = false;
       console.log(user);
-      // this.$axios.get("/deleteUser/" + user.userId).then((res) => {
-      //   if (res.data == 1) {
-      //     this.$alert("删除成功", "删除用户", {
-      //       confirmButtonText: "确定",
-      //       callback: (action) => {
-      //         this.$message({
-      //           type: "info",
-      //           message: `action: ${action}`,
-      //         });
-      //       },
-      //     });
-      //   } else if (res.data == 0) {
-      //     this.$alert("删除失败!!", "删除用户", {
-      //       confirmButtonText: "确定",
-      //       callback: (action) => {
-      //         this.$message({
-      //           type: "info",
-      //           message: `action: ${action}`,
-      //         });
-      //       },
-      //     });
-      //   }
-      // }).catch((error) => {
-      //   console.log(error)
-      // });
+      this.$axios.get("/deleteUser/" + user.userId).then((res) => {
+        if (res.data == 1) {
+          this.$alert("删除成功", "删除用户", {
+            confirmButtonText: "确定",
+            callback: (action) => {
+              this.$message({
+                type: "info",
+                message: `action: ${action}`,
+              });
+            },
+          });
+        } else if (res.data == 0) {
+          this.$alert("删除失败!!", "删除用户", {
+            confirmButtonText: "确定",
+            callback: (action) => {
+              this.$message({
+                type: "info",
+                message: `action: ${action}`,
+              });
+            },
+          });
+        }
+      }).catch((error) => {
+        console.log(error)
+      });
     },
-    // getUserData() {
-    //   this.$axios
-    //     .get("/showUserList/" + (this.currentPage - 1))
-    //     .then((res) => {
-    //       this.userData = res.data;
-    //       console.log(this.userData);
-    //       console.log("111");
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // },
-    // getAllUserCount(){
-    //   this.$axios
-    //   .post("/UserListCount")
-    //   .then((res)=>{
-    //     this.total = res.data
-    //     console.log(this.total)
-    //   })
-    // },
+    //得到所有用户的信息
+    getUserData() {
+      this.$axios
+        .get("/showUserList/" + (this.currentPage - 1))
+        .then((res) => {
+          this.userData = res.data;
+          console.log(this.userData);
+          console.log("111");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    //得到所有用户数
+    getAllUserCount(){
+      this.$axios
+      .post("/UserListCount")
+      .then((res)=>{
+        this.total = res.data
+        console.log(this.total)
+      })
+    },
     //  弹出框
     open() {
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
@@ -362,8 +375,8 @@ export default {
   },
 
   created() {
-    // this.getAllUserCount();
-    // this.getUserData();
+    this.getAllUserCount();
+    this.getUserData();
   },
 };
 </script>
