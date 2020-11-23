@@ -100,7 +100,7 @@
         <el-input v-model="book.bookName" placeholder="请输入关键字"></el-input>
       </div>
       <div class="search">
-        <el-button type="success" round v-on:click="queryBook">搜索</el-button>
+        <el-button type="success" v-on:click="queryBook">搜索</el-button>
       </div>
     </div>
     <div class="show-container">
@@ -149,17 +149,6 @@
                   >借阅</el-button
                 >
               </div>
-              <el-dialog :visible.sync="dialogTableVisible" top="10%">
-                <el-table :data="borrowBook">
-                  <el-table-column
-                    prop="bookName"
-                    label="书名"
-                    width="150"
-                  ></el-table-column>
-                  <el-table-column prop="theme" label="简介"></el-table-column>
-                </el-table>
-                <el-button type="success" @click="borrow">借阅</el-button>
-              </el-dialog>
             </template>
           </el-table-column>
         </el-table>
@@ -178,6 +167,17 @@
         </el-pagination>
       </div>
     </div>
+    <el-dialog :visible.sync="dialogTableVisible" top="10%">
+      <el-table :data="borrowBook">
+        <el-table-column
+          prop="bookName"
+          label="书名"
+          width="150"
+        ></el-table-column>
+        <el-table-column prop="summary" label="简介"></el-table-column>
+      </el-table>
+      <el-button type="success" @click="borrow">借阅</el-button>
+    </el-dialog>
   </div>
 </template>
 
@@ -187,7 +187,6 @@ export default {
   data() {
     return {
       count: null,
-      userId: "1001",
       book: {
         bookId: null,
         bookName: null,
@@ -196,6 +195,7 @@ export default {
         length: null,
         theme: null,
         status: null,
+        summary: null,
         // storeDate: null,
         leftAmount: null,
         // uploadAmount: null,
@@ -206,7 +206,7 @@ export default {
       currentType: null,
       pagesize: 5,
       dialogTableVisible: false,
-      borrowBook: { bookId: null, bookName: null },
+      borrowBook: [],
       nationData: [],
       lengthData: [],
       themeData: [],
@@ -222,7 +222,7 @@ export default {
     getBookTable() {
       this.$axios({
         method: "post",
-        url: "/BookType/" + this.userId + "/" + (this.currentPage - 1),
+        url: "/BookType/" + this.$userId.userId + "/" + (this.currentPage - 1),
         data: this.book,
       })
         .then((res) => {
@@ -239,7 +239,7 @@ export default {
       this.count = this.getTypeCount();
       this.$axios({
         method: "post",
-        url: "/BookType/" + this.userId + "/" + (this.currentPage - 1),
+        url: "/BookType/" + this.$userId.userId + "/" + (this.currentPage - 1),
         data: { bookName: this.book.bookName },
       })
         .then((res) => {
@@ -253,7 +253,8 @@ export default {
         });
     },
     showBook(e) {
-      this.borrowBook.bookName = e.bookName;
+      this.borrowBook = e.book;
+      // console.log("当前行的书籍名：" + this.borrowBook.bookName);
     },
     handleCurrentChange(val) {
       this.currentPage = val;
@@ -374,7 +375,7 @@ export default {
       this.count = this.getTypeCount();
       this.$axios({
         method: "post",
-        url: "/BookType/" + this.userId + "/" + (this.currentPage - 1),
+        url: "/BookType/" + this.$userId.userId + "/" + (this.currentPage - 1),
         data: this.book,
       })
         .then((res) => {
@@ -400,18 +401,54 @@ export default {
       }
     },
     borrow() {
+      console.log("书名：" + this.borrowBook.bookName);
+      console.log("简介：" + this.borrowBook.summary);
       this.$axios({
         method: "post",
-        url: "/BookType/" + this.userId + "/" + (this.currentPage - 1),
-        data: this.book,
+        url: "/borrowBook",
+        data: {
+          userId: this.$userId.userId,
+          bookId: this.borrowBook.bookId,
+        },
       })
         .then((res) => {
-          this.tableData = res.data;
-          console.log("上面的查询查询得到的书籍总数" + this.tableData.length);
+          if (res.data == "1") {
+            this.borrowSuccess();
+          } else if (res.data == "0") {
+            this.borrowFailed();
+          } else if (res.data == "2") {
+            this.reborrow();
+          } else if (res.data == "3") {
+            this.borrowEn();
+          } else if (res.data == "4") {
+            this.noBook();
+          }
         })
         .catch(function (error) {
           console.log(error);
         });
+    },
+    borrowSuccess() {
+      this.$message({
+        message: "恭喜你，借书成功",
+        type: "success",
+      });
+      this.getBookTable();
+    },
+    borrowFailed() {
+      this.$message.error("借阅失败！");
+    },
+    borrowEn() {
+      this.$message.error("你已经借了三本书了，不能再借了！");
+    },
+    reborrow() {
+      this.$message({
+        message: "你已经借了这本书了！",
+        type: "warning",
+      });
+    },
+    noBook() {
+      this.$message("这本书库存不足！");
     },
   },
   created() {

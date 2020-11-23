@@ -1,10 +1,25 @@
 <template>
   <div class="main-container">
-    <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item><a href="/">我是借阅者</a></el-breadcrumb-item>
-      <el-breadcrumb-item><a>我的书架</a></el-breadcrumb-item>
-    </el-breadcrumb>
+    <div class="desc">GBA图书管理系统</div>
+    <div class="navigator-container">
+      <div class="item">
+        <el-breadcrumb separator="/">
+          <el-breadcrumb-item :to="{ path: '/' }"
+            ><el-link class="item-class"
+              ><i class="el-icon-s-home"></i>首页</el-link
+            ></el-breadcrumb-item
+          >
+          <el-breadcrumb-item :to="{ path: '/UserPage' }"
+            ><el-link class="item-class"
+              ><i class="el-icon-s-custom"></i>个人主页</el-link
+            ></el-breadcrumb-item
+          >
+          <el-breadcrumb-item class="item-class"
+            ><i class="el-icon-ship"></i>我的书架</el-breadcrumb-item
+          >
+        </el-breadcrumb>
+      </div>
+    </div>
     <div v-for="(book, index) in booksList" :key="index" class="book">
       <el-form :inline="true" :model="booksList" class="demo-form-inline">
         <el-form-item>
@@ -51,10 +66,9 @@
 
 <script>
 export default {
-  data: function() {
+  data: function () {
     return {
       show: "true",
-      userId: 1001,
       jiazai: [
         {
           str: false,
@@ -74,7 +88,7 @@ export default {
       console.log("submit!");
       this.jiazai[index].str = true;
       console.log(index);
-      console.log(this.userId);
+      console.log(this.$userId.userId);
       console.log(this.booksList[index].bookId);
       console.log(this.booksList[index].id);
 
@@ -92,7 +106,7 @@ export default {
               bookId: this.booksList[index].bookId,
             },
           }).then((res) => {
-            console.log(this.userId);
+            console.log("当前用户ID:" + this.$userId.userId);
             console.log(this.booksList[index].bookId);
             console.log(res.data);
             if (res.data == 1) {
@@ -113,7 +127,7 @@ export default {
     },
     getBooksList() {
       this.$axios
-        .get("/borrowUserShelf/" + this.userId)
+        .get("/borrowUserShelf/" + this.$userId.userId)
         .then((res) => {
           this.booksList = res.data;
           console.log("请求成功");
@@ -172,5 +186,38 @@ export default {
 }
 .demo-form-inline {
   margin-left: 15%;
+}
+.main-container .desc {
+  font-family: "FZQuSJW";
+  font-size: 30px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  color: cadetblue;
+  margin-top: 10px;
+  float: left;
+  margin-left: 10px;
+  cursor: default;
+}
+
+.navigator-container {
+  display: flex;
+  height: 50px;
+  margin-top: 60px;
+  align-items: center;
+}
+
+.navigator-container .item {
+  margin-left: 50px;
+}
+
+.item-class {
+  font-size: 20px;
+  color: black;
+}
+
+.el-breadcrumb__separator {
+  margin: 0 9px;
+  font-weight: 700;
+  color: #031436;
 }
 </style>

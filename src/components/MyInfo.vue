@@ -64,6 +64,7 @@ export default {
         type: "warning",
       })
         .then(() => {
+          this.userId.userId = null;
           this.$router.push("/");
         })
         .catch(() => {

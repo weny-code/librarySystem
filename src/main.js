@@ -10,7 +10,7 @@ import userId from '../global_variable.js'
 
 
 // Vue.use(VueAxios, axios);
-Vue.prototype.userId = userId
+Vue.prototype.$userId = userId
 Vue.prototype.$axios = axios
 Vue.prototype.$qs = qs
 Vue.config.productionTip = false

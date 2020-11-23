@@ -96,6 +96,7 @@
     <bookStore v-show="pageList.bookRoomShow"></bookStore>
     <userList v-show="pageList.userShow"></userList>
     <BookStatic v-show="pageList.allShow"></BookStatic>
+    <UserBorrAndRet v-show="pageList.bookShow"></UserBorrAndRet>
   </div>
 </template>
 
@@ -103,8 +104,10 @@
 import BookStore from "@/views/BookStore";
 import UserList from "@/views/UserList";
 import BookStatic from "@/views/BookStatic";
+import UserBorrAndRet from "@/views/UserBorrAndRet";
+
 export default {
-  components: { BookStore, UserList, BookStatic },
+  components: { BookStore, UserList, BookStatic, UserBorrAndRet },
   name: "AdministratorPage",
   data() {
     return {
