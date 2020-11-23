@@ -4,45 +4,65 @@
     <div class="multiSelector">
       <!-- 选择器1 -->
       <span class="pre1">国家</span>
-      <el-select v-model="value1" placeholder="请选择">
+      <el-select
+        v-model="value1"
+        placeholder="请选择"
+        @change="currentBookNation($event)"
+        @clear="noSelect(1)"
+      >
         <el-option
           v-for="item in nation"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+          :key="item.id"
+          :label="item.nation"
+          :value="item.id"
         >
         </el-option>
       </el-select>
       <!-- 选择器2 -->
       <span class="pre"> 类型</span>
-      <el-select v-model="value2" placeholder="请选择">
+      <el-select
+        v-model="value2"
+        placeholder="请选择"
+        @change="currentBookType($event)"
+        @clear="noSelect(2)"
+      >
         <el-option
           v-for="item in type"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+          :key="item.id"
+          :label="item.type"
+          :value="item.id"
         >
         </el-option>
       </el-select>
       <!-- 选择器3 -->
       <span class="pre"> 篇幅</span>
-      <el-select v-model="value3" placeholder="请选择">
+      <el-select
+        v-model="value3"
+        placeholder="请选择"
+        @change="currentBookLength($event)"
+        @clear="noSelect(3)"
+      >
         <el-option
           v-for="item in length"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+          :key="item.id"
+          :label="item.length"
+          :value="item.id"
         >
         </el-option>
       </el-select>
       <!-- 选择器4 -->
       <span class="pre"> 主题</span>
-      <el-select v-model="value4" placeholder="请选择">
+      <el-select
+        v-model="value4"
+        placeholder="请选择"
+        @change="currentBookTheme($event)"
+        @clear="noSelect(4)"
+      >
         <el-option
           v-for="item in theme"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+          :key="item.id"
+          :label="item.theme"
+          :value="item.id"
         >
         </el-option>
       </el-select>
@@ -82,7 +102,7 @@
         </el-table-column>
         <el-table-column prop="theme" label="主题" width="150">
         </el-table-column>
-        <el-table-column prop="date" label="上架日期" width="200">
+        <el-table-column prop="storeDate" label="上架日期" width="200">
         </el-table-column>
         <!-- 按钮 -->
         <el-table-column width="150" label="借阅状态">
@@ -99,7 +119,7 @@
                 type="primary"
                 size="small"
                 slot="reference"
-                >{{boorowStatus}}</el-button
+                >{{ boorowStatus }}</el-button
               >
             </el-popover>
           </template>
@@ -107,17 +127,27 @@
       </el-table>
 
       <div class="dialog">
-        <el-dialog title="用户借阅详情" :visible.sync="dialogVisible" width="50%" >
+        <el-dialog
+          title="用户借阅详情"
+          :visible.sync="dialogVisible"
+          width="50%"
+        >
           <div>
             <el-row :gutter="20">
               <el-col :span="8"
-                ><div class="grid-content bg-purple">书名:{{book.bookName}}</div></el-col
+                ><div class="grid-content bg-purple">
+                  书名:{{ book.bookName }}
+                </div></el-col
               >
               <el-col :span="8"
-                ><div class="grid-content bg-purple">剩余数量:{{leftNum}}</div></el-col
+                ><div class="grid-content bg-purple">
+                  剩余数量:{{ leftNum }}
+                </div></el-col
               >
               <el-col :span="8"
-                ><div class="grid-content bg-purple">借出数量:{{borrowNum}}</div></el-col
+                ><div class="grid-content bg-purple">
+                  借出数量:{{ borrowNum }}
+                </div></el-col
               >
             </el-row>
 
@@ -126,7 +156,8 @@
               </el-table-column>
               <el-table-column prop="borrowDate" label="借阅日期" width="180">
               </el-table-column>
-              <el-table-column prop="borrowValid" label="有效期"> </el-table-column>
+              <el-table-column prop="borrowValid" label="有效期">
+              </el-table-column>
             </el-table>
           </div>
           <span slot="footer" class="dialog-footer">
@@ -142,9 +173,9 @@
       <el-pagination
         @current-change="handleCurrentChange"
         :current-page.sync="currentPage"
-        :page-size="100"
+        :page-size="5"
         layout="prev, pager, next, jumper"
-        :total="1000"
+        :total="total"
       >
       </el-pagination>
     </div>
@@ -158,183 +189,295 @@ export default {
       input: "",
       currentPage: 1,
       dialogVisible: false,
-      leftNum:"6",
-      borrowNum:"4",
-      boorowStatus:"可借",
+      leftNum: "6",
+      borrowNum: "4",
+      boorowStatus: "可借",
+      total: 0,
+      currentType: null,
       book: {
-        
+        bookId: null,
+        bookName: null,
+        nation: null,
+        type: null,
+        length: null,
+        theme: null,
+        status: null,
+        // storeDate: null,
+        leftAmount: null,
+        // uploadAmount: null,
+        // downloadAmount: null,
+        // author: null,
       },
-      nation: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
+      currentSelected: {
+        nation: null,
+        type: null,
+        length: null,
+        theme: null,
+      },
+      nation: [],
       type: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
+        // {
+        //   value: "选项1",
+        //   label: "黄金糕",
+        // },
+        // {
+        //   value: "选项2",
+        //   label: "双皮奶",
+        // },
+        // {
+        //   value: "选项3",
+        //   label: "蚵仔煎",
+        // },
+        // {
+        //   value: "选项4",
+        //   label: "龙须面",
+        // },
+        // {
+        //   value: "选项5",
+        //   label: "北京烤鸭",
+        // },
       ],
       length: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
+        // {
+        //   value: "选项1",
+        //   label: "黄金糕",
+        // },
+        // {
+        //   value: "选项2",
+        //   label: "双皮奶",
+        // },
+        // {
+        //   value: "选项3",
+        //   label: "蚵仔煎",
+        // },
+        // {
+        //   value: "选项4",
+        //   label: "龙须面",
+        // },
+        // {
+        //   value: "选项5",
+        //   label: "北京烤鸭",
+        // },
       ],
       theme: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
+        // {
+        //   value: "选项1",
+        //   label: "黄金糕",
+        // },
+        // {
+        //   value: "选项2",
+        //   label: "双皮奶",
+        // },
+        // {
+        //   value: "选项3",
+        //   label: "蚵仔煎",
+        // },
+        // {
+        //   value: "选项4",
+        //   label: "龙须面",
+        // },
+        // {
+        //   value: "选项5",
+        //   label: "北京烤鸭",
+        // },
       ],
       bookData: [
+        // {
+        //   date: "2016-05-02",
+        //   bookName: "水浒传",
+        //   type: "不知道",
+        //   length:"长篇",
+        //   theme:"不知道",
+        //   nation:"中国"
+        // },
+        //  {
+        //   date: "2016-05-02",
+        //   bookName: "水浒传",
+        //   type: "不知道",
+        //   length:"长篇",
+        //   theme:"不知道",
+        //   nation:"中国"
+        // },
+        // {
+        //   date: "2016-05-02",
+        //   bookName: "水浒传",
+        //   type: "不知道",
+        //   length:"长篇",
+        //   theme:"不知道",
+        //   nation:"中国"
+        // },
+        // {
+        //   date: "2016-05-02",
+        //   bookName: "水浒传",
+        //   type: "不知道",
+        //   length:"长篇",
+        //   theme:"不知道",
+        //   nation:"中国"
+        // },
+      ],
+      borrowInfo: [
         {
-          date: "2016-05-02",
-          bookName: "水浒传",
-          type: "不知道",
-          length:"长篇",
-          theme:"不知道",
-          nation:"中国"
-        },
-         {
-          date: "2016-05-02",
-          bookName: "水浒传",
-          type: "不知道",
-          length:"长篇",
-          theme:"不知道",
-          nation:"中国"
+          borrowName: "黑旋风李逵",
+          borrowDate: "2019-8-8",
+          borrowValid: "30天",
         },
         {
-          date: "2016-05-02",
-          bookName: "水浒传",
-          type: "不知道",
-          length:"长篇",
-          theme:"不知道",
-          nation:"中国"
+          borrowName: "黑旋风李逵",
+          borrowDate: "2019-8-8",
+          borrowValid: "30天",
         },
         {
-          date: "2016-05-02",
-          bookName: "水浒传",
-          type: "不知道",
-          length:"长篇",
-          theme:"不知道",
-          nation:"中国"
+          borrowName: "黑旋风李逵",
+          borrowDate: "2019-8-8",
+          borrowValid: "30天",
         },
       ],
-      borrowInfo:[
-        {
-          borrowName:"黑旋风李逵",
-          borrowDate:"2019-8-8",
-          borrowValid:"30天",
-        },
-         {
-          borrowName:"黑旋风李逵",
-          borrowDate:"2019-8-8",
-          borrowValid:"30天",
-        },
-         {
-          borrowName:"黑旋风李逵",
-          borrowDate:"2019-8-8",
-          borrowValid:"30天",
-        },
-      ],
-      value1: "",
-      value2: "",
-      value3: "",
-      value4: "",
+       value1: [],
+      value2: [],
+      value3: [],
+      value4: [],
     };
   },
 
   methods: {
+    //点击换页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-      // getBookData()
+      this.getBookData();
     },
-    // getBookData(){
-    //   this.$axios
-    //   .get("/book")
-    // },
+    //分页获取所有图书
+    getBookData() {
+      console.log("获得所有图书信息");
+      console.log(this.currentPage);
+      this.$axios
+        .get("/managerBookByPage/" + (this.currentPage - 1))
+        .then((res) => {
+          this.bookData = res.data;
+          console.log(this.bookData);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    //获取用户数量
+    managerBookCount() {
+      console.log("获取用户数量");
+      this.$axios
+        .get("/managerBookCount")
+        .then((res) => {
+          this.total = res.data;
+          console.log(this.total);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    //获取所有的国家数据
+    getSelectNation() {
+      this.$axios({
+        method: "get",
+        url: "/bookNation",
+      })
+        .then((res) => {
+          this.nation = res.data;
+          console.log(this.nation.length);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    //获取所有的篇幅信息
+    getSelectLength() {
+      this.$axios({
+        method: "get",
+        url: "/bookLength",
+      })
+        .then((res) => {
+          this.length = res.data;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    //获取总共的主题信息
+    getSelectTheme() {
+      this.$axios({
+        method: "get",
+        url: "/bookTheme/" + this.currentType,
+      })
+        .then((res) => {
+          this.theme = res.data;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    //获取所有的类型信息
+    getSelectType() {
+      this.$axios({
+        method: "get",
+        url: "/bookType",
+      })
+        .then((res) => {
+          this.type = res.data;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
 
-    // search(){
-    //   this.$axios
-    //   .get("url/input")
-    //   .then((res) => {
-    //     this.tableData = res.data
-    //     console.log(thsi.tableData)
-    //   }).catch(error=>{
-    //    console.log(error)
-    //  })
-    // },
+     currentBookType(e) {
+      let obj = {};
+      obj = this.type.find((item) => {
+        return item.id === e;
+      });
+      this.currentType = obj.id;
+      this.book.type = obj.type;
+      console.log("传入后端的类型：" + this.book.type);
+      console.log("当前书的类型ID：" + this.currentType);
+      this.getSelectTheme();
+    },
+    currentBookNation(e) {
+      let obj = {};
+      obj = this.nation.find((item) => {
+        return item.id === e;
+      });
+      this.book.nation = obj.nation;
+      console.log("传入后端的国家：" + this.book.nation);
+    },
+    currentBookLength(e) {
+      let obj = {};
+      obj = this.length.find((item) => {
+        return item.id === e;
+      });
+      this.book.length = obj.length;
+      console.log("传入后端的篇幅：" + this.book.length);
+    },
+    currentBookTheme(e) {
+      let obj = {};
+      obj = this.theme.find((item) => {
+        return item.id === e;
+      });
+      this.book.theme = obj.theme;
+      console.log("传入后端的主题：" + this.book.theme);
+    },
+    //搜索
+    search() {
+      this.$axios
+        .get("url/input")
+        .then((res) => {
+          this.tableData = res.data;
+          console.log(this.tableData);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    //点击状态按钮
     handleClick(book) {
       console.log(book);
       this.book = book;
       this.dialogVisible = true;
-      
     },
     // searchByType(){
     //   this.$axios({
@@ -353,6 +496,13 @@ export default {
     //     console.log(error)
     //   })
     // },
+  },
+  created() {
+    this.getSelectNation();
+    this.managerBookCount();
+    this.getBookData();
+    this.getSelectLength();
+    this.getSelectType();
   },
 };
 </script>

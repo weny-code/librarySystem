@@ -17,6 +17,7 @@
       >
     </div>
     <div class="list">
+    // 对话框内容
       <el-dialog title="借阅详情" :visible.sync="dialogTableVisible">
         <div class="user">用户名:{{ userName }}</div>
         <!-- 弹出框中的表格 -->
@@ -38,10 +39,7 @@
         <div slot="footer" class="dialog-footer">
           <!-- 删除确认 -->
           <template>
-            <el-button
-              type="primary"
-              slot="reference"
-              @click="withraw(scope.row)"
+            <el-button type="primary" slot="reference" @click="diaWithraw"
               >注销</el-button
             >
           </template>
@@ -60,14 +58,13 @@
           </el-pagination>
         </div>
       </el-dialog>
-
+      <!-- 用户信息主体 -->
       <el-table
         :data="userData"
         border
         style="width: 95%"
         highlight-current-row="true"
       >
-        <!-- 用户信息主体 -->
         <el-table-column
           fixed
           prop="name"
@@ -150,7 +147,7 @@ export default {
         name: null,
         index: null,
       },
-      user1:{},
+      user1: {},
       userData: [
         // {
         //   userId: 0,
@@ -223,20 +220,20 @@ export default {
     diaHandleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage1 = val;
-      this.checkUser(this.user1)
+      this.checkUser(this.user1);
     },
     // 搜索
     search() {
       console.log("点击了搜索");
       console.log(this.user.name);
-      this.getSearchUserCount()
+      this.getSearchUserCount();
       this.$axios({
-        method:'post',
-        url: '/findUserByExample/'+(this.currentPage-1),
-        data:{
-          name:  this.user.name,
-          index: this.user.index
-        }
+        method: "post",
+        url: "/findUserByExample/" + (this.currentPage - 1),
+        data: {
+          name: this.user.name,
+          index: this.user.index,
+        },
       })
         .then((res) => {
           this.userData = res.data;
@@ -256,7 +253,7 @@ export default {
         },
       })
         .then((res) => {
-          console.log("得到搜索总数")
+          console.log("得到搜索总数");
           this.total = res.data;
           console.log(this.total);
         })
@@ -270,7 +267,7 @@ export default {
         .get("/borrowCount/" + this.userId)
         .then((res) => {
           this.total1 = res.data;
-          console.log(this.total1)
+          console.log(this.total1);
         })
         .catch((error) => {
           console.log(error);
@@ -280,60 +277,125 @@ export default {
     checkUser(user) {
       this.dialogTableVisible = true;
       this.userName = user.name;
-      this.user1 = user
+      this.user1 = user;
       this.userId = user.userId;
       console.log(user);
       this.$axios({
-        method: 'post',
-        url: '/borrowPage',
+        method: "post",
+        url: "/borrowPage",
         data: {
           userId: user.userId,
-          index: this.currentPage1-1
-        }
-      }).then((res)=>{
-        this.getUserBorrCount()
-        this.gridData = res.data
-        console.log("得到用户借阅详情")
-      }).catch((error) => {
-        console.log(error);
+          index: this.currentPage1 - 1,
+        },
       })
+        .then((res) => {
+          this.getUserBorrCount();
+          this.gridData = res.data;
+          console.log("得到用户借阅详情");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     //注销用户
     withraw(user) {
-      this.open();
       console.log("111");
-      this.dialogTableVisible = false;
       console.log(user);
-      this.$axios.get("/deleteUser/" + user.userId).then((res) => {
-        if (res.data == 1) {
-          this.$alert("删除成功", "删除用户", {
-            confirmButtonText: "确定",
-            callback: (action) => {
-              this.$message({
-                type: "info",
-                message: `action: ${action}`,
-              });
-            },
+      //  弹出框
+      this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$axios
+            .get("/deleteUser/" + user.userId)
+            .then((res) => {
+              if (res.data == 1) {
+                this.$alert("删除成功", "删除用户", {
+                  confirmButtonText: "确定",
+                  callback: (action) => {
+                    this.$message({
+                      type: "info",
+                      message: `action: ${action}`,
+                    });
+                  },
+                });
+              } else if (res.data == 0) {
+                this.$alert("删除失败!!", "删除用户", {
+                  confirmButtonText: "确定",
+                  callback: (action) => {
+                    this.$message({
+                      type: "info",
+                      message: `action: ${action}`,
+                    });
+                  },
+                });
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
           });
-        } else if (res.data == 0) {
-          this.$alert("删除失败!!", "删除用户", {
-            confirmButtonText: "确定",
-            callback: (action) => {
-              this.$message({
-                type: "info",
-                message: `action: ${action}`,
-              });
-            },
+        });
+
+      this.dialogTableVisible = false;
+    },
+    //对话框里面的注销方法
+    diaWithraw() {
+      console.log("111");
+      console.log(this.user1);
+      this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$axios
+            .get("/deleteUser/" + this.user1.userId)
+            .then((res) => {
+              if (res.data == 1) {
+                this.$alert("删除成功", "删除用户", {
+                  confirmButtonText: "确定",
+                  callback: (action) => {
+                    this.$message({
+                      type: "info",
+                      message: `action: ${action}`,
+                    });
+                  },
+                });
+              } else if (res.data == 0) {
+                this.$alert("删除失败!!", "删除用户", {
+                  confirmButtonText: "确定",
+                  callback: (action) => {
+                    this.$message({
+                      type: "info",
+                      message: `action: ${action}`,
+                    });
+                  },
+                });
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
           });
-        }
-      }).catch((error) => {
-        console.log(error)
-      });
+        });
     },
     //得到所有用户的信息
     getUserData() {
       this.$axios
-        .get("/showUserList/" + (this.currentPage - 1))
+        .get("/ManagerShowUserList/" + (this.currentPage - 1))
         .then((res) => {
           this.userData = res.data;
           console.log(this.userData);
@@ -344,33 +406,11 @@ export default {
         });
     },
     //得到所有用户数
-    getAllUserCount(){
-      this.$axios
-      .post("/UserListCount")
-      .then((res)=>{
-        this.total = res.data
-        console.log(this.total)
-      })
-    },
-    //  弹出框
-    open() {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除",
-          });
-        });
+    getAllUserCount() {
+      this.$axios.post("/UserListCount").then((res) => {
+        this.total = res.data;
+        console.log(this.total);
+      });
     },
   },
 
