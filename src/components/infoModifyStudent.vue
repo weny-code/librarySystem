@@ -1,18 +1,17 @@
 <template>
-  <div class="flex">
+  <div>
     <el-form
       :model="infoModeify"
-      :rules="rules"
       class="signInForm"
       ref="signInForm"
       label-width="100px"
       id="modify"
     >
-     <!-- <el-button type="primary" icon="el-icon-arrow-left" @click="modifyReturn()" class="modifyReturn">返回</el-button> -->
+     <el-button type="primary" icon="el-icon-arrow-left" @click="modifyReturn()" class="modifyReturn">返回</el-button>
       <h2>个人信息</h2>
-      <table cellspacing="0" class="tale" border="1">
+      <table cellspacing="5" class="tale" border="1">
         <tr>
-          <td>姓名</td>
+          <td class="changdu">姓名 &nbsp;&nbsp;</td>
           <td>
             <input
               type="text"
@@ -46,7 +45,7 @@
               :readonly="readonly"
             />
           </td>
-          <td>出生年月</td>
+          <td class="changdu">出生年月</td>
           <td>
             <input
               type="text"
@@ -54,19 +53,19 @@
               :readonly="readonly"
             />
           </td>
-          <td>借阅ID</td>
-          <td></td>
+          <td class="changdu">借阅ID</td>
+          <td><input type="text" readonly="readonly"  v-model="infoModeify.userId"></td>
         </tr>
         <tr>
-          <td>联系电话</td>
+          <td >联系电话</td>
           <td>
             <input
-              type="number"
+              type="text"
               v-model="infoModeify.phone"
               :readonly="readonly"
             />
           </td>
-          <td>暂住地址</td>
+          <td >暂住地址</td>
           <td colspan="3">
             <input
               type="text"
@@ -89,8 +88,7 @@
       </table>
 
       <el-button type="success" @click="edit" v-if="flag == 1">编辑</el-button>
-      <el-button type="success" @click="Confirm()" v-if="flag == 0"
-        >确认</el-button
+      <el-button type="success" @click="Confirm()" v-if="flag == 0">确认</el-button
       >
     </el-form>
 
@@ -133,7 +131,7 @@ export default {
       method: "post",
       url: "/showUser",
       data: {
-        userId: this.userId,
+        userId:this.userId.userId,
       },
     })
       .then((res) => {
@@ -148,6 +146,7 @@ export default {
         a.phone = b.phone;
         a.address = b.address;
         a.description = b.description;
+        a.userId=this.userId.userId;
       })
       .catch(function (error) {
         console.log(error);
@@ -251,11 +250,10 @@ export default {
       this.$axios({
         method: "post",
         url: "/updateMyInfo",
-        data: this.passwordModeify,
+        data: this.infoModeify,
       })
-        .then((res) => {
-          console.log(res);
-
+       .then((res) => {
+        console.log(res)
           alert("修改成功");
         })
         .catch(function (error) {
@@ -269,17 +267,24 @@ export default {
 };
 </script>
 <style scoped>
-.modifyReturn{
+.changdu{
+  width:120px; 
+}
+td{
+  height: 40px;
+}
+.modifyReturn{ 
  background-color: #ffffff;
  color: black;
  border: 0;
- margin-right: 95%;
+ position:absolute;
+ top:0.2em;
+ left: 0.2em;
 }
 .passwordModeifyForm {
   width: 30%;
   margin: 5% auto;
 }
-
 .signInForm .el-button {
   margin: 1%;
 }
@@ -287,6 +292,7 @@ export default {
 .tale {
   margin: 0 auto;
   border-collapse: collapse;
+  background-color: #ffffff;
 }
 
 .juzhong {
@@ -295,9 +301,16 @@ export default {
   margin-left: 50%;
 }
 table {
-  background-color: #ffffff;
+  
   font-size: 1.2em;
+ 
 }
+table  th:nth-child(even){
+  background-color:burlywood;
+} 
+table  th:nth-child(odd){
+  background-color: #ffffff;
+} 
 td {
   padding: 0;
   margin: 0;
@@ -311,17 +324,22 @@ td input {
 }
 .signInForm {
   margin: 3% 0;
+  
 }
 .signInForm .el-input {
   width: 100%;
 }
 td textarea {
-  width: 634px;
-  height: 80px;
+  width:  761px;
+  height: 89px;
   line-height: 1em;
   margin: 0;
   padding: 0;
   outline: none;
   border: 0;
+}
+td input{
+  text-align: center;
+ 
 }
 </style>

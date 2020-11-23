@@ -56,9 +56,9 @@ export default {
         password: [
           { required: true, message: "密码不能为空", trigger: "blur" },
           {
-            min: 8,
+            min: 1,
             max: 40,
-            message: "长度在 8 到 30 个字符",
+            message: "长度在 1 到 40 个字符",
             trigger: "blur",
           },
         ],
