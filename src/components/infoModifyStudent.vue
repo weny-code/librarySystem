@@ -1,91 +1,167 @@
 <template>
-<div class="flex">
-        <table  cellspacing="0"   class="tale" border="1">
-  <th colspan="6" class="juzhong">
-      <td broder="0">个人资料</td>
-  </th>
-<tr>
-  <td>姓名</td>
-  <td> <input type="text"  v-model="infoModeify.name"> </td>
-  <td>性别</td>
-  <td>
-  <input type="text" id="#nameModifyStudent" v-model="infoModeify.gender" >  
-</td>
-  <td>年龄</td>
-  <td><input type="number" id="ageModifyStudent" v-model="infoModeify.age"></td>
-</tr>
-<tr>
-  <td>邮箱</td>
-  <td><input type="email" id="mailModifyStudent" v-model="infoModeify.email"></td>
-  <td>出生年月</td>
-  <td><input type="date" id="birthModifyStudent" v-model="infoModeify.birthday"></td>
-  <td>借阅ID</td>
-  <td><input type="text" id="borrrowModifyStudent" v-model="infoModeify.jieyu"></td>
-</tr>
-<tr>
-  <td>联系电话</td>
-  <td><input type="number" id="phoneModifyStudent" v-model="infoModeify.phone"></td>
-  <td>暂住地址</td>
-  <td colspan="3"><input type="text" id="temporary_addressModifyStudent" v-model="infoModeify.address"></td>
-</tr>
-<tr>
-  <th rowspan="2">个人描述</th>
-  <td colspan="5" rowspan="2" id="descriptionModifyStudent"><input type="text" v-model="infoModeify.description"></td>
-</tr>
-</table>
+  <div class="flex">
+    <el-form
+      :model="infoModeify"
+      :rules="rules"
+      class="signInForm"
+      ref="signInForm"
+      label-width="100px"
+      id="modify"
+    >
+     <!-- <el-button type="primary" icon="el-icon-arrow-left" @click="modifyReturn()" class="modifyReturn">返回</el-button> -->
+      <h2>个人信息</h2>
+      <table cellspacing="0" class="tale" border="1">
+        <tr>
+          <td>姓名</td>
+          <td>
+            <input
+              type="text"
+              v-model="infoModeify.name"
+              :readonly="readonly"
+            />
+          </td>
+          <td>性别</td>
+          <td>
+            <input
+              type="text"
+              v-model="infoModeify.gender"
+              :readonly="readonly"
+            />
+          </td>
+          <td>年龄</td>
+          <td>
+            <input
+              type="number"
+              v-model="infoModeify.age"
+              :readonly="readonly"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>邮箱</td>
+          <td>
+            <input
+              type="email"
+              v-model="infoModeify.email"
+              :readonly="readonly"
+            />
+          </td>
+          <td>出生年月</td>
+          <td>
+            <input
+              type="text"
+              v-model="infoModeify.birthday"
+              :readonly="readonly"
+            />
+          </td>
+          <td>借阅ID</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>联系电话</td>
+          <td>
+            <input
+              type="number"
+              v-model="infoModeify.phone"
+              :readonly="readonly"
+            />
+          </td>
+          <td>暂住地址</td>
+          <td colspan="3">
+            <input
+              type="text"
+              v-model="infoModeify.address"
+              :readonly="readonly"
+            />
+          </td>
+        </tr>
+        <tr>
+          <th rowspan="2" style="padding: 1em">个人描述</th>
+          <td colspan="5" rowspan="3">
+            <textarea
+              type="text"
+              v-model="infoModeify.description"
+              rows="5"
+              :readonly="readonly"
+            ></textarea>
+          </td>
+        </tr>
+      </table>
 
-  
-  
-  
-      <el-form
-        :model="passwordModeify"
-        :rules="rules"
-        class="passwordModeifyForm"
-        ref="passwordModeifyForm"
-        label-width="100px"
+      <el-button type="success" @click="edit" v-if="flag == 1">编辑</el-button>
+      <el-button type="success" @click="Confirm()" v-if="flag == 0"
+        >确认</el-button
       >
-                <el-form-item label="修改密码" prop="userPassword">
-                    <el-input v-model="passwordModeify.userPassword" placeholder="请输入密码" type="password"></el-input>
-                </el-form-item>
-                <el-form-item label="确认密码" prop="userPassword2">
-                    <el-input v-model="passwordModeify.userPassword2" placeholder="请确认密码" type="password"></el-input>
-                </el-form-item>
-   <el-button type="primary" @click="passwordModeifySubmit('  passwordModeifyForm')" >确认</el-button>
-     </el-form>
+    </el-form>
 
-</div>
-
+    <el-form
+      :model="passwordModeify"
+      :rules="rules"
+      class="passwordModeifyForm"
+      ref="passwordModeifyForm"
+      label-width="100px"
+    >
+      <el-form-item label="修改密码" prop="userPassword">
+        <el-input
+          v-model="passwordModeify.userPassword"
+          placeholder="请输入密码"
+          type="password"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="确认密码" prop="userPassword2">
+        <el-input
+          v-model="passwordModeify.userPassword2"
+          placeholder="请确认密码"
+          type="password"
+        ></el-input>
+      </el-form-item>
+      <el-button
+        type="primary"
+        @click="passwordModeifySubmit('passwordModeifyForm')"
+        >确认</el-button
+      >
+    </el-form>
+  </div>
 </template>                                                                                                                                                 
 <script>
 // import axios from 'axios'
 export default {
   name: "infoModeify",
   created() {
-        //  window.addEventListener('beforeunload', e => this.tableInit(e))
-          this.$axios({
-              method:"post",
-              url:"/showUser",
-              data: {
-                userId:this.userId.userId
-              },
-            }).then((res)=>{
-              console.log(res);
-              let a=this.infoModeify;
-              let b=res.data;
-              a.name=b.name;
-              a.gender=b.gender;
-              a.age=b.age;
-              a.email=b.email;
-              a.birthday=b.birthday;
-              a.phone=b.phone;
-              a.address=b.address;
-              a.description=b.description; 
-            })
-            .catch(function(error){
-              console.log(error);
-            })   
+    //  window.addEventListener('beforeunload', e => this.tableInit(e))
+    this.$axios({
+      method: "post",
+      url: "/showUser",
+      data: {
+        userId: this.userId,
       },
-      
+    })
+      .then((res) => {
+        console.log(res);
+        let a = this.infoModeify;
+        let b = res.data;
+        a.name = b.name;
+        a.gender = b.gender;
+        a.age = b.age;
+        a.email = b.email;
+        a.birthday = b.birthday;
+        a.phone = b.phone;
+        a.address = b.address;
+        a.description = b.description;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    this.readonly = true;
+  },
+  props: {
+    readonly: {
+      default: false,
+    },
+    flag: {
+      default: 1,
+    },
+  },
   data() {
     return {
       infoModeify: {
@@ -95,7 +171,7 @@ export default {
         age: "",
         email: "",
         birthday: "",
-        phone: "s",
+        phone: "",
         address: "",
         description: "",
       },
@@ -113,20 +189,7 @@ export default {
             max: 30,
             message: "长度在 8 到 30 个字符",
             trigger: "blur",
-          }
-          // {
-          //   trigger: "blur",
-          //   validator: (rule, value, callback) => {
-          //     var userPassword = /(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*?])/;
-          //     if (!userPassword.test(value)) {
-          //       callback(
-          //         new Error("密码必须由大小写字母、特殊字符组合,请输入8-30位")
-          //       );
-          //     } else {
-          //       callback();
-          //     }
-          //   },
-          // },
+          },
         ],
         userPassword2: [
           { required: true, message: "确认密码不能为空", trigger: "blur" },
@@ -148,95 +211,117 @@ export default {
             },
           },
         ],
-      }
-    }
+      },
+    };
   },
   methods: {
-        passwordModeifySubmit(formName) {
-          // this.passwordModeify.userId = this.GLOBAL.userId;
-          this.passwordModeify.userId=0;
+    passwordModeifySubmit(formName) {
+      // this.passwordModeify.userId = this.GLOBAL.userId;
+      this.passwordModeify.userId = 0;
 
-          this.$refs[formName].validate((valid) => {
-            if (valid) {
-              this.$axios({
-                method: "post",
-                url: "/updatePassword",
-                data: this.passwordModeify,
-              })
-                .then((res) => {
-                  console.log(res);
-                  
-                })
-                .catch(function (error) {
-                  console.log(error);
-                });
-            } else {
-              console.log("error submit!!");
-              alert("提交失败");
-              return false;
-            }
-          });
-        },
-        tableInit() {
-           
-        },
-      },
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$axios({
+            method: "post",
+            url: "/updatePassword",
+            data: this.passwordModeify,
+          })
+            .then((res) => {
+              console.log(res);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        } else {
+          console.log("error submit!!");
+          alert("提交失败");
+          return false;
+        }
+      });
+    },
+    tableInit() {},
+    edit() {
+      this.flag = 0;
+      this.readonly = false;
+      alert("请修改");
+    },
+    Confirm() {
+      this.flag = 1;
+      this.readonly = true;
+      this.$axios({
+        method: "post",
+        url: "/updateMyInfo",
+        data: this.passwordModeify,
+      })
+        .then((res) => {
+          console.log(res);
+
+          alert("修改成功");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    modifyReturn(){
+      this.$router.push("/MyInfo");
+    }
+  },
 };
 </script>
-
-
 <style scoped>
-.inputWidth .el-input__inner {
-  width: 1em;
+.modifyReturn{
+ background-color: #ffffff;
+ color: black;
+ border: 0;
+ margin-right: 95%;
 }
-
 .passwordModeifyForm {
-  width: 30em;
-  margin-left: 35%;
-  text-align: center;
-}
-#descriptionModifyStudent {
-  margin-left: auto;
-  margin-top: 2em;
-}
-#sexModifyStudent {
-  text-align: right;
-  margin-left: auto;
+  width: 30%;
+  margin: 5% auto;
 }
 
-.tableDiv {
-  height: 40%;
-  flex: 1;
-  margin-bottom: 15%;
+.signInForm .el-button {
+  margin: 1%;
 }
+
 .tale {
   margin: 0 auto;
   border-collapse: collapse;
 }
-.passwdModify {
-  height: 40%;
-}
+
 .juzhong {
   text-align: center;
   border: 0;
   margin-left: 50%;
 }
 table {
-  background-color: aliceblue;
+  background-color: #ffffff;
   font-size: 1.2em;
+}
+td {
+  padding: 0;
+  margin: 0;
 }
 td input {
   outline: none;
-  text-align: right;
+
   border: 0;
   width: 95%;
+  height: 95%;
 }
 .signInForm {
-  width: 60em;
-  padding-top: 15em;
-  margin: 0;
+  margin: 3% 0;
 }
 .signInForm .el-input {
   width: 100%;
+}
+td textarea {
+  width: 634px;
+  height: 80px;
+  line-height: 1em;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: 0;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="register">
-    <div class="bookmar">ABC图书馆管理系统</div>
+    <div class="desc">ABC图书馆管理系统</div>
     <div class="img">
       <img src="../assets/img/register.png" alt />
     </div>
@@ -94,7 +94,7 @@ export default {
               var account = /^[0-9]*$/;
               if (!account.test(value)) {
                 callback(
-                  new Error("密码必须由大小写字母、特殊字符组合,请输入8-30位")
+                  new Error("账号必须由数字组成,请输入8-30位")
                 );
               } else {
                 callback();
@@ -168,7 +168,7 @@ export default {
               console.log("传入的数据=" + JSON.stringify(this.register));
               if (res.data === 1) {
                 alert("注册成功");
-                this.router.push("/SignIn");
+                this.$router.push("/SignIn");
               } else if (res.data === 0) {
                 alert("账号已经存在");
               }
@@ -188,24 +188,43 @@ export default {
 </script>
 
 <style scoped>
+
+@font-face {
+  font-family: "FZQuSJW";
+  src: url("../assets/font/FZQuSJW.TTF");
+}
+@font-face {
+  font-family: "FZZhaoMFXSJF";
+  src: url("../assets/font/FZZhaoMFXSJF.TTF");
+}
+.desc {
+  font-family: "FZQuSJW";
+  font-size: 30px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  color: cadetblue;
+  margin-top: 10px;
+  float: left;
+  margin-left: 10px;
+  cursor: default;
+}
 .register {
   display: flex;
   justify-content: space-around;
 }
 .form_container .el-form {
-  width: 20em;
+  width: 20em;  
   border: 2px;
   flex: 2;
-  margin-right: 18em;
-  margin-top: 15%;
+  margin-right: 16em;
+  margin-top: 20%;
 }
 
 .img {
-  height: 40%;
-  width: 40%;
+  height: 80%;
+  width: 80%;
   display: inline-block;
   flex: 3;
-  margin-right: 20%;
 }
 .bookmar {
   font-family: "FZQuSJW";
@@ -213,5 +232,10 @@ export default {
   text-align: left;
   height: 30px;
   flex: 1;
+}
+.img img {
+  width: 100%;;
+  height: 100%;
+
 }
 </style>
