@@ -7,6 +7,7 @@
       <el-select
         v-model="value1"
         placeholder="请选择"
+        clearable
         @change="currentBookNation($event)"
         @clear="noSelect(1)"
       >
@@ -23,6 +24,7 @@
       <el-select
         v-model="value2"
         placeholder="请选择"
+        clearable
         @change="currentBookType($event)"
         @clear="noSelect(2)"
       >
@@ -39,6 +41,7 @@
       <el-select
         v-model="value3"
         placeholder="请选择"
+        clearable
         @change="currentBookLength($event)"
         @clear="noSelect(3)"
       >
@@ -55,6 +58,7 @@
       <el-select
         v-model="value4"
         placeholder="请选择"
+        clearable
         @change="currentBookTheme($event)"
         @clear="noSelect(4)"
       >
@@ -78,10 +82,10 @@
     <div class="keywordSearch">
       <el-input
         class="inputText"
-        v-model="input"
+        v-model="book.bookName"
         placeholder="请输入内容"
       ></el-input>
-      <el-button type="primary" @click="search"> 搜索</el-button>
+      <el-button type="primary" @click="searchByType"> 搜索</el-button>
     </div>
     <!-- 借阅详情 -->
     <div class="borrowInfo">
@@ -386,6 +390,37 @@ export default {
           console.log(error);
         });
     },
+    //根据
+    searchByType(){
+       this.total = this.getTypeCount();
+      this.$axios({
+        method: "post",
+        url: "/managerFindBookByType/"+ (this.currentPage - 1),
+        data: this.book,
+      })
+        .then((res) => {
+          this.bookData = res.data;
+          console.log("上面的查询查询得到的书籍总数" + this.bookData.length);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    //清空选择框
+    noSelect(e) {
+      if (e == "1") {
+        this.book.nation = null;
+      } else if (e == "2") {
+        this.book.type = null;
+        this.currentType = null;
+        console.log("传入后端的类型：" + this.book.type);
+        console.log("当前书的类型ID：" + this.currentType);
+      } else if (e == "3") {
+        this.book.length = null;
+      } else if (e == "4") {
+        this.book.theme = null;
+      }
+    },
     //获取所有的篇幅信息
     getSelectLength() {
       this.$axios({
@@ -461,18 +496,41 @@ export default {
       this.book.theme = obj.theme;
       console.log("传入后端的主题：" + this.book.theme);
     },
-    //搜索
-    search() {
-      this.$axios
-        .get("url/input")
+    //获取分类之后得到的数据总数
+    getTypeCount() {
+      console.log("------------" + this.book.bookName);
+      this.$axios({
+        method: "post",
+        url: "/BookTypeCount",
+        data: this.book,
+      })
         .then((res) => {
-          this.tableData = res.data;
-          console.log(this.tableData);
+          this.total = res.data;
+          console.log("用户查询书的数量：" + this.total);
         })
-        .catch((error) => {
+        .catch(function (error) {
           console.log(error);
         });
     },
+    //搜索
+    // search() {
+    //   console.log("------------" + this.book.bookName);
+    //   this.count = this.getTypeCount();
+    //   this.$axios({
+    //     method: "post",
+    //     url: "/managerFindBookByType/" + (this.currentPage - 1),
+    //     data: { bookName: this.book.bookName },
+    //   })
+    //     .then((res) => {
+    //       this.bookData = res.data;
+    //       // console.log("传入的数据=" + JSON.stringify(this.book));
+    //       console.log("下面的搜索得到的书籍总数" + this.bookData.length);
+    //       // console.log("数据：" + this.$qs.stringify(this.book));
+    //     })
+    //     .catch(function (error) {
+    //       console.log(error);
+    //     });
+    // },
     //点击状态按钮
     handleClick(book) {
       console.log(book);

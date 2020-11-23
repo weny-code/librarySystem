@@ -59,36 +59,36 @@
         </div>
       </el-dialog>
       <!-- 用户信息主体 -->
-      <el-table
+      <el-table class="userInfor"
         :data="userData"
         border
-        style="width: 95%"
+        style="width: 80%"
         highlight-current-row="true"
       >
         <el-table-column
           fixed
           prop="name"
           label="姓名"
-          width="80"
+          width="100"
           align="center"
         >
         </el-table-column>
         <el-table-column prop="userId" label="ID" width="100" align="center">
         </el-table-column>
-        <el-table-column prop="email" label="邮箱" width="120" align="center">
+        <el-table-column prop="email" label="邮箱" width="180" align="center">
         </el-table-column>
         <el-table-column prop="age" label="年龄" width="50" align="center">
         </el-table-column>
         <el-table-column
           prop="birthday"
           label="生日"
-          width="200"
+          width="100"
           align="center"
         >
         </el-table-column>
         <el-table-column prop="phone" label="电话" width="120" align="center">
         </el-table-column>
-        <el-table-column prop="address" label="地址" width="200" align="center">
+        <el-table-column prop="address" label="地址" width="150" align="center">
         </el-table-column>
         <el-table-column prop="gender" label="性别" width="50" align="center">
         </el-table-column>
@@ -439,4 +439,9 @@ export default {
   font-size: 18px;
   margin-bottom: 5px;
 }
+.userInfor{
+  margin: auto;
+  border-radius: 4px
+}
+
 </style>
