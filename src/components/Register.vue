@@ -94,7 +94,7 @@ export default {
               var account = /^[0-9]*$/;
               if (!account.test(value)) {
                 callback(
-                  new Error("密码必须由大小写字母、特殊字符组合,请输入8-30位")
+                  new Error("账号必须由数字组成,请输入8-30位")
                 );
               } else {
                 callback();
@@ -213,14 +213,10 @@ export default {
   justify-content: space-around;
 }
 .form_container .el-form {
-  width: 20em;
-
-
-
-  
+  width: 20em;  
   border: 2px;
   flex: 2;
-  margin-right: 18em;
+  margin-right: 16em;
   margin-top: 20%;
 }
 
