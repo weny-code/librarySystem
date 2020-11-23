@@ -10,9 +10,9 @@
     >
      <!-- <el-button type="primary" icon="el-icon-arrow-left" @click="modifyReturn()" class="modifyReturn">返回</el-button> -->
       <h2>个人信息</h2>
-      <table cellspacing="0" class="tale" border="1">
+      <table cellspacing="5" class="tale" border="0">
         <tr>
-          <td>姓名</td>
+          <td class="changdu">姓名 &nbsp;&nbsp;</td>
           <td>
             <input
               type="text"
@@ -46,7 +46,7 @@
               :readonly="readonly"
             />
           </td>
-          <td>出生年月</td>
+          <td class="changdu">出生年月</td>
           <td>
             <input
               type="text"
@@ -54,11 +54,11 @@
               :readonly="readonly"
             />
           </td>
-          <td>借阅ID</td>
-          <td></td>
+          <td class="changdu">借阅ID</td>
+          <td><input type="text" readonly="readonly"  v-model="infoModeify.userId"></td>
         </tr>
         <tr>
-          <td>联系电话</td>
+          <td >联系电话</td>
           <td>
             <input
               type="number"
@@ -66,7 +66,7 @@
               :readonly="readonly"
             />
           </td>
-          <td>暂住地址</td>
+          <td >暂住地址</td>
           <td colspan="3">
             <input
               type="text"
@@ -133,7 +133,7 @@ export default {
       method: "post",
       url: "/showUser",
       data: {
-        userId: this.userId,
+        userId:1011,
       },
     })
       .then((res) => {
@@ -269,7 +269,14 @@ export default {
 };
 </script>
 <style scoped>
+.changdu{
+  width:120px; 
+}
+td{
+  height: 40px;
+}
 .modifyReturn{
+  
  background-color: #ffffff;
  color: black;
  border: 0;
@@ -279,7 +286,6 @@ export default {
   width: 30%;
   margin: 5% auto;
 }
-
 .signInForm .el-button {
   margin: 1%;
 }
@@ -297,6 +303,7 @@ export default {
 table {
   background-color: #ffffff;
   font-size: 1.2em;
+  border-radius: 50px;
 }
 td {
   padding: 0;
@@ -316,12 +323,16 @@ td input {
   width: 100%;
 }
 td textarea {
-  width: 634px;
-  height: 80px;
+  width:  761px;
+  height: 89px;
   line-height: 1em;
   margin: 0;
   padding: 0;
   outline: none;
   border: 0;
+}
+td input{
+  text-align: center;
+ 
 }
 </style>
