@@ -1,6 +1,6 @@
 <template>
     <div class="register">
-      <div class="bookmar">ABC图书馆管理系统</div>
+      <div class="desc">ABC图书馆管理系统1</div>
     <div class="img">
       <img src="../assets/开心工作.svg" alt />
     </div>
@@ -143,6 +143,25 @@ export default {
 </script>
 
 <style>
+@font-face {
+  font-family: "FZQuSJW";
+  src: url("../assets/font/FZQuSJW.TTF");
+}
+@font-face {
+  font-family: "FZZhaoMFXSJF";
+  src: url("../assets/font/FZZhaoMFXSJF.TTF");
+}
+.desc {
+  font-family: "FZQuSJW";
+  font-size: 30px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  color: cadetblue;
+  margin-top: 10px;
+  float: left;
+  margin-left: 10px;
+  cursor: default;
+}
 .register{
     display: flex;
   justify-content: space-around;
@@ -153,9 +172,7 @@ export default {
   border: 2px;
   flex: 2;
   margin-right:18em; 
-  margin-top:15% 
-
-
+  margin-top:15% ;
 }
 
 .img {

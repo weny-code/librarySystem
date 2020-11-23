@@ -44,24 +44,24 @@ export default {
       },
       rules: {
         // 要以数组形式展示
-        // account: [
-        //   { required: true, message: "账号不能为空", trigger: "blur" },
-        //   {
-        //     min: 8,
-        //     max: 30,
-        //     message: "长度在 8 到 30 个字符",
-        //     trigger: "blur",
-        //   },
-        // ],
-        // password: [
-        //   { required: true, message: "密码不能为空", trigger: "blur" },
-        //   {
-        //     min: 8,
-        //     max: 40,
-        //     message: "长度在 8 到 30 个字符",
-        //     trigger: "blur",
-        //   },
-        // ],
+        account: [
+          { required: true, message: "账号不能为空", trigger: "blur" },
+          {
+            min: 8,
+            max: 30,
+            message: "长度在 8 到 30 个字符",
+            trigger: "blur",
+          },
+        ],
+        password: [
+          { required: true, message: "密码不能为空", trigger: "blur" },
+          {
+            min: 8,
+            max: 40,
+            message: "长度在 8 到 30 个字符",
+            trigger: "blur",
+          },
+        ],
       },
     };
   },
@@ -77,8 +77,13 @@ export default {
             .then((res) => {
               console.log(res);
               console.log("传入的数据=" + JSON.stringify(this.signIn));
-               this.userId.userId = res.data.userId;
-              this.$router.push("/UserPage"); 
+              this.userId.userId = res.data.userId;
+              if(res.data.userId<1000){
+                this.$router.push("/AdministratorPage"); 
+              }else{
+                this.$router.push("/UserPage"); 
+              }
+              
             })
             .catch(function (error) {
               console.log(error);
