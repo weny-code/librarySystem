@@ -1,16 +1,15 @@
 <template>
-  <div class="flex">
+  <div>
     <el-form
       :model="infoModeify"
-      :rules="rules"
       class="signInForm"
       ref="signInForm"
       label-width="100px"
       id="modify"
     >
-     <!-- <el-button type="primary" icon="el-icon-arrow-left" @click="modifyReturn()" class="modifyReturn">返回</el-button> -->
+     <el-button type="primary" icon="el-icon-arrow-left" @click="modifyReturn()" class="modifyReturn">返回</el-button>
       <h2>个人信息</h2>
-      <table cellspacing="5" class="tale" border="0">
+      <table cellspacing="5" class="tale" border="1">
         <tr>
           <td class="changdu">姓名 &nbsp;&nbsp;</td>
           <td>
@@ -61,7 +60,7 @@
           <td >联系电话</td>
           <td>
             <input
-              type="number"
+              type="text"
               v-model="infoModeify.phone"
               :readonly="readonly"
             />
@@ -89,8 +88,7 @@
       </table>
 
       <el-button type="success" @click="edit" v-if="flag == 1">编辑</el-button>
-      <el-button type="success" @click="Confirm()" v-if="flag == 0"
-        >确认</el-button
+      <el-button type="success" @click="Confirm()" v-if="flag == 0">确认</el-button
       >
     </el-form>
 
@@ -133,7 +131,7 @@ export default {
       method: "post",
       url: "/showUser",
       data: {
-        userId:1011,
+        userId:this.userId.userId,
       },
     })
       .then((res) => {
@@ -148,6 +146,7 @@ export default {
         a.phone = b.phone;
         a.address = b.address;
         a.description = b.description;
+        a.userId=this.userId.userId;
       })
       .catch(function (error) {
         console.log(error);
@@ -251,11 +250,10 @@ export default {
       this.$axios({
         method: "post",
         url: "/updateMyInfo",
-        data: this.passwordModeify,
+        data: this.infoModeify,
       })
-        .then((res) => {
-          console.log(res);
-
+       .then((res) => {
+        console.log(res)
           alert("修改成功");
         })
         .catch(function (error) {
@@ -275,12 +273,13 @@ export default {
 td{
   height: 40px;
 }
-.modifyReturn{
-  
+.modifyReturn{ 
  background-color: #ffffff;
  color: black;
  border: 0;
- margin-right: 95%;
+ position:absolute;
+ top:0.2em;
+ left: 0.2em;
 }
 .passwordModeifyForm {
   width: 30%;
@@ -293,6 +292,7 @@ td{
 .tale {
   margin: 0 auto;
   border-collapse: collapse;
+  background-color: #ffffff;
 }
 
 .juzhong {
@@ -301,10 +301,16 @@ td{
   margin-left: 50%;
 }
 table {
-  background-color: #ffffff;
+  
   font-size: 1.2em;
-  border-radius: 50px;
+ 
 }
+table  th:nth-child(even){
+  background-color:burlywood;
+} 
+table  th:nth-child(odd){
+  background-color: #ffffff;
+} 
 td {
   padding: 0;
   margin: 0;
@@ -318,6 +324,7 @@ td input {
 }
 .signInForm {
   margin: 3% 0;
+  
 }
 .signInForm .el-input {
   width: 100%;
