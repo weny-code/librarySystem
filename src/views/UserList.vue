@@ -2,7 +2,7 @@
   <div class="container">
     <div class="demo-input-suffix">
       <el-input
-        placeholder="请输入关键字"
+        placeholder="请输入用户名或者ID"
         class="searchInput"
         v-model="user.name"
       >
@@ -330,6 +330,7 @@ export default {
         .get("/ManagerShowUserList/" + (this.currentPage - 1))
         .then((res) => {
           this.userData = res.data;
+          console.log("获取用户信息")
           console.log(this.userData);
           console.log("111");
         })
