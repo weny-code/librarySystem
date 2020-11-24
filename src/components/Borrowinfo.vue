@@ -67,7 +67,7 @@
     <div class="demo-input-suffix">
       <el-input
         class="sousuokuang"
-        placeholder="请输入内容"
+        placeholder="请输入书名"
         prefix-icon="el-icon-search"
         v-model="input2"
       >
@@ -120,7 +120,7 @@
 export default {
   data() {
     return {
-      input2: "",
+      input2: null,
       xianshi: false,
       bookData: [],
       detail: {},
@@ -150,25 +150,43 @@ export default {
         this.userName = res.data.name;
         console.log("yonghuming");
         console.log(this.userName);
+        console.log(this.total)
       });
     },
     search() {
       console.log("点击了搜索");
+      this.total = 1;
+      this.getSearchCount();
       this.searchAndPage();
     },
-    getSearchCount() {},
+    getSearchCount() {
+      this.$axios({
+        method:'post',
+        url: '/borrowUserLikeSearchCount',
+        data:{
+          userId:1011,
+          bookName: this.input2
+        }
+      }).then((res)=>{
+        this.total = res.data
+        console.log("搜索得到的总数")
+        console.log(this.total)
+      }).catch((error)=>{
+        console.log(error)
+      })
+    },
     searchAndPage() {
       this.$axios({
         method: "post",
         url: "/borrowUserLikeSearch",
         data: {
-          userId: 1001,
+          index: (this.currentPage-1),
+          userId: 1011,
           bookName: this.input2,
         },
       }).then((res) => {
         this.bookData = res.data;
-        this.total = this.bookData.length;
-        console.log(this.total);
+        console.log(this.bookData)
       });
     },
     getBookData() {
@@ -176,28 +194,45 @@ export default {
         method: "post",
         url: "/borrowPage",
         data: {
-          userId: 1001,
-          index: this.currentPage - 1,
+          userId: 1011,
+          index: (this.currentPage - 1),
         },
       }).then((res) => {
         this.bookData = res.data;
         console.log(this.bookData);
       });
     },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
-      this.getBookData();
+      if(this.input2 != null){
+        this.searchAndPage();
+      }else if(this.input2 == null){
+        this.getBookData();
+      }
+    },
+    //退出登录
+     alert() {
+      this.$confirm("正在选择退出当前用户, 是否继续?", "退出登录......", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$userId.userId = null;
+          this.$router.push("/");
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消退出操作",
+          });
+        });
     },
   },
   created() {
     this.getCount();
     this.getBookData();
-    // this.total=this.bookData.length
-    // console.log( this.pageSize);
   },
 };
 </script>

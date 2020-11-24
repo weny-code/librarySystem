@@ -1,53 +1,131 @@
 <template>
   <div class="borrow-container block">
-    <span>借出统计</span>
-    <el-carousel :interval="4000" type="card" height="200px">
-      <el-carousel-item v-for="item in list" :key="item">
-        <span class="desc">{{ item }}</span>
-      </el-carousel-item>
-    </el-carousel>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" class="mainReport" style="width: 600px;height:400px;"></div>
+    <div id="main1" class="mainReport1" style="width: 600px;height:400px;"></div>
   </div>
 </template>
 
+<script src="echarts.min.js"></script>
 <script>
+import echarts from 'echarts'
 export default {
   name: "bookStatic",
   data() {
     return {
-      list: ["今日借出统计", "本月借出统计", "年度借出统计"],
     };
   },
+  mounted: function(){
+     // 基于准备好的dom，初始化echarts实例
+     var myChart = echarts.init(document.getElementById('main'));
+      var myChart1 = echarts.init(document.getElementById('main1'));
+     // 指定图表的配置项和数据
+    var option = {
+      title: {
+        text: '最近五个月借书情况',
+        left: 'center',
+        top: 20,
+        textStyle: {
+            color: 'black'
+        }
+    },
+    tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b}: {c} ({d}%)'
+    },
+    legend: {
+        orient: 'vertical',
+        left: 10,
+        data: ['七月', '八月', '九月', '十月', '十一月']
+    },
+    series: [
+        {
+            name: '访问来源',
+            type: 'pie',
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+                show: false,
+                position: 'center'
+            },
+            emphasis: {
+                label: {
+                    show: true,
+                    fontSize: '30',
+                    fontWeight: 'bold'
+                }
+            },
+            labelLine: {
+                show: false
+            },
+             data: [
+                {value: 335, name: '七月'},
+                {value: 310, name: '八月'},
+                {value: 234, name: '九月'},
+                {value: 135, name: '十月'},
+                {value: 1548, name: '十一月'}
+            ]
+        }
+    ]
+  };
+
+  var option1 = {
+      title: {
+        text: '最近五个月还书情况',
+        left: 'center',
+        top: 20,
+        textStyle: {
+            color: 'black'
+        }
+    },
+    tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b}: {c} ({d}%)'
+    },
+    legend: {
+        orient: 'vertical',
+        left: 10,
+        data:['七月', '八月', '九月', '十月', '十一月']
+    },
+    series: [
+        {
+            name: '访问来源',
+            type: 'pie',
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+                show: false,
+                position: 'center'
+            },
+            emphasis: {
+                label: {
+                    show: true,
+                    fontSize: '30',
+                    fontWeight: 'bold'
+                }
+            },
+            labelLine: {
+                show: false
+            },
+            data: [
+                {value: 335, name: '七月'},
+                {value: 310, name: '八月'},
+                {value: 234, name: '九月'},
+                {value: 135, name: '十月'},
+                {value: 1548, name: '十一月'}
+            ]
+        }
+    ]
+  };
+  myChart.setOption(option);
+   myChart1.setOption(option1);
+  }
 };
 </script>
 
 <style scoped>
-.borrow-container {
-  width: 60%;
-  margin-left: 20%;
+.mainReport , .mainReport1{
+  float: left;
   margin-top: 20px;
-  /* margin: 50px; */
-}
-
-.el-carousel__item h3 {
-  color: #475669;
-  font-size: 14px;
-  opacity: 0.75;
-  line-height: 200px;
-  margin: 0;
-}
-
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
-}
-
-.desc {
-  pad: 50px;
-  color: black;
-  font-size: 20px;
-  font-weight: bold;
 }
 </style>

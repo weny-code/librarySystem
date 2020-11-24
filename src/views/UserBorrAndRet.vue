@@ -163,6 +163,8 @@
 
               <el-table-column prop="retTime" label="归还日期" width="150">
               </el-table-column>
+              <el-table-column prop="validTime" label="距归还还剩" width="150">
+              </el-table-column>
             </el-table>
           </div>
           <span slot="footer" class="dialog-footer">
@@ -443,10 +445,12 @@ export default {
   margin-left: 5px;
   font-size: 30px;
   font-family: "FZZhaoMFXSJF";
+  color: black;
 }
 .multiSelector .pre1 {
   font-size: 30px;
   font-family: "FZZhaoMFXSJF";
+  color: black;
 }
 .searchButton {
   margin-left: 1%;
