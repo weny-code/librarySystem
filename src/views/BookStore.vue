@@ -82,7 +82,10 @@
     </div>
     <div class="search-container">
       <div class="item">
-        <el-input v-model="book.bookName" placeholder="请输入关键字"></el-input>
+        <el-input
+          v-model="book.bookName"
+          placeholder="请输入书名/作者"
+        ></el-input>
       </div>
       <div class="search">
         <el-button type="success" v-on:click="queryBook">搜索</el-button>
@@ -94,24 +97,48 @@
           <el-table-column
             prop="book.bookName"
             label="书名"
-            width="130"
+            width="110"
             align="center"
           >
           </el-table-column>
-          <el-table-column prop="book.nation" label="国家" width="130">
+          <el-table-column
+            align="center"
+            prop="book.nation"
+            label="国家"
+            width="110"
+          >
           </el-table-column>
-          <el-table-column prop="book.type" label="类型" width="130">
+          <el-table-column prop="book.type" label="类型" width="100">
           </el-table-column>
-          <el-table-column prop="book.length" label="篇幅" width="130">
+          <el-table-column prop="book.length" label="篇幅" width="60">
           </el-table-column>
-          <el-table-column prop="book.theme" label="主题" width="300">
+          <el-table-column
+            align="center"
+            prop="book.theme"
+            label="主题"
+            width="130"
+          >
           </el-table-column>
-          <el-table-column prop="book.storeDate" label="上架时间" width="200">
+          <el-table-column prop="book.author" label="作者" width="130">
+          </el-table-column>
+          <el-table-column
+            align="center"
+            prop="book.leftAmount"
+            label="剩余数量"
+            width="150"
+          >
+          </el-table-column>
+          <el-table-column
+            align="center"
+            prop="book.storeDate"
+            label="上架时间"
+            width="250"
+          >
           </el-table-column>
           <el-table-column
             prop="status"
-            label="状态"
-            width="100"
+            label="操作"
+            width="90"
             header-align="center"
           >
             <template slot-scope="scope">
@@ -121,38 +148,6 @@
                 v-on:click="showBook(scope.row), (dialogTableVisible = true)"
                 >编辑</el-button
               >
-              <!-- <el-dialog :visible.sync="dialogTableVisible" top="10%">
-                <el-form :model="scope.row" label-width="80px">
-                  <el-form-item label="书名">
-                    <el-input v-model="scope.row.bookName"></el-input>
-                  </el-form-item>
-                  <el-form-item label="类型">
-                    <el-select
-                      v-model="scope.row.type"
-                      placeholder="请选择书本类型"
-                    >
-                      <el-option
-                        v-for="item in nationData"
-                        :key="item.id"
-                        :label="item.type"
-                        :value="item.id"
-                      ></el-option>
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item label="活动形式">
-                    <el-input
-                      type="textarea"
-                      v-model="scope.row.bookName"
-                    ></el-input>
-                  </el-form-item>
-                  <el-form-item>
-                    <el-button type="primary" @click="onSubmit"
-                      >立即创建</el-button
-                    >
-                    <el-button>取消</el-button>
-                  </el-form-item>
-                </el-form>
-              </el-dialog> -->
             </template>
           </el-table-column>
         </el-table>
@@ -171,90 +166,209 @@
         </el-pagination>
       </div>
     </div>
-    <el-dialog :visible.sync="dialogTableVisible2" top="10%">
-      <el-form :model="book" label-width="80px">
-        <el-form-item label="书名">
-          <el-input v-model="book.bookName"></el-input>
-        </el-form-item>
-        <el-form-item label="国家">
-          <el-select
-            v-model="value1"
-            placeholder="请选择书本类型"
-            clearable
-            @change="currentBookNation($event)"
-            @clear="noSelect(1)"
-          >
-            <el-option
-              v-for="item in nationData"
-              :key="item.id"
-              :label="item.nation"
-              :value="item.id"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="类型">
-          <el-select
-            v-model="value2"
-            placeholder="请选择书本类型"
-            clearable
-            @change="currentBookType($event)"
-            @clear="noSelect(1)"
-          >
-            <el-option
-              v-for="item in typeData"
-              :key="item.id"
-              :label="item.type"
-              :value="item.id"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="篇幅">
-          <el-select
-            v-model="value3"
-            placeholder="请选择书本类型"
-            clearable
-            @change="currentBookLength($event)"
-            @clear="noSelect(1)"
-          >
-            <el-option
-              v-for="item in lengthData"
-              :key="item.id"
-              :label="item.length"
-              :value="item.id"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="主题">
-          <el-select
-            v-model="value4"
-            placeholder="请选择书本类型"
-            clearable
-            @change="currentBookTheme($event)"
-            @clear="noSelect(1)"
-          >
-            <el-option
-              v-for="item in themeData"
-              :key="item.id"
-              :label="item.theme"
-              :value="item.id"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="上架数量">
-          <el-input v-model="book.uploadAmount"></el-input>
-        </el-form-item>
-        <el-form-item label="作者">
-          <el-input v-model="book.author"></el-input>
-        </el-form-item>
-        <el-form-item label="简介">
-          <el-input type="textarea" v-model="book.summary"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="onSubmit">立即创建</el-button>
-          <el-button>取消</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
+    <div class="dialog-container">
+      <el-dialog :visible.sync="dialogTableVisible2">
+        <el-form
+          label-width="80px"
+          :model="ruleForm"
+          :rules="rules"
+          ref="ruleForm"
+          inline="true"
+        >
+          <el-form-item label="书名" prop="name">
+            <el-input v-model="book.bookName" style="width: 500px"></el-input>
+          </el-form-item>
+          <el-form-item label="作者" prop="author">
+            <el-input v-model="book.author" style="width: 200px"></el-input>
+          </el-form-item>
+          <el-form-item label="类型" prop="type">
+            <el-select
+              v-model="value2"
+              placeholder="请选择书籍类型"
+              clearable
+              @change="currentBookType($event)"
+              @clear="noSelect(1)"
+              style="width: 200px"
+            >
+              <el-option
+                v-for="item in typeData"
+                :key="item.id"
+                :label="item.type"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="国家" prop="nation">
+            <el-select
+              v-model="value1"
+              placeholder="请选择书籍国家"
+              clearable
+              @change="currentBookNation($event)"
+              @clear="noSelect(1)"
+              style="width: 200px"
+            >
+              <el-option
+                v-for="item in nationData"
+                :key="item.id"
+                :label="item.nation"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="主题" prop="theme">
+            <el-select
+              v-model="value4"
+              placeholder="请先选择书籍类型"
+              clearable
+              @change="currentBookTheme($event)"
+              @clear="noSelect(1)"
+              style="width: 200px"
+            >
+              <el-option
+                v-for="item in themeData"
+                :key="item.id"
+                :label="item.theme"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="上架数量" prop="uploadAmount">
+            <el-input
+              v-model="book.uploadAmount"
+              style="width: 200px"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="篇幅" prop="length">
+            <el-select
+              v-model="value3"
+              placeholder="请选择书籍篇幅"
+              clearable
+              @change="currentBookLength($event)"
+              @clear="noSelect(1)"
+              style="width: 200px"
+            >
+              <el-option
+                v-for="item in lengthData"
+                :key="item.id"
+                :label="item.length"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="简介" prop="summary">
+            <el-input
+              type="textarea"
+              v-model="book.summary"
+              style="width: 500px"
+            ></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">添加</el-button>
+            <el-button @click="dialogTableVisible = false">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </div>
+    <div class="dialog-container">
+      <el-dialog :visible.sync="dialogTableVisible">
+        <el-form
+          label-width="80px"
+          :model="ruleForm"
+          :rules="rules"
+          ref="ruleForm"
+          inline="true"
+        >
+          <el-form-item label="书名" prop="bookName">
+            <el-input
+              style="width: 500px"
+              v-model="ruleForm.bookName"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="作者" prop="author">
+            <el-input v-model="ruleForm.author" style="width: 200px"></el-input>
+          </el-form-item>
+          <el-form-item label="类型" prop="type">
+            <el-select
+              v-model="ruleForm.type"
+              placeholder="请选择书籍类型"
+              clearable
+              style="width: 200px"
+            >
+              <el-option
+                v-for="item in typeData"
+                :key="item.id"
+                :label="item.type"
+                :value="item.type"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="国家" prop="nation">
+            <el-select
+              v-model="ruleForm.nation"
+              placeholder="请选择书籍国家"
+              clearable
+              style="width: 200px"
+            >
+              <el-option
+                v-for="item in nationData"
+                :key="item.id"
+                :label="item.nation"
+                :value="item.nation"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="主题" prop="theme">
+            <el-select
+              v-model="ruleForm.theme"
+              placeholder="请先选择书籍类型"
+              clearable
+              style="width: 200px"
+            >
+              <el-option
+                v-for="item in themeData"
+                :key="item.id"
+                :label="item.theme"
+                :value="item.theme"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="上架数量" prop="uploadAmount">
+            <el-input
+              v-model="ruleForm.uploadAmount"
+              style="width: 200px"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="篇幅" prop="length">
+            <el-select
+              v-model="ruleForm.length"
+              placeholder="请选择书籍篇幅"
+              clearable
+              style="width: 200px"
+            >
+              <el-option
+                v-for="item in lengthData"
+                :key="item.id"
+                :label="item.length"
+                :value="item.length"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="简介" prop="summary">
+            <el-input
+              type="textarea"
+              v-model="ruleForm.summary"
+              style="width: 500px"
+            ></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit2">编辑</el-button>
+            <el-button @click="dialogTableVisible = false">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -273,11 +387,9 @@ export default {
         length: null,
         theme: null,
         status: null,
-        // storeDate: null,
         leftAmount: null,
         summary: null,
         uploadAmount: null,
-        // downloadAmount: null,
         author: null,
       },
       currentPage: 1,
@@ -295,6 +407,69 @@ export default {
       value2: [],
       value3: [],
       value4: [],
+      ruleForm: {
+        bookId: null,
+        bookName: null,
+        nation: null,
+        type: null,
+        length: null,
+        theme: null,
+        status: null,
+        leftAmount: null,
+        summary: null,
+        uploadAmount: null,
+        author: null,
+      },
+      rules: {
+        bookName: [
+          { required: true, message: "请输入书籍名称", trigger: "blur" },
+          {
+            min: 1,
+            max: 10,
+            message: "长度在 1 到 10 个字符",
+            trigger: "blur",
+          },
+        ],
+        nation: [
+          { required: true, message: "请选择书籍国家", trigger: "change" },
+        ],
+        type: [
+          { required: true, message: "请选择书籍类型", trigger: "change" },
+        ],
+        length: [
+          { required: true, message: "请选择书籍篇幅", trigger: "change" },
+        ],
+        theme: [
+          { required: true, message: "请选择书籍主题", trigger: "change" },
+        ],
+        uploadAmount: [
+          { required: true, message: "请输入上架数量", trigger: "blur" },
+          {
+            min: 1,
+            max: 10,
+            message: "长度在 1 到 10 个字符",
+            trigger: "blur",
+          },
+        ],
+        author: [
+          { required: true, message: "请输入书籍作者", trigger: "blur" },
+          {
+            min: 1,
+            max: 10,
+            message: "长度在 1 到 10 个字符",
+            trigger: "blur",
+          },
+        ],
+        summary: [
+          { required: true, message: "请输入书籍简介", trigger: "blur" },
+          {
+            min: 1,
+            max: 500,
+            message: "长度在 1 到 500 个字符",
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   methods: {
@@ -332,7 +507,10 @@ export default {
         });
     },
     showBook(e) {
-      this.borrowBook.bookName = e.bookName;
+      this.ruleForm = Object.assign({}, e.book);
+      console.log("类型为：" + typeof this.ruleForm);
+      console.log("当前行的书名：" + this.ruleForm.bookName);
+      console.log("当前行的国家：" + this.ruleForm.nation);
     },
     handleCurrentChange(val) {
       this.currentPage = val;
@@ -493,6 +671,26 @@ export default {
           console.log(error);
         });
     },
+    onSubmit2() {
+      this.$axios({
+        method: "post",
+        url: "/BookInfoUpdate",
+        data: this.ruleForm,
+      })
+        .then((res) => {
+          if (res.data == "1") {
+            this.$message({
+              message: "修改成功",
+              type: "success",
+            });
+            this.getBookTable();
+            this.dialogTableVisible = false;
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
   },
   created() {
     this.getBookTable();
@@ -557,7 +755,13 @@ export default {
 }
 
 .page-container {
-  margin-top: 5px;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 100px;
+  margin-left: 40%;
+}
+
+.dialog-container {
+  margin-top: 5%;
+  width: 500px;
 }
 </style>

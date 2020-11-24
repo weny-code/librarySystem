@@ -93,8 +93,6 @@ export default {
 .main-container {
   position: absolute;
   width: 100%;
-  height: 100%;
-  background-color: #c6ddff;
 }
 .box-card {
   background-color: #c7faff;
@@ -104,21 +102,18 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 300px;
   width: 100%;
 }
 
 .notice-container {
   height: 100px;
   width: 100%;
+  margin-top: 0px;
   display: flex;
   justify-content: center;
 }
 
 .inner-img {
-  display: inline-flex;
-  width: 400px;
-  height: 300px;
   align-items: center;
 }
 
@@ -126,14 +121,13 @@ export default {
   display: flex;
   margin-top: 5%;
   width: 100%;
-  height: 260px;
+  height: 280px;
   justify-content: space-between;
 }
 
 .login-item {
-  width: 350px;
-  height: 200px;
-  margin-left: 20%;
+  margin-left: 15%;
+  width: 500px;
   transition: all 0.6s ease;
 }
 
@@ -143,10 +137,8 @@ export default {
 }
 
 .register-item {
-  width: 280px;
-  height: 280px;
-  margin-right: 20%;
-  margin-top: -30px;
+  margin-right: 15%;
+  width: 400px;
   transition: all 0.6s ease;
 }
 
@@ -156,13 +148,13 @@ export default {
 }
 
 .theme-img {
-  width: auto;
-  height: auto;
+  width: 90%;
+  height: 90%;
 }
 
 .login-img {
-  width: 80%;
-  height: 80%;
+  width: 50%;
+  height: 50%;
 }
 
 @font-face {
@@ -179,7 +171,6 @@ export default {
   display: inline-flex;
   font-family: "FZQuSJW";
   font-size: 40px;
-  left: 0;
   font-weight: bold;
   letter-spacing: 10px;
   text-align: center;
@@ -196,7 +187,7 @@ export default {
   font-family: "FZZhaoMFXSJF";
   font-size: 50px;
   font-weight: bold;
-  margin-top: -30px;
+  margin-top: 0px;
 }
 
 .text {

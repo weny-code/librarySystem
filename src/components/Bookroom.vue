@@ -78,7 +78,7 @@
           style="margin-left: 20px"
           v-model="value4"
           clearable
-          placeholder="请选择"
+          placeholder="请先选择类型"
           @change="currentBookTheme($event)"
           @clear="noSelect(4)"
         >
@@ -104,6 +104,17 @@
       </div>
     </div>
     <div class="show-container">
+      <el-dialog :visible.sync="dialogTableVisible" top="10%">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>简介</span>
+          </div>
+          <div class="text item">
+            {{ borrowBook.summary }}
+          </div>
+        </el-card>
+        <el-button type="success" @click="borrow">借阅</el-button>
+      </el-dialog>
       <div class="booktable">
         <el-table v-model="tableData" :data="tableData" stripe>
           <el-table-column
@@ -120,9 +131,16 @@
           </el-table-column>
           <el-table-column prop="book.length" label="篇幅" width="130">
           </el-table-column>
-          <el-table-column prop="book.theme" label="主题" width="300">
+          <el-table-column prop="book.theme" label="主题" width="130">
           </el-table-column>
-          <el-table-column prop="book.storeDate" label="上架时间" width="200">
+          <el-table-column prop="book.author" label="作者" width="180">
+          </el-table-column>
+          <el-table-column
+            align="center"
+            prop="book.storeDate"
+            label="上架时间"
+            width="200"
+          >
           </el-table-column>
           <el-table-column
             prop="status"
@@ -157,7 +175,6 @@
     <div class="page-container">
       <div class="block">
         <el-pagination
-          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page.sync="currentPage"
           :page-size="pagesize"
@@ -167,17 +184,6 @@
         </el-pagination>
       </div>
     </div>
-    <el-dialog :visible.sync="dialogTableVisible" top="10%">
-      <el-table :data="borrowBook">
-        <el-table-column
-          prop="bookName"
-          label="书名"
-          width="150"
-        ></el-table-column>
-        <el-table-column prop="summary" label="简介"></el-table-column>
-      </el-table>
-      <el-button type="success" @click="borrow">借阅</el-button>
-    </el-dialog>
   </div>
 </template>
 
@@ -200,13 +206,13 @@ export default {
         leftAmount: null,
         // uploadAmount: null,
         // downloadAmount: null,
-        // author: null,
+        author: null,
       },
       currentPage: 1,
       currentType: null,
       pagesize: 5,
       dialogTableVisible: false,
-      borrowBook: [],
+      borrowBook: {},
       nationData: [],
       lengthData: [],
       themeData: [],
@@ -254,7 +260,10 @@ export default {
     },
     showBook(e) {
       this.borrowBook = e.book;
-      // console.log("当前行的书籍名：" + this.borrowBook.bookName);
+      // this.borrowBookSummary=
+      // this.borrowBookSummary = e.book.summary;
+      // console.log("----------" + typeof e.book.bookName);
+      console.log("当前行的书籍名：" + this.borrowBook);
     },
     handleCurrentChange(val) {
       this.currentPage = val;
@@ -401,8 +410,8 @@ export default {
       }
     },
     borrow() {
-      console.log("书名：" + this.borrowBook.bookName);
-      console.log("简介：" + this.borrowBook.summary);
+      console.log("书名：" + this.borrowBookName);
+      console.log("简介：" + this.borrowBookSummary);
       this.$axios({
         method: "post",
         url: "/borrowBook",
@@ -528,7 +537,7 @@ export default {
 }
 
 .select-container .check {
-  margin-left: 73%;
+  margin-left: 70%;
   margin-top: 5px;
 }
 
@@ -559,8 +568,9 @@ export default {
 }
 
 .page-container {
-  margin-top: 5px;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 100px;
+  margin-left: 40%;
 }
 
 .bookinfo-container {
