@@ -109,7 +109,7 @@
         <el-table-column prop="storeDate" label="上架日期" width="200">
         </el-table-column>
         <!-- 按钮 -->
-        <el-table-column width="150" label="借阅状态">
+        <el-table-column width="150" label="操作">
           <template slot-scope="scope">
             <el-popover
               placement="top-start"
@@ -129,10 +129,10 @@
           </template>
         </el-table-column>
       </el-table>
-
+       <!-- 对话框 -->
       <div class="dialog">
         <el-dialog
-          title="用户借阅详情"
+          title="书本借阅详情"
           :visible.sync="dialogVisible"
           width="50%"
         >
@@ -140,17 +140,17 @@
             <el-row :gutter="20">
               <el-col :span="8"
                 ><div class="grid-content bg-purple">
-                  书名:{{ book.bookName }}
+                  书名:{{ book1.bookName }}
                 </div></el-col
               >
               <el-col :span="8"
                 ><div class="grid-content bg-purple">
-                  剩余数量:{{ leftNum }}
+                  剩余数量:{{ book1.leftAmount }}
                 </div></el-col
               >
               <el-col :span="8"
                 ><div class="grid-content bg-purple">
-                  借出数量:{{ borrowNum }}
+                  借出数量:{{ book1.uploadAmount-book1.leftAmount }}
                 </div></el-col
               >
             </el-row>
@@ -193,9 +193,7 @@ export default {
       input: "",
       currentPage: 1,
       dialogVisible: false,
-      leftNum: "6",
-      borrowNum: "4",
-      boorowStatus: "可借",
+      boorowStatus: "借阅详情",
       total: 0,
       currentType: null,
       book: {
@@ -206,11 +204,13 @@ export default {
         length: null,
         theme: null,
         status: null,
-        // storeDate: null,
+        storeDate: null,
         leftAmount: null,
-        // uploadAmount: null,
-        // downloadAmount: null,
-        // author: null,
+        uploadAmount: null,
+        downloadAmount: null,
+        author: null,
+      },
+      book1:{
       },
       currentSelected: {
         nation: null,
@@ -219,123 +219,11 @@ export default {
         theme: null,
       },
       nation: [],
-      type: [
-        // {
-        //   value: "选项1",
-        //   label: "黄金糕",
-        // },
-        // {
-        //   value: "选项2",
-        //   label: "双皮奶",
-        // },
-        // {
-        //   value: "选项3",
-        //   label: "蚵仔煎",
-        // },
-        // {
-        //   value: "选项4",
-        //   label: "龙须面",
-        // },
-        // {
-        //   value: "选项5",
-        //   label: "北京烤鸭",
-        // },
-      ],
-      length: [
-        // {
-        //   value: "选项1",
-        //   label: "黄金糕",
-        // },
-        // {
-        //   value: "选项2",
-        //   label: "双皮奶",
-        // },
-        // {
-        //   value: "选项3",
-        //   label: "蚵仔煎",
-        // },
-        // {
-        //   value: "选项4",
-        //   label: "龙须面",
-        // },
-        // {
-        //   value: "选项5",
-        //   label: "北京烤鸭",
-        // },
-      ],
-      theme: [
-        // {
-        //   value: "选项1",
-        //   label: "黄金糕",
-        // },
-        // {
-        //   value: "选项2",
-        //   label: "双皮奶",
-        // },
-        // {
-        //   value: "选项3",
-        //   label: "蚵仔煎",
-        // },
-        // {
-        //   value: "选项4",
-        //   label: "龙须面",
-        // },
-        // {
-        //   value: "选项5",
-        //   label: "北京烤鸭",
-        // },
-      ],
-      bookData: [
-        // {
-        //   date: "2016-05-02",
-        //   bookName: "水浒传",
-        //   type: "不知道",
-        //   length:"长篇",
-        //   theme:"不知道",
-        //   nation:"中国"
-        // },
-        //  {
-        //   date: "2016-05-02",
-        //   bookName: "水浒传",
-        //   type: "不知道",
-        //   length:"长篇",
-        //   theme:"不知道",
-        //   nation:"中国"
-        // },
-        // {
-        //   date: "2016-05-02",
-        //   bookName: "水浒传",
-        //   type: "不知道",
-        //   length:"长篇",
-        //   theme:"不知道",
-        //   nation:"中国"
-        // },
-        // {
-        //   date: "2016-05-02",
-        //   bookName: "水浒传",
-        //   type: "不知道",
-        //   length:"长篇",
-        //   theme:"不知道",
-        //   nation:"中国"
-        // },
-      ],
-      borrowInfo: [
-        {
-          borrowName: "黑旋风李逵",
-          borrowDate: "2019-8-8",
-          borrowValid: "30天",
-        },
-        {
-          borrowName: "黑旋风李逵",
-          borrowDate: "2019-8-8",
-          borrowValid: "30天",
-        },
-        {
-          borrowName: "黑旋风李逵",
-          borrowDate: "2019-8-8",
-          borrowValid: "30天",
-        },
-      ],
+      type: [],
+      length: [],
+      theme: [],
+      bookData: [],
+      borrowInfo: [],
        value1: [],
       value2: [],
       value3: [],
@@ -347,7 +235,12 @@ export default {
     //点击换页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-      this.getBookData();
+      if(this.book==null && this.input){
+        this.getBookData();
+      }
+      else{
+        this.searchByTypePage();
+      } 
     },
     //分页获取所有图书
     getBookData() {
@@ -390,10 +283,14 @@ export default {
           console.log(error);
         });
     },
-    //根据
+    //根据类型搜搜
     searchByType(){
-       this.total = this.getTypeCount();
-      this.$axios({
+      this.total = this.getTypeCount();
+      this.searchByTypePage();
+    },
+    //对搜出来的数据进行分页
+    searchByTypePage(){
+       this.$axios({
         method: "post",
         url: "/managerFindBookByType/"+ (this.currentPage - 1),
         data: this.book,
@@ -512,48 +409,21 @@ export default {
           console.log(error);
         });
     },
-    //搜索
-    // search() {
-    //   console.log("------------" + this.book.bookName);
-    //   this.count = this.getTypeCount();
-    //   this.$axios({
-    //     method: "post",
-    //     url: "/managerFindBookByType/" + (this.currentPage - 1),
-    //     data: { bookName: this.book.bookName },
-    //   })
-    //     .then((res) => {
-    //       this.bookData = res.data;
-    //       // console.log("传入的数据=" + JSON.stringify(this.book));
-    //       console.log("下面的搜索得到的书籍总数" + this.bookData.length);
-    //       // console.log("数据：" + this.$qs.stringify(this.book));
-    //     })
-    //     .catch(function (error) {
-    //       console.log(error);
-    //     });
-    // },
     //点击状态按钮
     handleClick(book) {
       console.log(book);
-      this.book = book;
+      this.book1 = book;
       this.dialogVisible = true;
+      this.$axios
+      .get("/managerBookUserList/" + book.bookId)
+      .then((res) => {
+        this.borrowInfo = res.data
+        console.log(this.borrowInfo)
+      }).catch((error) =>{
+        console.log(error)
+      });
     },
-    // searchByType(){
-    //   this.$axios({
-    //     methods: 'post',
-    //     url: 'url',
-    //     data:{
-    //       bookNation: this.value1,
-    //       bookType: this.value2,
-    //       bookLength: this.value3,
-    //       bookTheme: this.value4,
-    //     }
-    //   }).then((res) => {
-    //     this.tableData = res.data
-    //     console.log(this.tableData)
-    //   }).catch(error=>{
-    //     console.log(error)
-    //   })
-    // },
+   
   },
   created() {
     this.getSelectNation();

@@ -25,7 +25,7 @@
         </el-breadcrumb>
       </div>
     </div>
-    <div  class="book" v-for="(temp,index) in booksList" :key=index  >
+    <div class="book" v-for="(temp, index) in booksList" :key="index">
       <el-form :inline="true" :model="booksList" class="demo-form-inline">
         <el-form-item>
           <el-input
@@ -44,9 +44,9 @@
           >
         </el-form-item>
       </el-form>
-      <div class="info" >
+      <div class="info">
         <el-card class="box-card">
-          <div v-if="booksList[index].bookName " >
+          <div v-if="booksList[index].bookName">
             <div class="text item">
               {{ "书名:" + booksList[index].bookName }}
             </div>
@@ -59,23 +59,25 @@
             <div class="text item">
               {{ "篇幅:" + booksList[index].length }}
             </div>
-            <div class="text item">
+            <div class="text item1">
               {{ "主题:" + booksList[index].theme }}
             </div>
+            <div class="text item">
+              {{ "借阅时间:" + booksList[index].borrowTime }}
+            </div>
           </div>
-          <div v-if="!booksList[index].bookName " class="noBorrow">
+          <div v-if="!booksList[index].bookName" class="noBorrow">
             <span>您还没有借入书籍</span>
           </div>
         </el-card>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
 export default {
-  data: function () {
+  data: function() {
     return {
       show: "true",
       userId: 1001,
@@ -91,30 +93,36 @@ export default {
         },
       ],
       booksList: [
-        {
-          bookName: "三国演义",
-          nation: "中国",
-          type: "小说",
-          length: "长篇",
-          theme: "历史战争谋略",
-          bookId: 1,
-        },
-        {
-          // bookName: "三国演义",
-          // nation: "中国",
-          // type: "历史战争谋略",
-          // theme: "不知道",
-          // length: "长篇",
-          // bookId: 2,
-        },
-        {
-          // bookName: "水浒传",
-          // nation: "中国",
-          // type: "历史战争谋略",
-          // theme: "不知道",
-          // length: "长篇",
-          // bookId: 3,
-        },
+      //   {
+      //     bookName: " ",
+      //     bookId: null,
+      //     borrowTime: null,
+      //     id: null,
+      //     length: null,
+      //     nation: null,
+      //     theme: null,
+      //     type: null,
+      //   },
+      //  {
+      //     bookName: " ",
+      //     bookId: null,
+      //     borrowTime: null,
+      //     id: null,
+      //     length: "长篇",
+      //     nation: "中国",
+      //     theme: null,
+      //     type: null,
+      //   },
+      //   {
+      //    bookName: " ",
+      //     bookId: null,
+      //     borrowTime: null,
+      //     id: null,
+      //     length: "长篇",
+      //     nation: "中国",
+      //     theme: null,
+      //     type: null,
+      //   },
       ],
     };
   },
@@ -176,21 +184,21 @@ export default {
       let count = this.booksList[index].bookName;
       return count;
     },
-    outputStatus(index){
-      if(this.booksList[index].bookName != null){
+    outputStatus(index) {
+      if (this.booksList[index].bookName != null) {
         console.log(this.booksList[index]);
-        return  "已借入书籍"
-      }else{
-        return "未借入书籍"
+        return "已借入书籍";
+      } else {
+        return "未借入书籍";
       }
     },
-    inputNotice(index){
-      if(this.booksList[index].bookName!= null){
-        return "shuming"
-      }else{
-        return "notshuming"
+    inputNotice(index) {
+      if (this.booksList[index].bookName != null) {
+        return "shuming";
+      } else {
+        return "notshuming";
       }
-    }
+    },
   },
   created() {
     this.getBooksList();
@@ -199,7 +207,6 @@ export default {
 </script>
 
 <style scoped>
-
 .main-container {
   position: absolute;
   width: 100%;
@@ -207,13 +214,13 @@ export default {
 .shuming {
   width: 350px;
 }
-.notshuming{
+.notshuming {
   width: 350px;
   background-color: rgb(64, 77, 77);
   border-radius: 4px;
 }
 .text {
-  font-size: 14px;
+  font-size: 16px;
   padding: 0 10;
   width: 200px;
   float: left;
@@ -225,10 +232,9 @@ export default {
 
 .box-card {
   width: 480px;
-  margin-left: 430px;
+  margin-left: 30%;
   height: 150px;
   padding: 0 10px;
-  
 }
 .info {
   text-align: left;
@@ -239,8 +245,9 @@ export default {
 }
 .demo-form-inline {
   height: 45px;
-  margin-left: 200px;
+  margin-left: 35%;
   margin-top: 5px;
+  width: 450px;
 }
 .desc {
   font-family: "FZQuSJW";
@@ -274,10 +281,9 @@ export default {
   font-size: 20px;
   color: black;
 }
-.noBorrow{
+.noBorrow {
   text-align: center;
   font-size: 20px;
   margin-top: 40px;
 }
-
 </style>

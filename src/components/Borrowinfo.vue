@@ -29,10 +29,11 @@
       </div>
     </div>
     <!-- 详情页面 -->
-    <div v-show="xianshi" class="xiangqingyemian">
+     <transition name="el-fade-in-linear">
+    <div v-show="xianshi" class="xiangqingyemian transition-box">
       <el-row :gutter="12">
         <el-col :span="8">
-          <el-card shadow="hover"> 用户编号：{userId}} </el-card>
+          <el-card shadow="hover"> 用户编号：{{userId}} </el-card>
         </el-col>
         <el-col :span="8">
           <el-card shadow="hover">
@@ -55,7 +56,9 @@
           <el-card shadow="hover"> 借阅有效期：30天 </el-card>
         </el-col>
       </el-row>
+      <el-button type="primary" round @click="xianshi=false">点击隐藏</el-button>
     </div>
+    </transition>
 
     <div class="demo-input-suffix">
       <el-input
@@ -82,7 +85,7 @@
         </el-table-column>
         <el-table-column prop="theme" label="主题" width="150">
         </el-table-column>
-        <el-table-column prop="retTime" label="归还日期" width="150">
+        <el-table-column prop="retTime" label="归还日期" width="200">
         </el-table-column>
         <el-table-column label="详情" width="200">
           <template slot-scope="scope">
@@ -120,7 +123,8 @@ export default {
       currentPage: 1, // 当前页码
       // 每页的数据条数
       pageSize: 5,
-      total: 0, // 总条数
+      // 总条数
+      total: 0, 
       userName:"",
       userId:1011
       //this.$userId.userId,
@@ -147,7 +151,11 @@ export default {
     },
     search() {
       console.log("点击了搜索");
-      this.$axios({
+     this.searchAndPage()
+    },
+     getSearchCount(){},
+    searchAndPage(){
+       this.$axios({
         method: "post",
         url: "/borrowUserLikeSearch",
         data: {
@@ -234,6 +242,7 @@ export default {
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;
+  width: 1080px;
   width: fit-content;
   border: 2px solid rgb(175, 193, 241);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
@@ -274,4 +283,5 @@ export default {
   font-size: 20px;
   color: black;
 }
+ 
 </style>

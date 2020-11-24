@@ -309,27 +309,23 @@ export default {
       })
         .then(() => {
           this.$axios
-            .get("/deleteUser/" + user.userId)
+            .get("/managerDeleteUser/" + user.userId)
             .then((res) => {
               if (res.data == 1) {
                 this.$alert("删除成功", "删除用户", {
                   confirmButtonText: "确定",
-                  callback: (action) => {
-                    this.$message({
-                      type: "info",
-                      message: `action: ${action}`,
-                    });
-                  },
+                
                 });
+                this.total=this.total - 1
               } else if (res.data == 0) {
-                this.$alert("删除失败!!", "删除用户", {
+                this.$alert("用户还有书没还，注销失败!!", "删除用户", {
                   confirmButtonText: "确定",
-                  callback: (action) => {
-                    this.$message({
-                      type: "info",
-                      message: `action: ${action}`,
-                    });
-                  },
+                });
+              }
+              else{
+                this.$alert("注销失败!!", "删除用户", {
+                  confirmButtonText: "确定",
+                  
                 });
               }
             })
@@ -357,27 +353,20 @@ export default {
       })
         .then(() => {
           this.$axios
-            .get("/deleteUser/" + this.user1.userId)
+            .get("/managerDeleteUser/" + this.user1.userId)
             .then((res) => {
               if (res.data == 1) {
+                this.total=this.total - 1
                 this.$alert("删除成功", "删除用户", {
                   confirmButtonText: "确定",
-                  callback: (action) => {
-                    this.$message({
-                      type: "info",
-                      message: `action: ${action}`,
-                    });
-                  },
                 });
               } else if (res.data == 0) {
-                this.$alert("删除失败!!", "删除用户", {
+                this.$alert("用户还有书没还，注销失败!!", "删除用户", {
                   confirmButtonText: "确定",
-                  callback: (action) => {
-                    this.$message({
-                      type: "info",
-                      message: `action: ${action}`,
-                    });
-                  },
+                });
+              } else{
+                this.$alert("注销失败!!", "删除用户", {
+                  confirmButtonText: "确定",  
                 });
               }
             })
@@ -440,7 +429,7 @@ export default {
   margin-bottom: 5px;
 }
 .userInfor{
-  margin: auto;
+  margin-left: 80px;
   border-radius: 4px
 }
 
