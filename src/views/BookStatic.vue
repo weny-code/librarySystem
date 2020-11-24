@@ -5,6 +5,7 @@
       <el-carousel-item v-for="item in list" :key="item">
         <span class="desc">{{ item }}</span>
       </el-carousel-item>
+     
     </el-carousel>
   </div>
 </template>

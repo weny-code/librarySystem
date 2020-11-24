@@ -29,7 +29,8 @@
 
     <div class="notice-container">
       <el-card class="box-card">
-        <div class="text item">IBM实训项目-图书管理系统</div>
+        <!--<input type="text" class="text item" v-model="text.Notice" >-->
+        <div class="text item" >{{text.Notice}}</div>
       </el-card>
     </div>
   </div>
@@ -38,7 +39,33 @@
 <script>
 export default {
   name: "HomePage",
-  props: {},
+
+  created(){
+    // this.getParams()
+    this.$axios({
+            method: "get",
+            url: "/showAnnouncement",
+          })
+            .then((res) => {
+              console.log(res);
+              this.text.Notice=res.data;
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+  },
+ data() {
+   return{
+    text: {
+        Notice:"图书管理系统"
+     }
+     
+   }
+ },
+  
+  props: {
+     
+     },
   methods: {
     loginSuccess() {
       // this.$router.push("/UserPage");
@@ -48,7 +75,16 @@ export default {
       // this.$router.push("/AdministratorPage");
       this.$router.push("/Register");
     },
+  getParams () {
+    // 取到路由带过来的参数
+    var routerParams = this.$route.params.Notice
+    // 将数据放在当前组件的数据内
+    this.Notice = routerParams
+}
   },
+  watch: {
+    '$route': 'getParams'// 监测路由变化,只要变化了就调用获取路由参数方法将数据存储本组件即可
+}
 };
 </script>
 
@@ -164,12 +200,13 @@ export default {
 }
 
 .text {
-  font-size: 14px;
+  font-size: 25px;
 }
 
 .item {
   padding: 18px 0;
   text-align: center;
+  
 }
 
 .box-card {

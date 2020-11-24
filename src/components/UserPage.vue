@@ -31,7 +31,7 @@
     </div>
     <div class="notice-container">
       <el-card class="box-card">
-        <div class="text item">IBM实训项目-图书管理系统</div>
+        <div class="text item">{{text.Notice}}</div>
       </el-card>
     </div>
   </div>
@@ -39,9 +39,27 @@
 
 <script>
 export default {
+  created(){
+    // this.getParams()
+    this.$axios({
+            method: "get",
+            url: "/showAnnouncement",
+          })
+            .then((res) => {
+              console.log(res);
+              this.text.Notice=res.data;
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+  },
   data() {
     return {
+      text: {
+        Notice:"图书管理系统"
+     },
       msg: "666",
+
     };
   },
   name: "UserPage",
@@ -194,7 +212,7 @@ export default {
 }
 
 .notice-container .text {
-  font-size: 14px;
+  font-size: 25px;
 }
 
 .notice-container .item {

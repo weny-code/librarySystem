@@ -1,6 +1,7 @@
 <template>
   <div class="register">
-    <div class="desc">ABC图书馆管理系统</div>
+    <div class="desc" >GBA图书馆管理系统</div>
+    <el-button type="primary" icon="el-icon-arrow-left" @click="backHome()" class="registReturn">返回</el-button>
     <div class="img">
       <img src="../assets/img/register.png" alt />
     </div>
@@ -16,6 +17,7 @@
           <el-input
             v-model="register.account"
             placeholder="请输入账号"
+            maxlength="30"
           ></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
@@ -23,6 +25,7 @@
             v-model="register.password"
             placeholder="请输入密码"
             type="password"
+             maxlength="30"
           ></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="password2">
@@ -30,18 +33,21 @@
             v-model="register.password2"
             placeholder="请确认密码"
             type="password"
+             maxlength="30"
           ></el-input>
         </el-form-item>
         <el-form-item label="姓名" prop="name">
           <el-input
             v-model="register.name"
             placeholder="请输入用户名"
+             maxlength="20"
           ></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
           <el-input
             v-model="register.email"
             placeholder="请输入邮箱"
+             maxlength="30"
           ></el-input>
         </el-form-item>
         <el-form-item>
@@ -183,6 +189,9 @@ export default {
         }
       });
     },
+    backHome(){
+       this.$router.push("/");
+    }
   },
 };
 </script>
@@ -207,6 +216,15 @@ export default {
   float: left;
   margin-left: 10px;
   cursor: default;
+}
+.registReturn{
+  position: absolute;
+  top: 2.5em;
+  left: 1em;
+  border: 0;
+  background-color:#c6ddff ;
+  color:#fff;
+  font-size: 1.2em
 }
 .register {
   display: flex;

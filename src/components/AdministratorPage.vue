@@ -97,6 +97,8 @@
     <userList v-show="pageList.userShow"></userList>
     <BookStatic v-show="pageList.allShow"></BookStatic>
     <UserBorrAndRet v-show="pageList.bookShow"></UserBorrAndRet>
+    <Announcement v-show="pageList.testShow"></Announcement>
+    
   </div>
 </template>
 
@@ -105,9 +107,11 @@ import BookStore from "@/views/BookStore";
 import UserList from "@/views/UserList";
 import BookStatic from "@/views/BookStatic";
 import UserBorrAndRet from "@/views/UserBorrAndRet";
+import Announcement from "@/views/Announcement";
+
 
 export default {
-  components: { BookStore, UserList, BookStatic, UserBorrAndRet },
+  components: { BookStore, UserList, BookStatic,UserBorrAndRet,Announcement},
   name: "AdministratorPage",
   data() {
     return {
