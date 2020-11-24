@@ -1,6 +1,11 @@
 <template>
   <div class="main-container">
     <div class="desc">GBA图书管理系统</div>
+    <div class="bottom">
+      <el-tooltip class="item" content="退出登录" placement="bottom-end">
+        <i class="el-icon-switch-button" v-on:click="alert()"></i>
+      </el-tooltip>
+    </div>
     <div class="navigator-container">
       <div class="item">
         <el-breadcrumb separator="/">
@@ -15,17 +20,17 @@
             ></el-breadcrumb-item
           >
           <el-breadcrumb-item class="item-class"
-            ><i class="el-icon-ship"></i>我的书架</el-breadcrumb-item
+            ><i class="el-icon-coffee-cup"></i>我的书架</el-breadcrumb-item
           >
         </el-breadcrumb>
       </div>
     </div>
-    <div v-for="(book, index) in booksList" :key="index" class="book">
+    <div class="book" v-for="(temp, index) in booksList" :key="index">
       <el-form :inline="true" :model="booksList" class="demo-form-inline">
         <el-form-item>
           <el-input
-            class="shuming"
-            :placeholder="book.bookName"
+            :class="inputNotice(index)"
+            :placeholder="outputStatus(index)"
             :disabled="true"
           ></el-input>
         </el-form-item>
@@ -41,22 +46,28 @@
       </el-form>
       <div class="info">
         <el-card class="box-card">
-          <div>
+          <div v-if="booksList[index].bookName">
             <div class="text item">
-              {{ "书名:" + book.bookName }}
+              {{ "书名:" + booksList[index].bookName }}
             </div>
             <div class="text item">
-              {{ "国家:" + book.nation }}
+              {{ "国家:" + booksList[index].nation }}
             </div>
             <div class="text item">
-              {{ "类型:" + book.type }}
+              {{ "类型:" + booksList[index].type }}
             </div>
             <div class="text item">
-              {{ "篇幅:" + book.length }}
+              {{ "篇幅:" + booksList[index].length }}
             </div>
-            <div class="text item">
+            <div class="text item1">
               {{ "主题:" + booksList[index].theme }}
             </div>
+            <div class="text item">
+              {{ "借阅时间:" + booksList[index].borrowTime }}
+            </div>
+          </div>
+          <div v-if="!booksList[index].bookName" class="noBorrow">
+            <span>您还没有借入书籍</span>
           </div>
         </el-card>
       </div>
@@ -80,7 +91,38 @@ export default {
           str: false,
         },
       ],
-      booksList: [],
+      booksList: [
+        //   {
+        //     bookName: " ",
+        //     bookId: null,
+        //     borrowTime: null,
+        //     id: null,
+        //     length: null,
+        //     nation: null,
+        //     theme: null,
+        //     type: null,
+        //   },
+        //  {
+        //     bookName: " ",
+        //     bookId: null,
+        //     borrowTime: null,
+        //     id: null,
+        //     length: "长篇",
+        //     nation: "中国",
+        //     theme: null,
+        //     type: null,
+        //   },
+        //   {
+        //    bookName: " ",
+        //     bookId: null,
+        //     borrowTime: null,
+        //     id: null,
+        //     length: "长篇",
+        //     nation: "中国",
+        //     theme: null,
+        //     type: null,
+        //   },
+      ],
     };
   },
   methods: {
@@ -141,6 +183,21 @@ export default {
       let count = this.booksList[index].bookName;
       return count;
     },
+    outputStatus(index) {
+      if (this.booksList[index].bookName != null) {
+        console.log(this.booksList[index]);
+        return "已借入书籍";
+      } else {
+        return "未借入书籍";
+      }
+    },
+    inputNotice(index) {
+      if (this.booksList[index].bookName != null) {
+        return "shuming";
+      } else {
+        return "notshuming";
+      }
+    },
   },
   created() {
     this.getBooksList();
@@ -149,10 +206,6 @@ export default {
 </script>
 
 <style scoped>
-.book {
-  margin-top: 20px;
-}
-
 .main-container {
   position: absolute;
   width: 100%;
@@ -160,9 +213,16 @@ export default {
 .shuming {
   width: 350px;
 }
+.notshuming {
+  width: 350px;
+  background-color: rgb(64, 77, 77);
+  border-radius: 4px;
+}
 .text {
-  font-size: 13px;
+  font-size: 16px;
   padding: 0 10;
+  width: 200px;
+  float: left;
 }
 
 .item {
@@ -171,13 +231,11 @@ export default {
 
 .box-card {
   width: 480px;
-  margin-left: 430px;
+  margin-left: 30%;
   height: 150px;
   padding: 0 10px;
 }
 .info {
-  margin-top: -15px;
-  height: 150px;
   text-align: left;
   margin-left: 50px;
 }
@@ -185,7 +243,47 @@ export default {
   margin: 14px 0px;
 }
 .demo-form-inline {
-  margin-left: 15%;
+  height: 45px;
+  margin-left: 35%;
+  margin-top: 5px;
+  width: 450px;
+}
+.desc {
+  font-family: "FZQuSJW";
+  font-size: 30px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  color: cadetblue;
+  margin-top: 10px;
+  float: left;
+  margin-left: 10px;
+  cursor: default;
+}
+.bottom {
+  float: right;
+  font-size: 40px;
+  margin-right: 50px;
+  margin-top: 10px;
+  cursor: pointer;
+  text-align: center;
+}
+.navigator-container {
+  display: flex;
+  height: 50px;
+  margin-top: 60px;
+  align-items: center;
+}
+.navigator-container .item {
+  margin-left: 50px;
+}
+.item-class {
+  font-size: 20px;
+  color: black;
+}
+.noBorrow {
+  text-align: center;
+  font-size: 20px;
+  margin-top: 40px;
 }
 .main-container .desc {
   font-family: "FZQuSJW";
