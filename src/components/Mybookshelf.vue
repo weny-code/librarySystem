@@ -130,7 +130,7 @@ export default {
       console.log("submit!");
       this.jiazai[index].str = true;
       console.log(index);
-      console.log(this.$userId.userId);
+     
       console.log(this.booksList[index].bookId);
       console.log(this.booksList[index].id);
 
@@ -148,7 +148,7 @@ export default {
               bookId: this.booksList[index].bookId,
             },
           }).then((res) => {
-            console.log("当前用户ID:" + this.$userId.userId);
+            console.log("当前用户ID:" + sessionStorage.getItem("userId"));
             console.log(this.booksList[index].bookId);
             console.log(res.data);
             if (res.data == 1) {
@@ -169,7 +169,7 @@ export default {
     },
     getBooksList() {
       this.$axios
-        .get("/borrowUserShelf/" + this.$userId.userId)
+        .get("/borrowUserShelf/" + sessionStorage.getItem("userId"))
         .then((res) => {
           this.booksList = res.data;
           console.log("请求成功");

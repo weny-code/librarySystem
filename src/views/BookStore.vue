@@ -373,7 +373,7 @@ export default {
   data() {
     return {
       count: null,
-      userId: "1001",
+      userId: sessionStorage.getItem("userId"),
       book: {
         bookId: null,
         bookName: null,

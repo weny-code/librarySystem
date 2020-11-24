@@ -130,7 +130,7 @@ export default {
       // 总条数
       total: 0,
       userName: "",
-      userId: 1011,
+      userId: sessionStorage.getItem("userId")
       //this.$userId.userId,
     };
   },
@@ -162,7 +162,7 @@ export default {
         method: "post",
         url: "/borrowUserLikeSearch",
         data: {
-          userId: 1001,
+          userId: sessionStorage.getItem("userId"),
           bookName: this.input2,
         },
       }).then((res) => {
@@ -176,7 +176,7 @@ export default {
         method: "post",
         url: "/borrowPage",
         data: {
-          userId: 1001,
+          userId: sessionStorage.getItem("userId"),
           index: this.currentPage - 1,
         },
       }).then((res) => {

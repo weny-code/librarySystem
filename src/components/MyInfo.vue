@@ -64,7 +64,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          this.userId.userId = null;
+         sessionStorage.removeItem("userId")
           this.$router.push("/");
         })
         .catch(() => {

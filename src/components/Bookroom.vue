@@ -228,7 +228,7 @@ export default {
     getBookTable() {
       this.$axios({
         method: "post",
-        url: "/BookType/" + this.$userId.userId + "/" + (this.currentPage - 1),
+        url: "/BookType/" + sessionStorage.getItem("userId") + "/" + (this.currentPage - 1),
         data: this.book,
       })
         .then((res) => {
@@ -245,7 +245,7 @@ export default {
       this.count = this.getTypeCount();
       this.$axios({
         method: "post",
-        url: "/BookType/" + this.$userId.userId + "/" + (this.currentPage - 1),
+        url: "/BookType/" + sessionStorage.getItem("userId") + "/" + (this.currentPage - 1),
         data: { bookName: this.book.bookName },
       })
         .then((res) => {
@@ -384,7 +384,7 @@ export default {
       this.count = this.getTypeCount();
       this.$axios({
         method: "post",
-        url: "/BookType/" + this.$userId.userId + "/" + (this.currentPage - 1),
+        url: "/BookType/" + sessionStorage.getItem("userId") + "/" + (this.currentPage - 1),
         data: this.book,
       })
         .then((res) => {
@@ -416,7 +416,7 @@ export default {
         method: "post",
         url: "/borrowBook",
         data: {
-          userId: this.$userId.userId,
+          userId: sessionStorage.getItem("userId"),
           bookId: this.borrowBook.bookId,
         },
       })

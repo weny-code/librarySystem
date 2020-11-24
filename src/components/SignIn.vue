@@ -1,5 +1,7 @@
 <template>
   <div class="about">
+  <div class="desc">GBA图书馆管理系统</div>
+     <el-button type="primary" icon="el-icon-arrow-left" @click="backHome()" class="siginReturn">返回</el-button>
     <section class="form_container">
       <el-form
         :model="signIn"
@@ -9,13 +11,14 @@
         label-width="100px"
       >
         <el-form-item label="账号" prop="account">
-          <el-input v-model="signIn.account" placeholder="请输入ID"></el-input>
+          <el-input v-model="signIn.account" placeholder="请输入ID" maxlength="30"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input
             v-model="signIn.password"
             placeholder="请输入密码"
             type="password"
+             maxlength="30"
           ></el-input>
         </el-form-item>
         <el-form-item>
@@ -23,7 +26,7 @@
             type="primary"
             class="submit_btn"
             @click="submitForm('signInForm')"
-            >登陆</el-button
+            >登录</el-button
           >
         </el-form-item>
       </el-form>
@@ -76,12 +79,16 @@ export default {
           })
             .then((res) => {
               console.log(res);
-              this.$userId.userId = res.data.userId;
-              if (res.data.userId < 1000) {
+              sessionStorage.setItem("userId",res.data.userId) 
+              console.log(sessionStorage.getItem("userId"))
+              if (res.data.userId < 1000 && res.data.resultCode==1) {
+                
                 this.$router.push("/AdministratorPage");
-              } else {
-                console.log("用户ID:" + this.$userId.userId);
+              } else if(res.data.resultCode==1){
+             
                 this.$router.push("/UserPage");
+              }else{
+                this.$message.error("密码错误");
               }
             })
             .catch(function (error) {
@@ -94,10 +101,44 @@ export default {
         }
       });
     },
+     backHome(){
+       this.$router.push("/");
+    }
   },
 };
 </script>
 <style scoped>
+@font-face {
+  font-family: "FZQuSJW";
+  src: url("../assets/font/FZQuSJW.TTF");
+}
+@font-face {
+  font-family: "FZZhaoMFXSJF";
+  src: url("../assets/font/FZZhaoMFXSJF.TTF");
+}
+.desc {
+  font-family: "FZQuSJW";
+  font-size: 30px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  color: cadetblue;
+  margin-top: 10px;
+  float: left;
+  margin-left: 10px;
+  cursor: default;
+  position:absolute;
+  top: 0.2em;
+  left:0.2em;
+}
+.siginReturn{
+  position: absolute;
+  top: 2.5em;
+  left: 1em;
+  border: 0;
+  background-color:#c6ddff ;
+  color:#fff;
+  font-size: 1.2em;
+}
 img {
   height: 60%;
   width: 60%;
@@ -110,7 +151,7 @@ img {
 }
 .img {
   flex: 3;
-  padding-top: 5%;
+  padding-top: 10%;
   height: 50%;
   width: 50%;
 }

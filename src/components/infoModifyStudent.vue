@@ -7,16 +7,23 @@
       label-width="100px"
       id="modify"
     >
-     <el-button type="primary" icon="el-icon-arrow-left" @click="modifyReturn()" class="modifyReturn">返回</el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-arrow-left"
+        @click="modifyReturn()"
+        class="modifyReturn"
+        >返回</el-button
+      >
       <h2>个人信息</h2>
-      <table cellspacing="5" class="tale" border="1">
+      <table cellspacing="5" class="tale" border="1" @click="editingTips()">
         <tr>
-          <td class="changdu">姓名 &nbsp;&nbsp;</td>
+          <td class="changdu">姓名</td>
           <td>
             <input
               type="text"
               v-model="infoModeify.name"
               :readonly="readonly"
+              maxlength="20"
             />
           </td>
           <td>性别</td>
@@ -25,6 +32,7 @@
               type="text"
               v-model="infoModeify.gender"
               :readonly="readonly"
+              maxlength="5"
             />
           </td>
           <td>年龄</td>
@@ -33,6 +41,8 @@
               type="number"
               v-model="infoModeify.age"
               :readonly="readonly"
+              onKeypress="return(/[\d\.]/.test(String.fromCharCode(event.keyCode)))"
+              oninput="if(value.length>5)value=value.slice(0,5)"
             />
           </td>
         </tr>
@@ -43,34 +53,45 @@
               type="email"
               v-model="infoModeify.email"
               :readonly="readonly"
+              maxlength="30"
             />
           </td>
           <td class="changdu">出生年月</td>
           <td>
             <input
-              type="text"
+              type="date"
               v-model="infoModeify.birthday"
               :readonly="readonly"
+              maxlength="30"
             />
           </td>
           <td class="changdu">借阅ID</td>
-          <td><input type="text" readonly="readonly"  v-model="infoModeify.userId"></td>
-        </tr>
-        <tr>
-          <td >联系电话</td>
           <td>
             <input
               type="text"
-              v-model="infoModeify.phone"
-              :readonly="readonly"
+              readonly="readonly"
+              v-model="infoModeify.userId"
             />
           </td>
-          <td >暂住地址</td>
+        </tr>
+        <tr>
+          <td>联系电话</td>
+          <td>
+            <input
+              type="number"
+              v-model="infoModeify.phone"
+              :readonly="readonly"
+              onKeypress="return(/[\d\.]/.test(String.fromCharCode(event.keyCode)))"
+              oninput="if(value.length>5)value=value.slice(0,30)"
+            />
+          </td>
+          <td>暂住地址</td>
           <td colspan="3">
             <input
               type="text"
               v-model="infoModeify.address"
               :readonly="readonly"
+              maxlength="100"
             />
           </td>
         </tr>
@@ -82,13 +103,15 @@
               v-model="infoModeify.description"
               rows="5"
               :readonly="readonly"
+              maxlength="100"
             ></textarea>
           </td>
         </tr>
       </table>
 
       <el-button type="success" @click="edit" v-if="flag == 1">编辑</el-button>
-      <el-button type="success" @click="Confirm()" v-if="flag == 0">确认</el-button
+      <el-button type="success" @click="Confirm()" v-if="flag == 0"
+        >确认</el-button
       >
     </el-form>
 
@@ -104,6 +127,7 @@
           v-model="passwordModeify.userPassword"
           placeholder="请输入密码"
           type="password"
+   
         ></el-input>
       </el-form-item>
       <el-form-item label="确认密码" prop="userPassword2">
@@ -111,6 +135,7 @@
           v-model="passwordModeify.userPassword2"
           placeholder="请确认密码"
           type="password"
+        
         ></el-input>
       </el-form-item>
       <el-button
@@ -131,11 +156,10 @@ export default {
       method: "post",
       url: "/showUser",
       data: {
-        userId:this.userId.userId,
+        userId: sessionStorage.getItem("userId"),
       },
     })
       .then((res) => {
-        console.log(res);
         let a = this.infoModeify;
         let b = res.data;
         a.name = b.name;
@@ -146,7 +170,7 @@ export default {
         a.phone = b.phone;
         a.address = b.address;
         a.description = b.description;
-        a.userId=this.userId.userId;
+        a.userId = sessionStorage.getItem("userId");
       })
       .catch(function (error) {
         console.log(error);
@@ -162,6 +186,8 @@ export default {
     },
   },
   data() {
+   
+  
     return {
       infoModeify: {
         userId: "",
@@ -189,6 +215,19 @@ export default {
             message: "长度在 8 到 30 个字符",
             trigger: "blur",
           },
+          {
+            trigger: "blur",
+            validator: (rule, value, callback) => {
+              var passwordreg = /(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*?])/;
+              if (!passwordreg.test(value)) {
+                callback(
+                  new Error("密码必须由大小写字母、特殊字符组合,请输入8-30位")
+                );
+              } else {
+                callback();
+              }
+            },
+          },
         ],
         userPassword2: [
           { required: true, message: "确认密码不能为空", trigger: "blur" },
@@ -198,12 +237,31 @@ export default {
             message: "长度在 8 到 30 个字符",
             trigger: "blur",
           },
+          // {
+           
+          //   trigger: "blur",
+          //   validateor: (rule, value, callback) => {
+          //     if (
+          //      value !==  this.passwordModeify.userPassword
+          //     ) {
+          //       callback(new Error("两次输入密码不一致!"));
+                
+          //     } else {
+          //       callback();
+          //       console.log("密码一致");
+                
+          //     }
+          //   },
+          // },
           {
-            message: "密码必须一致",
             trigger: "blur",
-            validatePass2: (rule, value, callback) => {
-              if (value !== this.passwordModeify.userPassword) {
-                callback(new Error("两次输入密码不一致!"));
+            validator: (rule, value, callback) => {
+              var passwordreg =this.passwordModeify.userPassword;
+              console.log(passwordreg)
+              if ( value !==passwordreg) {
+                callback(
+                  new Error("两次输入密码不一致!")
+                );
               } else {
                 callback();
               }
@@ -216,7 +274,7 @@ export default {
   methods: {
     passwordModeifySubmit(formName) {
       // this.passwordModeify.userId = this.GLOBAL.userId;
-      this.passwordModeify.userId = 0;
+      this.passwordModeify.userId = sessionStorage.getItem("userId");
 
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -226,23 +284,32 @@ export default {
             data: this.passwordModeify,
           })
             .then((res) => {
-              console.log(res);
+              if (res.data == 1) {
+                this.$message({
+                  type: "success",
+                  message: "修改成功!",
+                });
+              } else {
+                this.$message.error("修改失败");
+              }
+              this.passwordModeify.userPassword = "";
+              this.passwordModeify.userPassword2 = "";
             })
             .catch(function (error) {
               console.log(error);
             });
         } else {
-          console.log("error submit!!");
-          alert("提交失败");
+          // console.log("error submit!!");
+          this.$message.error("修改失败");
           return false;
         }
       });
     },
+
     tableInit() {},
     edit() {
       this.flag = 0;
       this.readonly = false;
-      alert("请修改");
     },
     Confirm() {
       this.flag = 1;
@@ -252,34 +319,44 @@ export default {
         url: "/updateMyInfo",
         data: this.infoModeify,
       })
-       .then((res) => {
-        console.log(res)
-          alert("修改成功");
+        .then(() => {
+          // console.log(res)
+          // alert("修改成功");
+          this.$message({
+            type: "success",
+            message: "修改成功!",
+          });
+          // this.flag=0;
         })
         .catch(function (error) {
           console.log(error);
         });
     },
-    modifyReturn(){
+    modifyReturn() {
       this.$router.push("/MyInfo");
-    }
+    },
+    editingTips() {
+      if (this.flag == 1) {
+        this.$message.error("请按编辑按钮进行修改");
+      }
+    },
   },
 };
 </script>
 <style scoped>
-.changdu{
-  width:120px; 
+.changdu {
+  width: 120px;
 }
-td{
+td {
   height: 40px;
 }
-.modifyReturn{ 
- background-color: #ffffff;
- color: black;
- border: 0;
- position:absolute;
- top:0.2em;
- left: 0.2em;
+.modifyReturn {
+  background-color: #ffffff;
+  color: black;
+  border: 0;
+  position: absolute;
+  top: 0.2em;
+  left: 0.2em;
 }
 .passwordModeifyForm {
   width: 30%;
@@ -301,16 +378,14 @@ td{
   margin-left: 50%;
 }
 table {
-  
   font-size: 1.2em;
- 
 }
-table  th:nth-child(even){
-  background-color:burlywood;
-} 
-table  th:nth-child(odd){
+table th:nth-child(even) {
+  background-color: burlywood;
+}
+table th:nth-child(odd) {
   background-color: #ffffff;
-} 
+}
 td {
   padding: 0;
   margin: 0;
@@ -324,13 +399,12 @@ td input {
 }
 .signInForm {
   margin: 3% 0;
-  
 }
 .signInForm .el-input {
   width: 100%;
 }
 td textarea {
-  width:  761px;
+  width: 761px;
   height: 89px;
   line-height: 1em;
   margin: 0;
@@ -338,8 +412,15 @@ td textarea {
   outline: none;
   border: 0;
 }
-td input{
+td input {
   text-align: center;
- 
+}
+/*去除上下箭头*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 </style>
