@@ -75,7 +75,7 @@
         <el-button
           type="success"
           icon="el-icon-plus"
-          v-on:click="dialogTableVisible2 = true"
+          v-on:click="addBook"
         ></el-button>
         <el-button type="success" v-on:click="queryBook">查询</el-button>
       </div>
@@ -175,110 +175,6 @@
           ref="ruleForm"
           inline="true"
         >
-          <el-form-item label="书名" prop="name">
-            <el-input v-model="book.bookName" style="width: 500px"></el-input>
-          </el-form-item>
-          <el-form-item label="作者" prop="author">
-            <el-input v-model="book.author" style="width: 200px"></el-input>
-          </el-form-item>
-          <el-form-item label="类型" prop="type">
-            <el-select
-              v-model="value2"
-              placeholder="请选择书籍类型"
-              clearable
-              @change="currentBookType($event)"
-              @clear="noSelect(1)"
-              style="width: 200px"
-            >
-              <el-option
-                v-for="item in typeData"
-                :key="item.id"
-                :label="item.type"
-                :value="item.id"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="国家" prop="nation">
-            <el-select
-              v-model="value1"
-              placeholder="请选择书籍国家"
-              clearable
-              @change="currentBookNation($event)"
-              @clear="noSelect(1)"
-              style="width: 200px"
-            >
-              <el-option
-                v-for="item in nationData"
-                :key="item.id"
-                :label="item.nation"
-                :value="item.id"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="主题" prop="theme">
-            <el-select
-              v-model="value4"
-              placeholder="请先选择书籍类型"
-              clearable
-              @change="currentBookTheme($event)"
-              @clear="noSelect(1)"
-              style="width: 200px"
-            >
-              <el-option
-                v-for="item in themeData"
-                :key="item.id"
-                :label="item.theme"
-                :value="item.id"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-
-          <el-form-item label="上架数量" prop="uploadAmount">
-            <el-input
-              v-model="book.uploadAmount"
-              style="width: 200px"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="篇幅" prop="length">
-            <el-select
-              v-model="value3"
-              placeholder="请选择书籍篇幅"
-              clearable
-              @change="currentBookLength($event)"
-              @clear="noSelect(1)"
-              style="width: 200px"
-            >
-              <el-option
-                v-for="item in lengthData"
-                :key="item.id"
-                :label="item.length"
-                :value="item.id"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="简介" prop="summary">
-            <el-input
-              type="textarea"
-              v-model="book.summary"
-              style="width: 500px"
-            ></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">添加</el-button>
-            <el-button @click="dialogTableVisible = false">取消</el-button>
-          </el-form-item>
-        </el-form>
-      </el-dialog>
-    </div>
-    <div class="dialog-container">
-      <el-dialog :visible.sync="dialogTableVisible">
-        <el-form
-          label-width="80px"
-          :model="ruleForm"
-          :rules="rules"
-          ref="ruleForm"
-          inline="true"
-        >
           <el-form-item label="书名" prop="bookName">
             <el-input
               style="width: 500px"
@@ -292,6 +188,7 @@
             <el-select
               v-model="ruleForm.type"
               placeholder="请选择书籍类型"
+              @change="currentBookType2($event)"
               clearable
               style="width: 200px"
             >
@@ -299,7 +196,7 @@
                 v-for="item in typeData"
                 :key="item.id"
                 :label="item.type"
-                :value="item.type"
+                :value="item.id"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -333,7 +230,105 @@
               ></el-option>
             </el-select>
           </el-form-item>
-
+          <el-form-item label="上架数量" prop="uploadAmount">
+            <el-input
+              v-model="ruleForm.uploadAmount"
+              style="width: 200px"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="篇幅" prop="length">
+            <el-select
+              v-model="ruleForm.length"
+              placeholder="请选择书籍篇幅"
+              clearable
+              style="width: 200px"
+            >
+              <el-option
+                v-for="item in lengthData"
+                :key="item.id"
+                :label="item.length"
+                :value="item.length"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="简介" prop="summary">
+            <el-input
+              type="textarea"
+              v-model="ruleForm.summary"
+              style="width: 500px"
+            ></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">添加</el-button>
+            <el-button @click="dialogTableVisible2 = false">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </div>
+    <div class="dialog-container">
+      <el-dialog :visible.sync="dialogTableVisible">
+        <el-form
+          label-width="80px"
+          :model="ruleForm"
+          :rules="rules"
+          ref="ruleForm"
+          inline="true"
+        >
+          <el-form-item label="书名" prop="bookName">
+            <el-input
+              style="width: 500px"
+              v-model="ruleForm.bookName"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="作者" prop="author">
+            <el-input v-model="ruleForm.author" style="width: 200px"></el-input>
+          </el-form-item>
+          <el-form-item label="类型" prop="type">
+            <el-select
+              v-model="ruleForm.type"
+              placeholder="请选择书籍类型"
+              @change="currentBookType2($event)"
+              clearable
+              style="width: 200px"
+            >
+              <el-option
+                v-for="item in typeData"
+                :key="item.id"
+                :label="item.type"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="国家" prop="nation">
+            <el-select
+              v-model="ruleForm.nation"
+              placeholder="请选择书籍国家"
+              clearable
+              style="width: 200px"
+            >
+              <el-option
+                v-for="item in nationData"
+                :key="item.id"
+                :label="item.nation"
+                :value="item.nation"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="主题" prop="theme">
+            <el-select
+              v-model="ruleForm.theme"
+              placeholder="请先选择书籍类型"
+              clearable
+              style="width: 200px"
+            >
+              <el-option
+                v-for="item in themeData"
+                :key="item.id"
+                :label="item.theme"
+                :value="item.theme"
+              ></el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="上架数量" prop="uploadAmount">
             <el-input
               v-model="ruleForm.uploadAmount"
@@ -408,17 +403,17 @@ export default {
       value3: [],
       value4: [],
       ruleForm: {
-        bookId: null,
-        bookName: null,
-        nation: null,
-        type: null,
-        length: null,
-        theme: null,
-        status: null,
-        leftAmount: null,
-        summary: null,
-        uploadAmount: null,
-        author: null,
+        bookId: "",
+        bookName: "",
+        nation: "",
+        type: "",
+        length: "",
+        theme: "",
+        status: "",
+        leftAmount: "",
+        summary: "",
+        uploadAmount: "",
+        author: "",
       },
       rules: {
         bookName: [
@@ -580,6 +575,18 @@ export default {
           console.log(error);
         });
     },
+    getSelectTheme2() {
+      this.$axios({
+        method: "get",
+        url: "/bookTheme/" + this.currentType,
+      })
+        .then((res) => {
+          this.themeData = res.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     getSelectType() {
       this.$axios({
         method: "get",
@@ -602,6 +609,16 @@ export default {
       console.log("传入后端的类型：" + this.book.type);
       console.log("当前书的类型ID：" + this.currentType);
       this.getSelectTheme();
+    },
+    currentBookType2(e) {
+      let obj = {};
+      obj = this.typeData.find((item) => {
+        return item.id === e;
+      });
+      this.currentType = obj.id;
+      this.ruleForm.type = obj.type;
+      console.log("当前书的类型ID：" + this.currentType);
+      this.getSelectTheme2();
     },
     currentBookNation(e) {
       let obj = {};
@@ -660,12 +677,18 @@ export default {
       this.$axios({
         method: "post",
         url: "/BookInsert",
-        data: this.book,
+        data: this.ruleForm,
       })
         .then((res) => {
           // this.tableData = res.data;
-          console.log(res);
-          console.log("添加的书籍为：" + this.book);
+          if (res.data == "1") {
+            this.$message({
+              message: "添加成功！",
+              type: "success",
+            });
+            this.getBookTable();
+            this.dialogTableVisible = false;
+          }
         })
         .catch(function (error) {
           console.log(error);
@@ -683,6 +706,9 @@ export default {
               message: "修改成功",
               type: "success",
             });
+            for (let key in this.ruleForm) {
+              this.ruleForm[key] = "";
+            }
             this.getBookTable();
             this.dialogTableVisible = false;
           }
@@ -690,6 +716,12 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+    },
+    addBook() {
+      for (let key in this.ruleForm) {
+        this.ruleForm[key] = "";
+      }
+      this.dialogTableVisible2 = true;
     },
   },
   created() {
