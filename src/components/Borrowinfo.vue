@@ -180,12 +180,8 @@ export default {
         method: "post",
         url: "/borrowUserLikeSearch",
         data: {
-<<<<<<< HEAD
           userId: sessionStorage.getItem("userId"),
-=======
           index: (this.currentPage-1),
-          userId: 1011,
->>>>>>> d2db70200b0ca5cbc464d821babeef9da904d486
           bookName: this.input2,
         },
       }).then((res) => {
@@ -198,13 +194,8 @@ export default {
         method: "post",
         url: "/borrowPage",
         data: {
-<<<<<<< HEAD
           userId: sessionStorage.getItem("userId"),
           index: this.currentPage - 1,
-=======
-          userId: 1011,
-          index: (this.currentPage - 1),
->>>>>>> d2db70200b0ca5cbc464d821babeef9da904d486
         },
       }).then((res) => {
         this.bookData = res.data;
