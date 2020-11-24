@@ -155,12 +155,13 @@
               >
             </el-row>
 
-            <el-table :data="borrowInfo" style="width: 100%">
-              <el-table-column prop="borrowName" label="借阅人" width="180">
+            <el-table :data="borrowInfo" style="width: 100%"  height="250">
+              <el-table-column prop="name" label="借阅人" width="100">
               </el-table-column>
-              <el-table-column prop="borrowDate" label="借阅日期" width="180">
+              <el-table-column prop="borrowTime" label="借阅日期" width="150">
               </el-table-column>
-              <el-table-column prop="borrowValid" label="有效期">
+              
+              <el-table-column prop="retTime" label="归还日期" width="150">
               </el-table-column>
             </el-table>
           </div>
@@ -418,7 +419,7 @@ export default {
       .get("/managerBookUserList/" + book.bookId)
       .then((res) => {
         this.borrowInfo = res.data
-        console.log(this.borrowInfo)
+        console.log(res.data)
       }).catch((error) =>{
         console.log(error)
       });
