@@ -33,6 +33,9 @@ const routes = [{
     {
         path: '/Bookroom',
         name: 'Bookroom',
+        meta: {
+            requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
+        },
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
@@ -42,6 +45,9 @@ const routes = [{
     {
         path: '/AdministratorPage',
         name: 'AdministratorPage',
+        meta: {
+            requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
+        },
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
@@ -51,6 +57,7 @@ const routes = [{
     {
         path: '/SignIn',
         name: 'SignIn',
+
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
@@ -69,6 +76,9 @@ const routes = [{
     {
         path: '/Mybookshelf',
         name: 'Mybookshelf',
+        meta: {
+            requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
+        },
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
@@ -78,6 +88,9 @@ const routes = [{
     {
         path: '/Borrowinfo',
         name: 'Borrowinfo',
+        meta: {
+            requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
+        },
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
@@ -87,6 +100,9 @@ const routes = [{
     {
         path: '/infoModifyStudent',
         name: 'infoModifyStudent',
+        meta: {
+            requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
+        },
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
@@ -100,5 +116,21 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes
 })
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(res => res.meta.requireAuth)) { // 验证是否需要登陆 
+        if (sessionStorage.getItem('userId')) { // 查询本地存储信息是否已经登陆 
+
+            next();
+        } else {
+            alert("请先登录")
+
+            next({
+                path: '/SignIn', // 未登录则跳转至login页面 
+            });
+        }
+    } else {
+        next();
+    }
+});
 
 export default router
