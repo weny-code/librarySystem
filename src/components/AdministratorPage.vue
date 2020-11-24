@@ -156,6 +156,22 @@ export default {
         console.log(key + "状态为" + this.pageList[key]);
       }
     },
+    alert() {
+      this.$confirm("正在选择退出, 是否继续?", "退出登录......", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$router.push("/");
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消退出操作",
+          });
+        });
+    },
   },
   created() {},
 };
