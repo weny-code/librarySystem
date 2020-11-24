@@ -26,7 +26,7 @@
             type="primary"
             class="submit_btn"
             @click="submitForm('signInForm')"
-            >登陆</el-button
+            >登录</el-button
           >
         </el-form-item>
       </el-form>
@@ -82,13 +82,13 @@ export default {
               sessionStorage.setItem("userId",res.data.userId) 
               console.log(sessionStorage.getItem("userId"))
               if (res.data.userId < 1000 && res.data.resultCode==1) {
-                console.log("用户ID:" + this.$userId.userId);
+                
                 this.$router.push("/AdministratorPage");
               } else if(res.data.resultCode==1){
-                console.log("用户ID:" + this.$userId.userId);
+             
                 this.$router.push("/UserPage");
               }else{
-                alert("账号密码错误");
+                this.$message.error("密码错误");
               }
             })
             .catch(function (error) {

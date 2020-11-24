@@ -143,7 +143,7 @@ export default {
       currentPage1: 1,
       pageSize: 5,
       userName: "",
-      userId: null,
+      userId: sessionStorage.getItem("userId"),
       user: {
         name: null,
         index: null,

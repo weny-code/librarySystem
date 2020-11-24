@@ -42,7 +42,7 @@ export default {
     //   })
     },
     open() {
-      this.textarea.publisherId=this.$userId.userId;
+      this.textarea.publisherId=sessionStorage.getItem("userId");
         this.$confirm('此操作将修改公告, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',

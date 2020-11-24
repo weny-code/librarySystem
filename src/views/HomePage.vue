@@ -47,7 +47,7 @@ export default {
             url: "/showAnnouncement",
           })
             .then((res) => {
-              console.log(res);
+              console.log(res.data);
               this.text.Notice=res.data;
             })
             .catch(function (error) {
@@ -93,6 +93,8 @@ export default {
 .main-container {
   position: absolute;
   width: 100%;
+  height: 100%;
+  background-color: #c6ddff;
 }
 .box-card {
   background-color: #c7faff;
@@ -102,18 +104,21 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 300px;
   width: 100%;
 }
 
 .notice-container {
   height: 100px;
   width: 100%;
-  margin-top: 0px;
   display: flex;
   justify-content: center;
 }
 
 .inner-img {
+  display: inline-flex;
+  width: 400px;
+  height: 300px;
   align-items: center;
 }
 
@@ -121,13 +126,14 @@ export default {
   display: flex;
   margin-top: 5%;
   width: 100%;
-  height: 280px;
+  height: 260px;
   justify-content: space-between;
 }
 
 .login-item {
-  margin-left: 15%;
-  width: 500px;
+  width: 350px;
+  height: 200px;
+  margin-left: 20%;
   transition: all 0.6s ease;
 }
 
@@ -137,8 +143,10 @@ export default {
 }
 
 .register-item {
-  margin-right: 15%;
-  width: 400px;
+  width: 280px;
+  height: 280px;
+  margin-right: 20%;
+  margin-top: -30px;
   transition: all 0.6s ease;
 }
 
@@ -148,13 +156,13 @@ export default {
 }
 
 .theme-img {
-  width: 90%;
-  height: 90%;
+  width: auto;
+  height: auto;
 }
 
 .login-img {
-  width: 50%;
-  height: 50%;
+  width: 80%;
+  height: 80%;
 }
 
 @font-face {
@@ -171,6 +179,7 @@ export default {
   display: inline-flex;
   font-family: "FZQuSJW";
   font-size: 40px;
+  left: 0;
   font-weight: bold;
   letter-spacing: 10px;
   text-align: center;
@@ -187,11 +196,11 @@ export default {
   font-family: "FZZhaoMFXSJF";
   font-size: 50px;
   font-weight: bold;
-  margin-top: 0px;
+  margin-top: -30px;
 }
 
 .text {
-  font-size: 25px;
+  font-size: 14px;
 }
 
 .item {

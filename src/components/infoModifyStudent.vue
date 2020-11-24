@@ -150,8 +150,7 @@ export default {
       },
     })
       .then((res) => {
-        console.log(res);
-        console.log(sessionStorage.getItem("userId"))
+
       
         let a = this.infoModeify;
         let b = res.data;
