@@ -31,8 +31,20 @@
       <el-card class="box-card">
         <!--<input type="text" class="text item" v-model="text.Notice" >-->
         <div class="text item" >{{text.Notice}}</div>
+        <el-button type="text" @click="dialogVisible = true">公告详情</el-button>
       </el-card>
     </div>
+   <!--提示框-->
+    <el-dialog
+  title="公告"
+  :visible.sync="dialogVisible"
+  style="text-align:left;padding-bottom:100px;">
+  
+  <span  style=" font-size: 1em;margin-top: -2em;" v-html="textconent"></span> 
+  <div style="height:40px"></div>
+
+</el-dialog>
+
   </div>
 </template>
 
@@ -47,8 +59,16 @@ export default {
             url: "/showAnnouncement",
           })
             .then((res) => {
-              console.log(res.data);
-              this.text.Notice=res.data;
+              console.log(res);
+              console.log(res.data.content)
+              this.textconent=res.data.content;
+                if(res.data.title===""){
+                console.log("w")
+              }
+              else{
+                   this.text.Notice=res.data.title;
+              }
+             
             })
             .catch(function (error) {
               console.log(error);
@@ -56,8 +76,11 @@ export default {
   },
  data() {
    return{
+     dialogVisible: false,
+     textconent:"哈师大就看哈看手机都会卡上打卡上打开撒活动课教案和SD卡合适的卡号的卡号是肯定哈空间都是监测路由变化,只要变化了就调用获取路由参数方法将数据存储本组件即可监测路由变化,只要变化了就调用获取路由参数方法将数据存储本组件即可监测路由变化,只要变化了就调用获取路由参数方法将数据存储本组件即可监测路由变化,只要变化了就调用获取路由参数方法将数据存储本组件即可监测路由变化,只要变化了就调用获取路由参数方法将数据存储本组件即可",
     text: {
         Notice:"图书管理系统"
+
      }
      
    }
@@ -90,14 +113,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 .main-container {
   position: absolute;
   width: 100%;
   height: 100%;
   background-color: #c6ddff;
 }
+
+  
 .box-card {
-  background-color: #c7faff;
+  background-color: #fff;
 }
 
 .theme-container {
@@ -106,6 +132,9 @@ export default {
   align-items: center;
   height: 300px;
   width: 100%;
+ 
+  
+  
 }
 
 .notice-container {
@@ -158,6 +187,7 @@ export default {
 .theme-img {
   width: auto;
   height: auto;
+ 
 }
 
 .login-img {
@@ -200,11 +230,11 @@ export default {
 }
 
 .text {
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .item {
-  padding: 18px 0;
+  padding: 0;
   text-align: center;
   
 }

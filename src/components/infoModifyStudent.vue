@@ -127,6 +127,7 @@
           v-model="passwordModeify.userPassword"
           placeholder="请输入密码"
           type="password"
+          show-password
    
         ></el-input>
       </el-form-item>
@@ -135,6 +136,7 @@
           v-model="passwordModeify.userPassword2"
           placeholder="请确认密码"
           type="password"
+          show-password
         
         ></el-input>
       </el-form-item>
@@ -218,7 +220,7 @@ export default {
           {
             trigger: "blur",
             validator: (rule, value, callback) => {
-              var passwordreg = /(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*?])/;
+              var passwordreg = /(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*?.。])/;
               if (!passwordreg.test(value)) {
                 callback(
                   new Error("密码必须由大小写字母、特殊字符组合,请输入8-30位")

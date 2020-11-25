@@ -26,7 +26,9 @@
             placeholder="请输入密码"
             type="password"
              maxlength="30"
-          ></el-input>
+             show-password
+          >
+          </el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="password2">
           <el-input
@@ -34,6 +36,7 @@
             placeholder="请确认密码"
             type="password"
              maxlength="30"
+             show-password
           ></el-input>
         </el-form-item>
         <el-form-item label="姓名" prop="name">
@@ -41,6 +44,7 @@
             v-model="register.name"
             placeholder="请输入用户名"
              maxlength="20"
+             status-icon="ture"
           ></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
@@ -111,7 +115,7 @@ export default {
         name: [
           { required: true, message: "用户名不能为空", trigger: "blur" },
           {
-            min: 2,
+            // min: 2,
             max: 40,
             message: "长度在 2 到 30 个汉字",
             trigger: "blur",
@@ -132,7 +136,7 @@ export default {
           {
             trigger: "blur",
             validator: (rule, value, callback) => {
-              var passwordreg = /(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*?])/;
+              var passwordreg = /(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*?.。])/;
               if (!passwordreg.test(value)) {
                 callback(
                   new Error("密码由大小写字母、特殊字符组合")
@@ -252,7 +256,7 @@ export default {
   flex: 1;
 }
 .img img {
-  width: 100%;;
+  width: 100%;
   height: 100%;
 
 }

@@ -74,7 +74,7 @@
           align="center"
         >
         </el-table-column>
-        <el-table-column prop="userId" label="ID" width="100" align="center">
+        <el-table-column prop="userAccount" label="账号" width="100" align="center">
         </el-table-column>
         <el-table-column prop="email" label="邮箱" width="180" align="center">
         </el-table-column>
@@ -144,6 +144,7 @@ export default {
       pageSize: 5,
       userName: "",
       userId: sessionStorage.getItem("userId"),
+      userAccount:"",
       user: {
         name: null,
         index: null,

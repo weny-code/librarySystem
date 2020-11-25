@@ -167,6 +167,8 @@ export default {
         type: "warning",
       })
         .then(() => {
+            sessionStorage.removeItem("userId")
+            console.log(sessionStorage.getItem("userId"))
           this.$router.push("/");
         })
         .catch(() => {
@@ -194,7 +196,7 @@ export default {
   left: 0;
   overflow-y: auto; */
 
-  color: #c6ddff;
+  color: #c6ddff; 
 }
 
 @font-face {

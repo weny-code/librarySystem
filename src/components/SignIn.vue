@@ -3,7 +3,7 @@
   <div class="desc">GBA图书馆管理系统</div>
      <el-button type="primary" icon="el-icon-arrow-left" @click="backHome()" class="siginReturn">返回</el-button>
     <section class="form_container">
-      <el-form
+      <el-form  
         :model="signIn"
         :rules="rules"
         class="signInForm"
@@ -34,6 +34,7 @@
     <div class="img">
       <img src="../assets/img/login.png" alt />
     </div>
+
   </div>
 </template>
 <script>
