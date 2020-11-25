@@ -17,7 +17,6 @@
       >
     </div>
     <div class="list">
-      // 对话框内容
       <el-dialog title="借阅详情" :visible.sync="dialogTableVisible">
         <div class="user">用户名:{{ userName }}</div>
         <!-- 弹出框中的表格 -->
@@ -63,7 +62,7 @@
         class="userInfor"
         :data="userData"
         border
-        style="width: 80%"
+        style="width: 82%"
         highlight-current-row="true"
       >
         <el-table-column
@@ -372,7 +371,10 @@ export default {
   margin-bottom: 5px;
 }
 .userInfor {
-  margin-left: 80px;
+  margin-left: 100px;
   border-radius: 4px;
+}
+.list{
+  margin-top: 20px;
 }
 </style>

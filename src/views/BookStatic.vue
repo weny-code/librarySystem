@@ -295,11 +295,11 @@ export default {
 <style scoped>
 @font-face {
   font-family: "FZZJ-JHTJW";
-  src: url("../assets/font/FZZJ-JHTJW.TTF");
+  src: url("../assets/font/FZFWZhuZiAYuanJWM.TTF");
 }
 
 .el-carousel__item h3 {
-  color: #4c5232;
+  color: #9fac69;
   font-size: 18px;
   opacity: 0.85;
   line-height: 100px;
@@ -308,21 +308,25 @@ export default {
 
 .el-carousel__item span {
   color: rgb(100, 86, 86);
-  font-size: 24px;
-  line-height: 50px;
+  font-size: 22px;
+  line-height: 40px;
   opacity: 0.75;
-  font-family: "FZZJ-JHTJW";
+  font-family: "FZFWZhuZiAYuanJWM";
 }
 
 .el-carousel__item:nth-child(2n) {
-  background-color: rgb(241, 249, 252);
+  background-color: rgb(238, 215, 202);
 }
 .el-carousel__item:nth-child(2n+1) {
-  background-color: rgb(242, 253, 213);
+  background-color: #d7f56c;
 }
 .carousel {
   width: 1000px;
-  margin: auto;
+  margin: 20px auto;
+}
+.el-carousel__item{
+  box-shadow: rgb(250, 102, 18) 10px 10px 10px; 
+  border-radius: 20px;
 }
 
 .mainReport,

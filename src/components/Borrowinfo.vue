@@ -42,7 +42,7 @@
     >
     <!-- 详情页面 -->
     <transition name="el-fade-in-linear">
-      <div v-show="show" class="xiangqingyemian transition-box">
+      <div v-show="show" class="showDetail transition-box">
         <el-row :gutter="12">
           <el-col :span="8">
             <el-card shadow="hover"> 用户编号：{{userId}}} </el-card>
@@ -353,7 +353,7 @@ body > .el-container {
 .sousuokuang {
   width: 200px;
 }
-.xiangqingyemian {
+.showDetail {
   height: 150px;
   width: 900px;
   margin-left: auto;
