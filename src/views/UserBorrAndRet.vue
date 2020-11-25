@@ -8,6 +8,7 @@
         v-model="value1"
         placeholder="请选择"
         clearable
+        filterable 
         @change="currentBookNation($event)"
         @clear="noSelect(1)"
       >
@@ -25,6 +26,7 @@
         v-model="value2"
         placeholder="请选择"
         clearable
+        filterable
         @change="currentBookType($event)"
         @clear="noSelect(2)"
       >
@@ -59,6 +61,7 @@
         v-model="value4"
         placeholder="请选择"
         clearable
+        filterable
         @change="currentBookTheme($event)"
         @clear="noSelect(4)"
       >
@@ -452,14 +455,17 @@ export default {
   font-family: "FZZhaoMFXSJF";
   color: black;
 }
+.el-select{
+  width: 180px;
+}
 .searchButton {
   margin-left: 1%;
 }
 .inputText {
-  width: 300px;
+  width: 250px;
 }
 .keywordSearch {
-  margin-left: 300px;
+  margin-left: 400px;
   margin-top: 20px;
 }
 .table {
@@ -468,7 +474,7 @@ export default {
   margin-top: 10px;
 }
 .block {
-  margin-left: 12%;
+  margin-left: 15%;
   margin-top: 5px;
 }
 .el-row {

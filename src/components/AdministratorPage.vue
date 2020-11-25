@@ -234,13 +234,14 @@ body > .el-container {
 
 .operation-container {
   display: flex;
-  margin-top: 40px;
-  margin-left: 20%;
-  width: 1000px;
+  /* margin-top: 40px; */
+  /* margin-left: 20%; */
+  margin: 40px auto auto;
+  width: 850px;
   /* height: 450px; */
   /* flex-direction: column; */
   flex-wrap: wrap;
-  /* justify-content: center; */
+  justify-content: center; 
   align-content: flex-start;
 }
 
