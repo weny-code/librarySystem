@@ -101,7 +101,7 @@
         >
         </el-table-column>
         <!-- 按钮 -->
-        <el-table-column fixed="right" label="操作" width="100" align="center">
+        <el-table-column fixed="right" label="操作" width="150" align="center">
           <template slot-scope="scope">
             <el-button @click="checkUser(scope.row)" type="primary" size="mini"
               >查看</el-button

@@ -30,10 +30,10 @@
     </div>
     <!-- 详情页面 -->
     <transition name="el-fade-in-linear">
-      <div v-show="xianshi" class="xiangqingyemian transition-box">
+      <div v-show="show" class="xiangqingyemian transition-box">
         <el-row :gutter="12">
           <el-col :span="8">
-            <el-card shadow="hover"> 用户编号：{{ sessionStorage.getItem("userId") }} </el-card>
+            <el-card shadow="hover"> 用户编号：{{userId}}} </el-card>
           </el-col>
           <el-col :span="8">
             <el-card shadow="hover"> 用户姓名：{{ userName }} </el-card>
@@ -58,7 +58,7 @@
             <el-card shadow="hover"> 借阅有效期：30天 </el-card>
           </el-col>
         </el-row>
-        <el-button type="primary" round @click="xianshi = false"
+        <el-button type="primary" round @click="show = false"
           >点击隐藏</el-button
         >
       </div>
@@ -67,7 +67,7 @@
     <div class="demo-input-suffix">
       <el-input
         class="sousuokuang"
-        placeholder="请输入书名"
+        placeholder="请输入关键词"
         prefix-icon="el-icon-search"
         v-model="input2"
       >
@@ -78,20 +78,20 @@
     </div>
     <!-- 所有借阅历史 -->
     <div class="tb">
-      <el-table :data="bookData" style="width: 100%">
-        <el-table-column prop="bookName" label="书籍名" width="150">
+      <el-table :data="bookData" style="width: 100%" border>
+        <el-table-column prop="bookName" label="书籍名" width="150" align="center">
         </el-table-column>
-        <el-table-column prop="nation" label="国家" width="150">
+        <el-table-column prop="nation" label="国家" width="150" align="center">
         </el-table-column>
-        <el-table-column prop="type" label="类型" width="150">
+        <el-table-column prop="type" label="类型" width="150" align="center">
         </el-table-column>
-        <el-table-column prop="length" label="篇幅" width="150">
+        <el-table-column prop="length" label="篇幅" width="150" align="center">
         </el-table-column>
-        <el-table-column prop="theme" label="主题" width="150">
+        <el-table-column prop="theme" label="主题" width="150" align="center">
         </el-table-column>
-        <el-table-column prop="retTime" label="归还日期" width="200">
+        <el-table-column prop="retTime" label="归还日期" width="200" align="center">
         </el-table-column>
-        <el-table-column label="详情" width="200">
+        <el-table-column label="详情" width="150" align="center">
           <template slot-scope="scope">
             <el-button v-on:click="onLook(scope.row)" type="primary" round
               >查看详情</el-button
@@ -121,7 +121,7 @@ export default {
   data() {
     return {
       input2: null,
-      xianshi: false,
+      show: false,
       bookData: [],
       detail: {},
       currentPage: 1, // 当前页码
@@ -130,12 +130,12 @@ export default {
       // 总条数
       total: 0,
       userName: "",
-      
+      userId:sessionStorage.getItem('userId'),
     };
   },
   methods: {
     onLook(book) {
-      this.xianshi = true;
+      this.show = true;
       console.log(book.id);
       this.$axios.get("/borrowInfo/" + book.id).then((res) => {
         this.detail = res.data;
@@ -144,12 +144,13 @@ export default {
       });
     },
     getCount() {
-      this.$axios.get("/borrowCount/" + sessionStorage.getItem("userId")).then((res) => {
+      this.$axios.get("/borrowCount/" + sessionStorage.getItem('userId')).then((res) => {
         this.total = res.data.num;
         this.userName = res.data.name;
         console.log("yonghuming");
         console.log(this.userName);
         console.log(this.total)
+        console.log(sessionStorage.getItem('userId'))
       });
     },
     search() {
@@ -163,7 +164,7 @@ export default {
         method:'post',
         url: '/borrowUserLikeSearchCount',
         data:{
-          userId: sessionStorage.getItem("userId"),
+          userId: sessionStorage.getItem('userId'),
           bookName: this.input2
         }
       }).then((res)=>{
@@ -179,7 +180,7 @@ export default {
         method: "post",
         url: "/borrowUserLikeSearch",
         data: {
-          userId: sessionStorage.getItem("userId"),
+          userId: sessionStorage.getItem('userId'),
           index: (this.currentPage-1),
           bookName: this.input2,
         },
@@ -193,7 +194,7 @@ export default {
         method: "post",
         url: "/borrowPage",
         data: {
-          userId: sessionStorage.getItem("userId"),
+          userId: sessionStorage.getItem('userId'),
           index: this.currentPage - 1,
         },
       }).then((res) => {

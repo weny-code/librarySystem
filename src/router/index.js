@@ -116,21 +116,21 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes
 })
-// router.beforeEach((to, from, next) => {
-//     if (to.matched.some(res => res.meta.requireAuth)) { // 验证是否需要登陆 
-//         if (sessionStorage.getItem('userId')) { // 查询本地存储信息是否已经登陆 
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(res => res.meta.requireAuth)) { // 验证是否需要登陆 
+        if (sessionStorage.getItem('userId')) { // 查询本地存储信息是否已经登陆 
 
-//             next();
-//         } else {
-//             alert("请先登录")
+            next();
+        } else {
+            alert("请先登录")
 
-//             next({
-//                 path: '/SignIn', // 未登录则跳转至login页面 
-//             });
-//         }
-//     } else {
-//         next();
-//     }
-// });
+            next({
+                path: '/SignIn', // 未登录则跳转至login页面 
+            });
+        }
+    } else {
+        next();
+    }
+});
 
 export default router
