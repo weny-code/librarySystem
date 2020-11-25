@@ -1,53 +1,65 @@
 <template>
-  <div class="main-container">
-    <div class="desc">GBA图书管理系统</div>
-    <div class="bottom">
-      <el-tooltip class="item" content="退出登录" placement="bottom-end">
-        <i class="el-icon-switch-button" v-on:click="alert()"></i>
-      </el-tooltip>
-    </div>
-    <div class="navigator-container">
-      <div class="item">
-        <el-breadcrumb separator="/">
-          <el-breadcrumb-item :to="{ path: '/' }"
-            ><el-link class="item-class"
-              ><i class="el-icon-s-home"></i>首页</el-link
-            ></el-breadcrumb-item
-          >
-          <el-breadcrumb-item :to="{ path: '/UserPage' }"
-            ><el-link class="item-class"
-              ><i class="el-icon-s-custom"></i>个人主页</el-link
-            ></el-breadcrumb-item
-          >
-          <el-breadcrumb-item class="item-class"
-            ><i class="el-icon-ship"></i>个人信息</el-breadcrumb-item
-          >
-        </el-breadcrumb>
+  <el-container>
+    <el-header
+      ><div class="desc">GBA图书管理系统</div>
+      <div class="bottom">
+        <el-tooltip class="item" content="退出登录" placement="bottom-end">
+          <i class="el-icon-switch-button" v-on:click="alert()"></i>
+        </el-tooltip>
       </div>
-    </div>
-    <div class="operation-container">
-      <div class="myinfo" v-on:click="myInfo()">
-        <el-image
-          :src="require('../assets/img/updateinfo.png')"
-          class="myinfo-img"
-        ></el-image>
-        <div class="desc">信息修改</div>
+      <div class="headImg">
+        <el-avatar
+          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+        ></el-avatar>
+        <span class="name">{{ userName }}</span>
       </div>
-      <div class="bookroom" v-on:click="borrowInfo()">
-        <el-image
-          :src="require('../assets/img/history.png')"
-          class="bookroom-img"
-        ></el-image>
-        <div class="desc">借阅历史</div>
+    </el-header>
+    <el-main>
+      <div class="navigator-container">
+        <div class="item">
+          <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/' }"
+              ><el-link class="item-class"
+                ><i class="el-icon-s-home"></i>首页</el-link
+              ></el-breadcrumb-item
+            >
+            <el-breadcrumb-item :to="{ path: '/UserPage' }"
+              ><el-link class="item-class"
+                ><i class="el-icon-s-custom"></i>个人主页</el-link
+              ></el-breadcrumb-item
+            >
+            <el-breadcrumb-item class="item-class"
+              ><i class="el-icon-ship"></i>个人信息</el-breadcrumb-item
+            >
+          </el-breadcrumb>
+        </div>
       </div>
-    </div>
-  </div>
+      <div class="operation-container">
+        <div class="myinfo" v-on:click="myInfo()">
+          <el-image
+            :src="require('../assets/img/updateinfo.png')"
+            class="myinfo-img"
+          ></el-image>
+          <div class="desc">信息修改</div>
+        </div>
+        <div class="bookroom" v-on:click="borrowInfo()">
+          <el-image
+            :src="require('../assets/img/history.png')"
+            class="bookroom-img"
+          ></el-image>
+          <div class="desc">借阅历史</div>
+        </div>
+      </div>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
 export default {
   data() {
     return {
+      userName: sessionStorage.getItem("userName"),
+
       msg: "",
     };
   },
@@ -64,7 +76,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-         sessionStorage.removeItem("userId")
+          sessionStorage.removeItem("userId");
           this.$router.push("/");
         })
         .catch(() => {
@@ -90,8 +102,23 @@ export default {
 </script>
 
 <style scoped>
-.main-container {
-  position: absolute;
+.el-header {
+  background-color: rgb(198, 226, 255);
+  /* color: rgb(160, 207, 255); */
+  text-align: center;
+  line-height: 50px;
+}
+
+.el-main {
+  background-color: rgb(217, 236, 255);
+  color: #333;
+  text-align: center;
+  /* line-height: 200px; */
+}
+
+body > .el-container {
+  margin: 0;
+  padding: 0;
   width: 100%;
 }
 
@@ -100,35 +127,50 @@ export default {
   src: url("../assets/font/FZQuSJW.TTF");
 }
 
-.main-container .desc {
+.el-header .desc {
   font-family: "FZQuSJW";
   font-size: 30px;
   font-weight: bold;
   letter-spacing: 5px;
-  color: cadetblue;
+  color: rgb(102, 177, 255);
   margin-top: 10px;
   float: left;
   margin-left: 10px;
   cursor: default;
 }
 
-.main-container .bottom {
+.el-header .bottom {
   float: right;
+  margin-top: 5px;
   font-size: 40px;
-  margin-right: 50px;
-  margin-top: 10px;
   cursor: pointer;
-  text-align: center;
+  /* text-align: center; */
 }
 
-.main-container .item {
+.el-header .item {
   margin: 4px;
 }
 
-.navigator-container {
-  display: flex;
+.headImg {
+  position: relative;
+  width: 200px;
   height: 50px;
-  margin-top: 60px;
+  margin-left: 1200px;
+  margin-top: 10px;
+}
+
+.name {
+  position: absolute;
+  font-family: "FZQuSJW";
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 15px;
+  letter-spacing: 1px;
+}
+
+.navigator-container {
+  /* display: flex; */
+  height: 50px;
   align-items: center;
 }
 
@@ -138,27 +180,21 @@ export default {
 
 .item-class {
   font-size: 20px;
-  color: black;
-}
-
-.el-breadcrumb__separator {
-  margin: 0 9px;
-  font-weight: 700;
-  color: #031436;
+  color: rgb(140, 197, 255);
 }
 
 .operation-container {
   display: flex;
-  margin-top: 10%;
-  height: 350px;
+  margin-top: 100px;
+  height: 400px;
   flex-wrap: wrap;
   justify-content: space-around;
   /* align-items: center; */
 }
 
 .myinfo {
-  width: 400px;
-  height: 350px;
+  width: 350px;
+  height: 300px;
   transition: all 0.6s ease;
 }
 
@@ -168,8 +204,8 @@ export default {
 }
 
 .bookroom {
-  width: 400px;
-  height: 350px;
+  width: 350px;
+  height: 300px;
   margin-top: -30px;
   transition: all 0.6s ease;
 }
@@ -186,21 +222,17 @@ export default {
 
 .bookroom .desc {
   font-family: "FZZhaoMFXSJF";
-  font-size: 40px;
+  font-size: 30px;
   color: black;
-  margin-left: 150px;
-  margin-top: 0px;
   font-weight: bold;
-  margin-top: 0px;
 }
 
 .myinfo .desc {
   font-family: "FZZhaoMFXSJF";
-  font-size: 40px;
+  font-size: 30px;
   color: black;
-  font-weight: bold;
-  margin-left: 100px;
   margin-top: 30px;
+  font-weight: bold;
 }
 
 .myinfo-img {
@@ -211,6 +243,6 @@ export default {
 .bookroom-img {
   max-width: 100%;
   max-height: 100%;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 </style>

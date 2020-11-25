@@ -1,150 +1,183 @@
 <template>
-  <div>
-    <el-form
-      :model="infoModeify"
-      class="signInForm"
-      ref="signInForm"
-      label-width="100px"
-      id="modify"
-    >
-      <el-button
-        type="primary"
-        icon="el-icon-arrow-left"
-        @click="modifyReturn()"
-        class="modifyReturn"
-        >返回</el-button
+  <el-container>
+    <el-header
+      ><div class="desc">GBA图书管理系统</div>
+      <div class="bottom">
+        <el-tooltip class="item" content="退出登录" placement="bottom-end">
+          <i class="el-icon-switch-button" v-on:click="alert()"></i>
+        </el-tooltip>
+      </div>
+      <div class="headImg">
+        <el-avatar
+          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+        ></el-avatar>
+        <span class="name">{{ userName }}</span>
+      </div>
+    </el-header>
+    <el-main>
+      <div class="navigator-container">
+        <div class="item">
+          <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/' }"
+              ><el-link class="item-class"
+                ><i class="el-icon-s-home"></i>首页</el-link
+              ></el-breadcrumb-item
+            >
+            <el-breadcrumb-item :to="{ path: '/UserPage' }"
+              ><el-link class="item-class"
+                ><i class="el-icon-s-custom"></i>个人主页</el-link
+              ></el-breadcrumb-item
+            >
+            <el-breadcrumb-item :to="{ path: '/MyInfo' }"
+              ><el-link class="item-class"
+                ><i class="el-icon-s-custom"></i>个人信息</el-link
+              ></el-breadcrumb-item
+            >
+            <el-breadcrumb-item class="item-class"
+              ><i class="el-icon-ship"></i>修改信息</el-breadcrumb-item
+            >
+          </el-breadcrumb>
+        </div>
+      </div>
+      <el-form
+        :model="infoModeify"
+        class="signInForm"
+        ref="signInForm"
+        label-width="100px"
+        id="modify"
       >
-      <h2>个人信息</h2>
-      <table cellspacing="5" class="tale" border="1" @click="editingTips()">
-        <tr>
-          <td class="changdu">姓名</td>
-          <td>
-            <input
-              type="text"
-              v-model="infoModeify.name"
-              :readonly="readonly"
-              maxlength="20"
-            />
-          </td>
-          <td>性别</td>
-          <td>
-            <input
-              type="text"
-              v-model="infoModeify.gender"
-              :readonly="readonly"
-              maxlength="5"
-            />
-          </td>
-          <td>年龄</td>
-          <td>
-            <input
-              type="number"
-              v-model="infoModeify.age"
-              :readonly="readonly"
-              onKeypress="return(/[\d\.]/.test(String.fromCharCode(event.keyCode)))"
-              oninput="if(value.length>5)value=value.slice(0,5)"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>邮箱</td>
-          <td>
-            <input
-              type="email"
-              v-model="infoModeify.email"
-              :readonly="readonly"
-              maxlength="30"
-            />
-          </td>
-          <td class="changdu">出生年月</td>
-          <td>
-            <input
-              type="date"
-              v-model="infoModeify.birthday"
-              :readonly="readonly"
-              maxlength="30"
-            />
-          </td>
-          <td class="changdu">借阅ID</td>
-          <td>
-            <input
-              type="text"
-              readonly="readonly"
-              v-model="infoModeify.userId"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>联系电话</td>
-          <td>
-            <input
-              type="number"
-              v-model="infoModeify.phone"
-              :readonly="readonly"
-              onKeypress="return(/[\d\.]/.test(String.fromCharCode(event.keyCode)))"
-              oninput="if(value.length>5)value=value.slice(0,30)"
-            />
-          </td>
-          <td>暂住地址</td>
-          <td colspan="3">
-            <input
-              type="text"
-              v-model="infoModeify.address"
-              :readonly="readonly"
-              maxlength="100"
-            />
-          </td>
-        </tr>
-        <tr>
-          <th rowspan="2" style="padding: 1em">个人描述</th>
-          <td colspan="5" rowspan="3">
-            <textarea
-              type="text"
-              v-model="infoModeify.description"
-              rows="5"
-              :readonly="readonly"
-              maxlength="100"
-            ></textarea>
-          </td>
-        </tr>
-      </table>
+        <h2>个人信息</h2>
+        <table cellspacing="5" class="tale" border="1" @click="editingTips()">
+          <tr>
+            <td class="changdu">姓名</td>
+            <td>
+              <input
+                type="text"
+                v-model="infoModeify.name"
+                :readonly="readonly"
+                maxlength="20"
+              />
+            </td>
+            <td>性别</td>
+            <td>
+              <input
+                type="text"
+                v-model="infoModeify.gender"
+                :readonly="readonly"
+                maxlength="5"
+              />
+            </td>
+            <td>年龄</td>
+            <td>
+              <input
+                type="number"
+                v-model="infoModeify.age"
+                :readonly="readonly"
+                onKeypress="return(/[\d\.]/.test(String.fromCharCode(event.keyCode)))"
+                oninput="if(value.length>5)value=value.slice(0,5)"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>邮箱</td>
+            <td>
+              <input
+                type="email"
+                v-model="infoModeify.email"
+                :readonly="readonly"
+                maxlength="30"
+              />
+            </td>
+            <td class="changdu">出生年月</td>
+            <td>
+              <input
+                type="date"
+                v-model="infoModeify.birthday"
+                :readonly="readonly"
+                maxlength="30"
+              />
+            </td>
+            <td class="changdu">借阅ID</td>
+            <td>
+              <input
+                type="text"
+                readonly="readonly"
+                v-model="infoModeify.userId"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>联系电话</td>
+            <td>
+              <input
+                type="number"
+                v-model="infoModeify.phone"
+                :readonly="readonly"
+                onKeypress="return(/[\d\.]/.test(String.fromCharCode(event.keyCode)))"
+                oninput="if(value.length>5)value=value.slice(0,30)"
+              />
+            </td>
+            <td>暂住地址</td>
+            <td colspan="3">
+              <input
+                type="text"
+                v-model="infoModeify.address"
+                :readonly="readonly"
+                maxlength="100"
+              />
+            </td>
+          </tr>
+          <tr>
+            <th rowspan="2" style="padding: 1em">个人描述</th>
+            <td colspan="5" rowspan="3">
+              <textarea
+                type="text"
+                v-model="infoModeify.description"
+                rows="5"
+                :readonly="readonly"
+                maxlength="100"
+              ></textarea>
+            </td>
+          </tr>
+        </table>
 
-      <el-button type="success" @click="edit" v-if="flag == 1">编辑</el-button>
-      <el-button type="success" @click="Confirm()" v-if="flag == 0"
-        >确认</el-button
-      >
-    </el-form>
+        <el-button type="success" @click="edit" v-if="flag == 1"
+          >编辑</el-button
+        >
+        <el-button type="success" @click="Confirm()" v-if="flag == 0"
+          >确认</el-button
+        >
+      </el-form>
 
-    <el-form
-      :model="passwordModeify"
-      :rules="rules"
-      class="passwordModeifyForm"
-      ref="passwordModeifyForm"
-      label-width="100px"
-    >
-      <el-form-item label="修改密码" prop="userPassword">
-        <el-input
-          v-model="passwordModeify.userPassword"
-          placeholder="请输入密码"
-          type="password"
-   
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="确认密码" prop="userPassword2">
-        <el-input
-          v-model="passwordModeify.userPassword2"
-          placeholder="请确认密码"
-          type="password"
-        
-        ></el-input>
-      </el-form-item>
-      <el-button
-        type="primary"
-        @click="passwordModeifySubmit('passwordModeifyForm')"
-        >确认</el-button
+      <el-form
+        :model="passwordModeify"
+        :rules="rules"
+        class="passwordModeifyForm"
+        ref="passwordModeifyForm"
+        label-width="100px"
       >
-    </el-form>
-  </div>
+        <el-form-item label="修改密码" prop="userPassword">
+          <el-input
+            v-model="passwordModeify.userPassword"
+            placeholder="请输入密码"
+            type="password"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="userPassword2">
+          <el-input
+            v-model="passwordModeify.userPassword2"
+            placeholder="请确认密码"
+            type="password"
+          ></el-input>
+        </el-form-item>
+        <el-button
+          type="primary"
+          @click="passwordModeifySubmit('passwordModeifyForm')"
+          >确认</el-button
+        >
+      </el-form>
+    </el-main>
+  </el-container>
 </template>                                                                                                                                                 
 <script>
 // import axios from 'axios'
@@ -186,9 +219,9 @@ export default {
     },
   },
   data() {
-   
-  
     return {
+      userName: sessionStorage.getItem("userName"),
+
       infoModeify: {
         userId: "",
         name: "",
@@ -238,30 +271,28 @@ export default {
             trigger: "blur",
           },
           // {
-           
+
           //   trigger: "blur",
           //   validateor: (rule, value, callback) => {
           //     if (
           //      value !==  this.passwordModeify.userPassword
           //     ) {
           //       callback(new Error("两次输入密码不一致!"));
-                
+
           //     } else {
           //       callback();
           //       console.log("密码一致");
-                
+
           //     }
           //   },
           // },
           {
             trigger: "blur",
             validator: (rule, value, callback) => {
-              var passwordreg =this.passwordModeify.userPassword;
-              console.log(passwordreg)
-              if ( value !==passwordreg) {
-                callback(
-                  new Error("两次输入密码不一致!")
-                );
+              var passwordreg = this.passwordModeify.userPassword;
+              console.log(passwordreg);
+              if (value !== passwordreg) {
+                callback(new Error("两次输入密码不一致!"));
               } else {
                 callback();
               }
@@ -340,10 +371,107 @@ export default {
         this.$message.error("请按编辑按钮进行修改");
       }
     },
+    alert() {
+      this.$confirm("正在选择退出当前用户, 是否继续?", "退出登录......", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          sessionStorage.removeItem("userId");
+          this.$router.push("/");
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消退出操作",
+          });
+        });
+    },
   },
 };
 </script>
 <style scoped>
+.el-header {
+  background-color: rgb(198, 226, 255);
+  /* color: rgb(160, 207, 255); */
+  text-align: center;
+  line-height: 50px;
+}
+
+.el-main {
+  background-color: rgb(217, 236, 255);
+  color: #333;
+  text-align: center;
+  /* line-height: 200px; */
+}
+
+body > .el-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+@font-face {
+  font-family: "FZQuSJW";
+  src: url("../assets/font/FZQuSJW.TTF");
+}
+
+.el-header .desc {
+  font-family: "FZQuSJW";
+  font-size: 30px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  color: rgb(102, 177, 255);
+  margin-top: 10px;
+  float: left;
+  margin-left: 10px;
+  cursor: default;
+}
+
+.el-header .bottom {
+  float: right;
+  margin-top: 5px;
+  font-size: 40px;
+  cursor: pointer;
+  /* text-align: center; */
+}
+
+.el-header .item {
+  margin: 4px;
+}
+
+.headImg {
+  position: relative;
+  width: 200px;
+  height: 50px;
+  margin-left: 1200px;
+  margin-top: 10px;
+}
+
+.name {
+  position: absolute;
+  font-family: "FZQuSJW";
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 15px;
+  letter-spacing: 1px;
+}
+
+.navigator-container {
+  /* display: flex; */
+  align-items: center;
+}
+
+.navigator-container .item {
+  margin-left: 50px;
+}
+
+.item-class {
+  font-size: 20px;
+  color: rgb(140, 197, 255);
+}
+
 .changdu {
   width: 120px;
 }
@@ -360,7 +488,7 @@ td {
 }
 .passwordModeifyForm {
   width: 30%;
-  margin: 5% auto;
+  margin: 2% auto;
 }
 .signInForm .el-button {
   margin: 1%;

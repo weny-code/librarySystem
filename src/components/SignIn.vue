@@ -1,7 +1,13 @@
 <template>
   <div class="about">
-  <div class="desc">GBA图书馆管理系统</div>
-     <el-button type="primary" icon="el-icon-arrow-left" @click="backHome()" class="siginReturn">返回</el-button>
+    <div class="desc">GBA图书馆管理系统</div>
+    <el-button
+      type="primary"
+      icon="el-icon-arrow-left"
+      @click="backHome()"
+      class="siginReturn"
+      >返回</el-button
+    >
     <section class="form_container">
       <el-form
         :model="signIn"
@@ -11,14 +17,18 @@
         label-width="100px"
       >
         <el-form-item label="账号" prop="account">
-          <el-input v-model="signIn.account" placeholder="请输入ID" maxlength="30"></el-input>
+          <el-input
+            v-model="signIn.account"
+            placeholder="请输入ID"
+            maxlength="30"
+          ></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input
             v-model="signIn.password"
             placeholder="请输入密码"
             type="password"
-             maxlength="30"
+            maxlength="30"
           ></el-input>
         </el-form-item>
         <el-form-item>
@@ -78,16 +88,14 @@ export default {
             data: this.signIn,
           })
             .then((res) => {
-              console.log(res);
-              sessionStorage.setItem("userId",res.data.userId) 
-              console.log(sessionStorage.getItem("userId"))
-              if (res.data.userId < 1000 && res.data.resultCode==1) {
-                
+              sessionStorage.setItem("userId", res.data.userId);
+              sessionStorage.setItem("userName", res.data.name);
+              console.log("用户名为：" + sessionStorage.getItem("userName"));
+              if (res.data.userId < 1000 && res.data.resultCode == 1) {
                 this.$router.push("/AdministratorPage");
-              } else if(res.data.resultCode==1){
-             
+              } else if (res.data.resultCode == 1) {
                 this.$router.push("/UserPage");
-              }else{
+              } else {
                 this.$message.error("密码错误");
               }
             })
@@ -101,9 +109,9 @@ export default {
         }
       });
     },
-     backHome(){
-       this.$router.push("/");
-    }
+    backHome() {
+      this.$router.push("/");
+    },
   },
 };
 </script>
@@ -126,17 +134,17 @@ export default {
   float: left;
   margin-left: 10px;
   cursor: default;
-  position:absolute;
+  position: absolute;
   top: 0.2em;
-  left:0.2em;
+  left: 0.2em;
 }
-.siginReturn{
+.siginReturn {
   position: absolute;
   top: 2.5em;
   left: 1em;
   border: 0;
-  background-color:#c6ddff ;
-  color:#fff;
+  background-color: #c6ddff;
+  color: #fff;
   font-size: 1.2em;
 }
 img {

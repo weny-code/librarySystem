@@ -1,14 +1,19 @@
 <template>
-  <div class="body-bg">
-    <div class="navigation-container">
+  <el-container>
+    <el-header>
       <div class="desc">GBA图书管理系统</div>
+      <div class="bottom">
+        <el-tooltip class="item" content="退出登录" placement="bottom-end">
+          <i class="el-icon-switch-button" v-on:click="alert()"></i>
+        </el-tooltip>
+      </div>
       <div class="nav">
         <el-menu
           :default-active="pageIndex"
           class="el-menu-demo"
           mode="horizontal"
           @select="handleSelect"
-          background-color="#66cccc"
+          background-color="rgb(198, 226, 255)"
           text-color="#000099"
           active-text-color="black"
         >
@@ -20,15 +25,9 @@
           <el-menu-item index="6">图书借阅统计</el-menu-item>
         </el-menu>
       </div>
-      <div class="bottom">
-        <el-tooltip class="item" content="退出登录" placement="bottom-end">
-          <i class="el-icon-switch-button" v-on:click="alert()"></i>
-        </el-tooltip>
-      </div>
-    </div>
-
-    <div class="operation-container" v-show="pageList.adminShow">
-      <div class="item">
+    </el-header>
+    <el-main>
+      <div class="operation-container" v-show="pageList.adminShow">
         <el-card class="box-card">
           <div class="card-inner" @click="showPage(2)">
             <el-image
@@ -39,20 +38,15 @@
             <span class="desc">用户列表</span>
           </div>
         </el-card>
-      </div>
-      <div class="item">
         <el-card class="box-card">
           <div class="card-inner" @click="showPage(3)">
             <el-image
               :src="require('../assets/img/tsjygh.png')"
               class="img-inner"
             ></el-image>
-
             <span class="desc">图书借阅与归还</span>
           </div>
         </el-card>
-      </div>
-      <div class="item">
         <el-card class="box-card">
           <div class="card-inner" @click="showPage(5)">
             <el-image
@@ -63,43 +57,35 @@
             <span class="desc">首页公告管理</span>
           </div>
         </el-card>
-      </div>
-      <div class="item">
         <el-card class="box-card">
           <div class="card-inner" @click="showPage(4)">
             <el-image
               :src="require('../assets/img/sk.png')"
               class="img-inner"
             ></el-image>
-
             <span class="desc">书库</span>
           </div>
         </el-card>
-      </div>
-      <div class="item">
         <el-card class="box-card">
           <div class="card-inner" @click="showPage(6)">
             <el-image
               :src="require('../assets/img/tj.png')"
               class="img-inner"
             ></el-image>
-
             <span class="desc">图书借阅统计</span>
           </div>
         </el-card>
+        <div class="item2">
+          <img src="../assets/img/Admin.png" class="image" />
+        </div>
       </div>
-      <div class="item2">
-        <img src="../assets/img/Admin.png" class="image" />
-      </div>
-    </div>
-
-    <bookStore v-show="pageList.bookRoomShow"></bookStore>
-    <userList v-show="pageList.userShow"></userList>
-    <BookStatic v-show="pageList.allShow"></BookStatic>
-    <UserBorrAndRet v-show="pageList.bookShow"></UserBorrAndRet>
-    <Announcement v-show="pageList.testShow"></Announcement>
-    
-  </div>
+      <bookStore v-show="pageList.bookRoomShow"></bookStore>
+      <userList v-show="pageList.userShow"></userList>
+      <BookStatic v-show="pageList.allShow"></BookStatic>
+      <UserBorrAndRet v-show="pageList.bookShow"></UserBorrAndRet>
+      <Announcement v-show="pageList.testShow"></Announcement>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
@@ -109,9 +95,8 @@ import BookStatic from "@/views/BookStatic";
 import UserBorrAndRet from "@/views/UserBorrAndRet";
 import Announcement from "@/views/Announcement";
 
-
 export default {
-  components: { BookStore, UserList, BookStatic,UserBorrAndRet,Announcement},
+  components: { BookStore, UserList, BookStatic, UserBorrAndRet, Announcement },
   name: "AdministratorPage",
   data() {
     return {
@@ -182,19 +167,24 @@ export default {
 </script>
 
 <style scoped>
-.body-bg {
-  /* position: absolute; */
-  width: 100%;
-  height: 100%;
-  min-width: 1500px;
-  width: 100%;
-  max-width: 100%;
-  height: 100%;
-  /* top: 0;
-  left: 0;
-  overflow-y: auto; */
+.el-header {
+  background-color: rgb(198, 226, 255);
+  text-align: center;
+  line-height: 50px;
+}
 
-  color: #c6ddff;
+.el-main {
+  background-color: rgb(217, 236, 255);
+  color: #333;
+  text-align: center;
+  padding: 0;
+  /* line-height: 200px; */
+}
+
+body > .el-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 @font-face {
@@ -202,59 +192,54 @@ export default {
   src: url("../assets/font/FZQuSJW.TTF");
 }
 
-.navigation-container {
-  position: relative;
-  display: flex;
-  height: auto;
-  width: auto;
-  background-color: #66cccc;
-  justify-content: space-between;
-}
-
-.navigation-container .desc {
+.el-header .desc {
   font-family: "FZQuSJW";
   font-size: 30px;
   font-weight: bold;
   letter-spacing: 5px;
-  color: white;
-
-  padding-top: 10px;
-  /* float: left; */
-  padding-left: 10px;
-
+  color: rgb(102, 177, 255);
+  margin-top: 10px;
+  float: left;
+  margin-left: 10px;
   cursor: default;
 }
 
-.navigation-container .bottom {
-  font-size: 40px;
-  margin-right: 50px;
-  padding-top: 10px;
-
-  cursor: pointer;
-  text-align: center;
+.el-header .nav {
+  margin-left: 400px;
+  width: 700px;
 }
 
-.navigation-container .item {
+.el-header .bottom {
+  float: right;
+  margin-top: 5px;
+  font-size: 40px;
+  cursor: pointer;
+  /* text-align: center; */
+}
+
+.el-header .item {
   margin: 4px;
 }
 
-.navigation-container .nav {
-  margin-left: -150px;
+.headImg {
+  margin-top: 10px;
 }
+
+@font-face {
+  font-family: "FZQuSJW";
+  src: url("../assets/font/FZQuSJW.TTF");
+}
+
 .operation-container {
   display: flex;
-  margin-top: 5%;
-
-  margin-left: 15%;
+  margin-top: 40px;
+  margin-left: 20%;
   width: 1000px;
   /* height: 450px; */
   /* flex-direction: column; */
   flex-wrap: wrap;
-  justify-content: center;
-}
-
-.item {
-  margin: 10px;
+  /* justify-content: center; */
+  align-content: flex-start;
 }
 
 .item2 {
@@ -262,8 +247,15 @@ export default {
 }
 
 .box-card {
-  width: 380px;
+  width: 40%;
   height: 160px;
+  margin: 10px;
+}
+
+.box-card:last-child {
+  width: 40%;
+  height: 160px;
+  margin: 10px;
 }
 
 .card-inner {
@@ -296,7 +288,6 @@ export default {
 
 .card-inner .desc {
   font-family: "FZZhaoMFXSJF";
-
   display: block;
   font-size: 25px;
   color: black;

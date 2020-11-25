@@ -1,33 +1,45 @@
 <template>
-  <div class="container">
-    <div class="desc">GBA图书管理系统</div>
-    <div class="bottom">
-      <el-tooltip class="item" content="退出登录" placement="bottom-end">
-        <i class="el-icon-switch-button" v-on:click="alert()"></i>
-      </el-tooltip>
-    </div>
-    <div class="navigator-container">
-      <div class="item">
-        <el-breadcrumb separator="/">
-          <el-breadcrumb-item :to="{ path: '/' }"
-            ><el-link class="item-class"
-              ><i class="el-icon-s-home"></i>首页</el-link
-            ></el-breadcrumb-item
-          >
-          <el-breadcrumb-item :to="{ path: '/UserPage' }"
-            ><el-link class="item-class"
-              ><i class="el-icon-s-custom"></i>个人主页</el-link
-            ></el-breadcrumb-item
-          >
-          <el-breadcrumb-item class="item-class" :to="{ path: '/MyInfo' }"
-            ><i class="el-icon-ship"></i>个人信息</el-breadcrumb-item
-          >
-          <el-breadcrumb-item class="item-class"
-            ><i class="el-icon-s-order"></i>借阅历史</el-breadcrumb-item
-          >
-        </el-breadcrumb>
+  <el-container>
+    <el-header
+      ><div class="desc">GBA图书管理系统</div>
+      <div class="bottom">
+        <el-tooltip class="item" content="退出登录" placement="bottom-end">
+          <i class="el-icon-switch-button" v-on:click="alert()"></i>
+        </el-tooltip>
       </div>
-    </div>
+      <div class="headImg">
+        <el-avatar
+          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+        ></el-avatar>
+        <span class="name">{{ userName1 }}</span>
+      </div>
+    </el-header>
+    <el-main>
+      <div class="navigator-container">
+        <div class="item">
+          <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/' }"
+              ><el-link class="item-class"
+                ><i class="el-icon-s-home"></i>首页</el-link
+              ></el-breadcrumb-item
+            >
+            <el-breadcrumb-item :to="{ path: '/UserPage' }"
+              ><el-link class="item-class"
+                ><i class="el-icon-s-custom"></i>个人主页</el-link
+              ></el-breadcrumb-item
+            >
+            <el-breadcrumb-item :to="{ path: '/MyInfo' }"
+              ><el-link class="item-class"
+                ><i class="el-icon-s-custom"></i>个人信息</el-link
+              ></el-breadcrumb-item
+            >
+            <el-breadcrumb-item class="item-class"
+              ><i class="el-icon-ship"></i>借阅历史</el-breadcrumb-item
+            >
+          </el-breadcrumb>
+        </div>
+      </div></el-main
+    >
     <!-- 详情页面 -->
     <transition name="el-fade-in-linear">
       <div v-show="xianshi" class="xiangqingyemian transition-box">
@@ -113,13 +125,14 @@
       >
       </el-pagination>
     </div>
-  </div>
+  </el-container>
 </template>
 
 <script>
 export default {
   data() {
     return {
+      userName1: sessionStorage.getItem("userName"),
       input2: null,
       xianshi: false,
       bookData: [],
@@ -130,7 +143,7 @@ export default {
       // 总条数
       total: 0,
       userName: "",
-      userId: sessionStorage.getItem("userId")
+      userId: sessionStorage.getItem("userId"),
       //this.$userId.userId,
     };
   },
@@ -150,7 +163,7 @@ export default {
         this.userName = res.data.name;
         console.log("yonghuming");
         console.log(this.userName);
-        console.log(this.total)
+        console.log(this.total);
       });
     },
     search() {
@@ -161,36 +174,34 @@ export default {
     },
     getSearchCount() {
       this.$axios({
-        method:'post',
-        url: '/borrowUserLikeSearchCount',
-        data:{
-          userId:1011,
-          bookName: this.input2
-        }
-      }).then((res)=>{
-        this.total = res.data
-        console.log("搜索得到的总数")
-        console.log(this.total)
-      }).catch((error)=>{
-        console.log(error)
+        method: "post",
+        url: "/borrowUserLikeSearchCount",
+        data: {
+          userId: 1011,
+          bookName: this.input2,
+        },
       })
+        .then((res) => {
+          this.total = res.data;
+          console.log("搜索得到的总数");
+          console.log(this.total);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     searchAndPage() {
       this.$axios({
         method: "post",
         url: "/borrowUserLikeSearch",
         data: {
-<<<<<<< HEAD
           userId: sessionStorage.getItem("userId"),
-=======
-          index: (this.currentPage-1),
-          userId: 1011,
->>>>>>> d2db70200b0ca5cbc464d821babeef9da904d486
+          index: this.currentPage - 1,
           bookName: this.input2,
         },
       }).then((res) => {
         this.bookData = res.data;
-        console.log(this.bookData)
+        console.log(this.bookData);
       });
     },
     getBookData() {
@@ -198,13 +209,8 @@ export default {
         method: "post",
         url: "/borrowPage",
         data: {
-<<<<<<< HEAD
           userId: sessionStorage.getItem("userId"),
           index: this.currentPage - 1,
-=======
-          userId: 1011,
-          index: (this.currentPage - 1),
->>>>>>> d2db70200b0ca5cbc464d821babeef9da904d486
         },
       }).then((res) => {
         this.bookData = res.data;
@@ -214,14 +220,14 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
-      if(this.input2 != null){
+      if (this.input2 != null) {
         this.searchAndPage();
-      }else if(this.input2 == null){
+      } else if (this.input2 == null) {
         this.getBookData();
       }
     },
     //退出登录
-     alert() {
+    alert() {
       this.$confirm("正在选择退出当前用户, 是否继续?", "退出登录......", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -247,14 +253,92 @@ export default {
 </script>
 
 <style scoped>
+.el-header {
+  background-color: rgb(198, 226, 255);
+  /* color: rgb(160, 207, 255); */
+  text-align: center;
+  line-height: 50px;
+}
+
+.el-main {
+  background-color: rgb(217, 236, 255);
+  color: #333;
+  text-align: center;
+  /* line-height: 200px; */
+}
+
+body > .el-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+@font-face {
+  font-family: "FZQuSJW";
+  src: url("../assets/font/FZQuSJW.TTF");
+}
+
+.el-header .desc {
+  font-family: "FZQuSJW";
+  font-size: 30px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  color: rgb(102, 177, 255);
+  margin-top: 10px;
+  float: left;
+  margin-left: 10px;
+  cursor: default;
+}
+
+.el-header .bottom {
+  float: right;
+  margin-top: 5px;
+  font-size: 40px;
+  cursor: pointer;
+  /* text-align: center; */
+}
+
+.el-header .item {
+  margin: 4px;
+}
+
+.headImg {
+  position: relative;
+  width: 200px;
+  height: 50px;
+  margin-left: 1200px;
+  margin-top: 10px;
+}
+
+.name {
+  position: absolute;
+  font-family: "FZQuSJW";
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 15px;
+  letter-spacing: 1px;
+}
+
+.navigator-container {
+  /* display: flex; */
+  height: 50px;
+  align-items: center;
+}
+
+.navigator-container .item {
+  margin-left: 50px;
+}
+
+.item-class {
+  font-size: 20px;
+  color: rgb(140, 197, 255);
+}
+
 @font-face {
   font-family: "FZZhaoMFXSJF";
   src: url("../assets/font/FZZhaoMFXSJF.TTF");
 }
-.container {
-  width: 100%;
-  position: absolute;
-}
+
 .page {
   width: 500px;
   margin-left: 600px;
@@ -273,18 +357,7 @@ export default {
   margin-bottom: 10px;
   margin-top: 30px;
 }
-.text {
-  font-size: 14px;
-}
 
-.item {
-  padding: 18px 0;
-}
-
-.box-card {
-  width: 900px;
-  margin: 0px 200px 10px;
-}
 .tb {
   margin-left: auto;
   margin-right: auto;
@@ -293,41 +366,5 @@ export default {
   width: fit-content;
   border: 2px solid rgb(175, 193, 241);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
-}
-
-.el-card {
-  height: 80px;
-}
-.desc {
-  font-family: "FZQuSJW";
-  font-size: 30px;
-  font-weight: bold;
-  letter-spacing: 5px;
-  color: cadetblue;
-  margin-top: 10px;
-  float: left;
-  margin-left: 10px;
-  cursor: default;
-}
-.bottom {
-  float: right;
-  font-size: 40px;
-  margin-right: 50px;
-  margin-top: 10px;
-  cursor: pointer;
-  text-align: center;
-}
-.navigator-container {
-  display: flex;
-  height: 50px;
-  margin-top: 60px;
-  align-items: center;
-}
-.navigator-container .item {
-  margin-left: 50px;
-}
-.item-class {
-  font-size: 20px;
-  color: black;
 }
 </style>

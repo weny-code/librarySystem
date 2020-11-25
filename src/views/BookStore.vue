@@ -1,370 +1,401 @@
 <template>
-  <div>
-    <div class="select-container">
-      <div class="select">
-        <div class="desc">国家</div>
-        <el-select
-          style="margin-left: 20px"
-          v-model="value1"
-          clearable
-          placeholder="请选择"
-          @change="currentBookNation($event)"
-          @clear="noSelect(1)"
-        >
-          <el-option
-            v-for="item in nationData"
-            :key="item.id"
-            :label="item.nation"
-            :value="item.id"
+  <el-container>
+    <el-main>
+      <div class="select-container">
+        <div class="select">
+          <div class="desc">国家</div>
+          <el-select
+            v-model="value1"
+            style="width: 150px"
+            clearable
+            placeholder="请选择"
+            @change="currentBookNation($event)"
+            @clear="noSelect(1)"
           >
-          </el-option>
-        </el-select>
-        <div class="desc">类型</div>
-        <el-select
-          style="margin-left: 20px"
-          v-model="value2"
-          clearable
-          placeholder="请选择"
-          @change="currentBookType($event)"
-          @clear="noSelect(2)"
-        >
-          <el-option
-            v-for="item in typeData"
-            :key="item.id"
-            :label="item.type"
-            :value="item.id"
+            <el-option
+              v-for="item in nationData"
+              :key="item.id"
+              :label="item.nation"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+          <span class="desc">类型</span>
+          <el-select
+            v-model="value2"
+            style="width: 150px"
+            clearable
+            placeholder="请选择"
+            @change="currentBookType($event)"
+            @clear="noSelect(2)"
           >
-          </el-option>
-        </el-select>
-        <div class="desc">篇幅</div>
-        <el-select
-          style="margin-left: 20px"
-          v-model="value3"
-          clearable
-          placeholder="请选择"
-          @change="currentBookLength($event)"
-          @clear="noSelect(3)"
-        >
-          <el-option
-            v-for="item in lengthData"
-            :key="item.id"
-            :label="item.length"
-            :value="item.id"
+            <el-option
+              v-for="item in typeData"
+              :key="item.id"
+              :label="item.type"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+          <span class="desc">篇幅</span>
+          <el-select
+            v-model="value3"
+            style="width: 150px"
+            clearable
+            placeholder="请选择"
+            @change="currentBookLength($event)"
+            @clear="noSelect(3)"
           >
-          </el-option>
-        </el-select>
-        <div class="desc">主题</div>
-        <el-select
-          style="margin-left: 20px"
-          v-model="value4"
-          clearable
-          placeholder="请选择"
-          @change="currentBookTheme($event)"
-          @clear="noSelect(4)"
-        >
-          <el-option
-            v-for="item in themeData"
-            :key="item.id"
-            :label="item.theme"
-            :value="item.id"
+            <el-option
+              v-for="item in lengthData"
+              :key="item.id"
+              :label="item.length"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+          <span class="desc">主题</span>
+          <el-select
+            v-model="value4"
+            style="width: 150px"
+            clearable
+            placeholder="请先选择类型"
+            @change="currentBookTheme($event)"
+            @clear="noSelect(4)"
           >
-          </el-option>
-        </el-select>
+            <el-option
+              v-for="item in themeData"
+              :key="item.id"
+              :label="item.theme"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+          <div class="check">
+            <el-button type="primary" v-on:click="queryBook">查询</el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-plus"
+              v-on:click="addBook"
+            ></el-button>
+          </div>
+        </div>
       </div>
-      <div class="check">
-        <el-button
-          type="success"
-          icon="el-icon-plus"
-          v-on:click="addBook"
-        ></el-button>
-        <el-button type="success" v-on:click="queryBook">查询</el-button>
+      <div class="search-container">
+        <div class="item">
+          <el-input v-model="book.bookName" placeholder="请输入书名/作者"
+            ><i slot="prefix" class="el-input__icon el-icon-search"></i
+          ></el-input>
+        </div>
+        <div class="search">
+          <el-button type="primary" v-on:click="queryBook">搜索</el-button>
+        </div>
       </div>
-    </div>
-    <div class="search-container">
-      <div class="item">
-        <el-input
-          v-model="book.bookName"
-          placeholder="请输入书名/作者"
-        ></el-input>
+      <div class="show-container">
+        <div class="booktable">
+          <el-table v-model="tableData" :data="tableData" stripe border>
+            <el-table-column
+              prop="book.bookName"
+              fixed
+              label="书名"
+              width="150"
+              align="center"
+            >
+            </el-table-column>
+            <el-table-column
+              align="center"
+              prop="book.nation"
+              label="国家"
+              width="100"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="book.type"
+              label="类型"
+              width="150"
+              align="center"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="book.length"
+              label="篇幅"
+              width="100"
+              align="center"
+            >
+            </el-table-column>
+            <el-table-column
+              align="center"
+              prop="book.theme"
+              label="主题"
+              width="100"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="book.author"
+              label="作者"
+              width="180"
+              align="center"
+            >
+            </el-table-column>
+            <el-table-column
+              align="center"
+              prop="book.leftAmount"
+              label="剩余数量"
+              width="100"
+            >
+            </el-table-column>
+            <el-table-column
+              align="center"
+              prop="book.storeDate"
+              label="上架时间"
+              width="230"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="status"
+              label="操作"
+              width="100"
+              header-align="center"
+            >
+              <template slot-scope="scope">
+                <el-button
+                  type="primary"
+                  round
+                  v-on:click="showBook(scope.row), (dialogTableVisible = true)"
+                  >编辑</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
       </div>
-      <div class="search">
-        <el-button type="success" v-on:click="queryBook">搜索</el-button>
+      <div class="page-container">
+        <div class="block">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage"
+            :page-size="pagesize"
+            layout="prev, pager, next, jumper"
+            :total="count"
+          >
+          </el-pagination>
+        </div>
       </div>
-    </div>
-    <div class="show-container">
-      <div class="booktable">
-        <el-table v-model="tableData" :data="tableData" stripe>
-          <el-table-column
-            prop="book.bookName"
-            label="书名"
-            width="110"
-            align="center"
+      <!-- 添加书籍 -->
+      <div class="dialog-container">
+        <el-dialog
+          :visible.sync="dialogTableVisible2"
+          :close-on-click-modal="false"
+        >
+          <el-form
+            label-width="80px"
+            :model="ruleForm"
+            :rules="rules"
+            ref="ruleForm"
+            inline="true"
           >
-          </el-table-column>
-          <el-table-column
-            align="center"
-            prop="book.nation"
-            label="国家"
-            width="110"
-          >
-          </el-table-column>
-          <el-table-column prop="book.type" label="类型" width="100">
-          </el-table-column>
-          <el-table-column prop="book.length" label="篇幅" width="60">
-          </el-table-column>
-          <el-table-column
-            align="center"
-            prop="book.theme"
-            label="主题"
-            width="130"
-          >
-          </el-table-column>
-          <el-table-column prop="book.author" label="作者" width="130">
-          </el-table-column>
-          <el-table-column
-            align="center"
-            prop="book.leftAmount"
-            label="剩余数量"
-            width="150"
-          >
-          </el-table-column>
-          <el-table-column
-            align="center"
-            prop="book.storeDate"
-            label="上架时间"
-            width="250"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="status"
-            label="操作"
-            width="90"
-            header-align="center"
-          >
-            <template slot-scope="scope">
-              <el-button
-                type="primary"
-                round
-                v-on:click="showBook(scope.row), (dialogTableVisible = true)"
-                >编辑</el-button
+            <el-form-item label="书名" prop="bookName">
+              <el-input
+                style="width: 500px"
+                v-model="ruleForm.bookName"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="作者" prop="author">
+              <el-input
+                v-model="ruleForm.author"
+                style="width: 200px"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="类型" prop="type">
+              <el-select
+                v-model="ruleForm.type"
+                placeholder="请选择书籍类型"
+                @change="currentBookType2($event)"
+                clearable
+                style="width: 200px"
               >
-            </template>
-          </el-table-column>
-        </el-table>
+                <el-option
+                  v-for="item in typeData"
+                  :key="item.id"
+                  :label="item.type"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="国家" prop="nation">
+              <el-select
+                v-model="ruleForm.nation"
+                placeholder="请选择书籍国家"
+                clearable
+                style="width: 200px"
+              >
+                <el-option
+                  v-for="item in nationData"
+                  :key="item.id"
+                  :label="item.nation"
+                  :value="item.nation"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="主题" prop="theme">
+              <el-select
+                v-model="ruleForm.theme"
+                placeholder="请先选择书籍类型"
+                clearable
+                style="width: 200px"
+              >
+                <el-option
+                  v-for="item in themeData"
+                  :key="item.id"
+                  :label="item.theme"
+                  :value="item.theme"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="上架数量" prop="uploadAmount">
+              <el-input
+                v-model="ruleForm.uploadAmount"
+                style="width: 200px"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="篇幅" prop="length">
+              <el-select
+                v-model="ruleForm.length"
+                placeholder="请选择书籍篇幅"
+                clearable
+                style="width: 200px"
+              >
+                <el-option
+                  v-for="item in lengthData"
+                  :key="item.id"
+                  :label="item.length"
+                  :value="item.length"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="简介" prop="summary">
+              <el-input
+                type="textarea"
+                v-model="ruleForm.summary"
+                style="width: 500px"
+                :rows="4"
+              ></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit">添加</el-button>
+              <el-button @click="dialogTableVisible2 = false">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
       </div>
-    </div>
-    <div class="page-container">
-      <div class="block">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page.sync="currentPage"
-          :page-size="pagesize"
-          layout="prev, pager, next, jumper"
-          :total="count"
+      <div class="dialog-container">
+        <el-dialog
+          :visible.sync="dialogTableVisible"
+          :close-on-click-modal="false"
         >
-        </el-pagination>
+          <el-form
+            label-width="80px"
+            :model="ruleForm"
+            :rules="rules"
+            ref="ruleForm"
+            inline="true"
+          >
+            <el-form-item label="书名" prop="bookName">
+              <el-input
+                style="width: 500px"
+                v-model="ruleForm.bookName"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="作者" prop="author">
+              <el-input
+                v-model="ruleForm.author"
+                style="width: 200px"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="类型" prop="type">
+              <el-select
+                v-model="ruleForm.type"
+                placeholder="请选择书籍类型"
+                @change="currentBookType2($event)"
+                clearable
+                style="width: 200px"
+              >
+                <el-option
+                  v-for="item in typeData"
+                  :key="item.id"
+                  :label="item.type"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="国家" prop="nation">
+              <el-select
+                v-model="ruleForm.nation"
+                placeholder="请选择书籍国家"
+                clearable
+                style="width: 200px"
+              >
+                <el-option
+                  v-for="item in nationData"
+                  :key="item.id"
+                  :label="item.nation"
+                  :value="item.nation"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="主题" prop="theme">
+              <el-select
+                v-model="ruleForm.theme"
+                placeholder="请先选择书籍类型"
+                clearable
+                style="width: 200px"
+              >
+                <el-option
+                  v-for="item in themeData"
+                  :key="item.id"
+                  :label="item.theme"
+                  :value="item.theme"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="上架数量" prop="uploadAmount">
+              <el-input
+                v-model="ruleForm.uploadAmount"
+                style="width: 200px"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="篇幅" prop="length">
+              <el-select
+                v-model="ruleForm.length"
+                placeholder="请选择书籍篇幅"
+                clearable
+                style="width: 200px"
+              >
+                <el-option
+                  v-for="item in lengthData"
+                  :key="item.id"
+                  :label="item.length"
+                  :value="item.length"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="简介" prop="summary">
+              <el-input
+                type="textarea"
+                v-model="ruleForm.summary"
+                style="width: 500px"
+              ></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit2">保存</el-button>
+              <el-button @click="dialogTableVisible = false">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
       </div>
-    </div>
-    <div class="dialog-container">
-      <el-dialog :visible.sync="dialogTableVisible2">
-        <el-form
-          label-width="80px"
-          :model="ruleForm"
-          :rules="rules"
-          ref="ruleForm"
-          inline="true"
-        >
-          <el-form-item label="书名" prop="bookName">
-            <el-input
-              style="width: 500px"
-              v-model="ruleForm.bookName"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="作者" prop="author">
-            <el-input v-model="ruleForm.author" style="width: 200px"></el-input>
-          </el-form-item>
-          <el-form-item label="类型" prop="type">
-            <el-select
-              v-model="ruleForm.type"
-              placeholder="请选择书籍类型"
-              @change="currentBookType2($event)"
-              clearable
-              style="width: 200px"
-            >
-              <el-option
-                v-for="item in typeData"
-                :key="item.id"
-                :label="item.type"
-                :value="item.id"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="国家" prop="nation">
-            <el-select
-              v-model="ruleForm.nation"
-              placeholder="请选择书籍国家"
-              clearable
-              style="width: 200px"
-            >
-              <el-option
-                v-for="item in nationData"
-                :key="item.id"
-                :label="item.nation"
-                :value="item.nation"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="主题" prop="theme">
-            <el-select
-              v-model="ruleForm.theme"
-              placeholder="请先选择书籍类型"
-              clearable
-              style="width: 200px"
-            >
-              <el-option
-                v-for="item in themeData"
-                :key="item.id"
-                :label="item.theme"
-                :value="item.theme"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="上架数量" prop="uploadAmount">
-            <el-input
-              v-model="ruleForm.uploadAmount"
-              style="width: 200px"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="篇幅" prop="length">
-            <el-select
-              v-model="ruleForm.length"
-              placeholder="请选择书籍篇幅"
-              clearable
-              style="width: 200px"
-            >
-              <el-option
-                v-for="item in lengthData"
-                :key="item.id"
-                :label="item.length"
-                :value="item.length"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="简介" prop="summary">
-            <el-input
-              type="textarea"
-              v-model="ruleForm.summary"
-              style="width: 500px"
-            ></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">添加</el-button>
-            <el-button @click="dialogTableVisible2 = false">取消</el-button>
-          </el-form-item>
-        </el-form>
-      </el-dialog>
-    </div>
-    <div class="dialog-container">
-      <el-dialog :visible.sync="dialogTableVisible">
-        <el-form
-          label-width="80px"
-          :model="ruleForm"
-          :rules="rules"
-          ref="ruleForm"
-          inline="true"
-        >
-          <el-form-item label="书名" prop="bookName">
-            <el-input
-              style="width: 500px"
-              v-model="ruleForm.bookName"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="作者" prop="author">
-            <el-input v-model="ruleForm.author" style="width: 200px"></el-input>
-          </el-form-item>
-          <el-form-item label="类型" prop="type">
-            <el-select
-              v-model="ruleForm.type"
-              placeholder="请选择书籍类型"
-              @change="currentBookType2($event)"
-              clearable
-              style="width: 200px"
-            >
-              <el-option
-                v-for="item in typeData"
-                :key="item.id"
-                :label="item.type"
-                :value="item.id"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="国家" prop="nation">
-            <el-select
-              v-model="ruleForm.nation"
-              placeholder="请选择书籍国家"
-              clearable
-              style="width: 200px"
-            >
-              <el-option
-                v-for="item in nationData"
-                :key="item.id"
-                :label="item.nation"
-                :value="item.nation"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="主题" prop="theme">
-            <el-select
-              v-model="ruleForm.theme"
-              placeholder="请先选择书籍类型"
-              clearable
-              style="width: 200px"
-            >
-              <el-option
-                v-for="item in themeData"
-                :key="item.id"
-                :label="item.theme"
-                :value="item.theme"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="上架数量" prop="uploadAmount">
-            <el-input
-              v-model="ruleForm.uploadAmount"
-              style="width: 200px"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="篇幅" prop="length">
-            <el-select
-              v-model="ruleForm.length"
-              placeholder="请选择书籍篇幅"
-              clearable
-              style="width: 200px"
-            >
-              <el-option
-                v-for="item in lengthData"
-                :key="item.id"
-                :label="item.length"
-                :value="item.length"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="简介" prop="summary">
-            <el-input
-              type="textarea"
-              v-model="ruleForm.summary"
-              style="width: 500px"
-            ></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit2">编辑</el-button>
-            <el-button @click="dialogTableVisible = false">取消</el-button>
-          </el-form-item>
-        </el-form>
-      </el-dialog>
-    </div>
-  </div>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
@@ -484,7 +515,6 @@ export default {
         });
     },
     searchBook() {
-      console.log("------------" + this.book.bookName);
       this.count = this.getTypeCount();
       this.$axios({
         method: "post",
@@ -493,9 +523,7 @@ export default {
       })
         .then((res) => {
           this.tableData = res.data;
-          // console.log("传入的数据=" + JSON.stringify(this.book));
           console.log("下面的搜索得到的书籍总数" + this.tableData.length);
-          // console.log("数据：" + this.$qs.stringify(this.book));
         })
         .catch(function (error) {
           console.log(error);
@@ -524,7 +552,6 @@ export default {
         });
     },
     getTypeCount() {
-      console.log("------------" + this.book.bookName);
       this.$axios({
         method: "post",
         url: "/BookTypeCount",
@@ -680,7 +707,6 @@ export default {
         data: this.ruleForm,
       })
         .then((res) => {
-          // this.tableData = res.data;
           if (res.data == "1") {
             this.$message({
               message: "添加成功！",
@@ -706,11 +732,10 @@ export default {
               message: "修改成功",
               type: "success",
             });
-            for (let key in this.ruleForm) {
-              this.ruleForm[key] = "";
-            }
             this.getBookTable();
             this.dialogTableVisible = false;
+          } else {
+            this.$message.error("修改失败，不能超过剩余数量！");
           }
         })
         .catch(function (error) {
@@ -722,6 +747,11 @@ export default {
         this.ruleForm[key] = "";
       }
       this.dialogTableVisible2 = true;
+      setTimeout(() => {
+        this.$nextTick(function () {
+          this.$refs.ruleForm.resetFields();
+        });
+      }, 100);
     },
   },
   created() {
@@ -735,44 +765,57 @@ export default {
 </script>
 
 <style scoped>
+.el-main {
+  background-color: rgb(217, 236, 255);
+  color: #333;
+  text-align: center;
+  padding: 0px;
+  /* line-height: 200px; */
+}
+
+body > .el-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
 .select-container {
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 .select-container .select {
+  margin-left: 20%;
   display: flex;
-  width: 80%;
-  margin-left: 10%;
+  width: 1000px;
   justify-content: space-around;
 }
 
 .select-container .desc {
   color: black;
-  font-size: 30px;
-  margin-top: 2px;
-  margin-right: -40px;
+  font-size: 25px;
+  margin-top: 5px;
+  margin-right: -10px;
   letter-spacing: -5px;
   font-family: "FZZhaoMFXSJF";
 }
 
 .select-container .check {
-  margin-left: 70%;
-  margin-top: 5px;
+  margin-left: 5px;
 }
 
 .search-container {
-  margin-top: 100px;
-  margin-left: 60%;
+  margin-top: 70px;
+  margin-left: 63%;
 }
 
 .search-container .item {
-  width: 200px;
-  margin-left: 10%;
+  width: 150px;
+  margin-left: 30%;
 }
 
 .search-container .search {
   margin-top: -40px;
-  margin-left: -10px;
+  margin-left: 160px;
 }
 
 .show-container {
@@ -783,12 +826,11 @@ export default {
 }
 
 .show-container .booktable {
-  width: 75%;
+  width: auto;
 }
 
 .page-container {
   margin-top: 10px;
-  margin-bottom: 100px;
   margin-left: 40%;
 }
 

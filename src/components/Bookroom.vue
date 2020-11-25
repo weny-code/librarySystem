@@ -1,190 +1,250 @@
 <template>
-  <div class="main-container">
-    <div class="desc">GBA图书管理系统</div>
-    <div class="navigator-container">
-      <div class="item">
-        <el-breadcrumb separator="/">
-          <el-breadcrumb-item :to="{ path: '/' }"
-            ><el-link class="item-class"
-              ><i class="el-icon-s-home"></i>首页</el-link
-            ></el-breadcrumb-item
-          >
-          <el-breadcrumb-item :to="{ path: '/UserPage' }"
-            ><el-link class="item-class"
-              ><i class="el-icon-s-custom"></i>个人主页</el-link
-            ></el-breadcrumb-item
-          >
-          <el-breadcrumb-item class="item-class"
-            ><i class="el-icon-ship"></i>图书库</el-breadcrumb-item
-          >
-        </el-breadcrumb>
+  <el-container>
+    <el-header
+      ><div class="desc">GBA图书管理系统</div>
+      <div class="bottom">
+        <el-tooltip class="item" content="退出登录" placement="bottom-end">
+          <i class="el-icon-switch-button" v-on:click="alert()"></i>
+        </el-tooltip>
       </div>
-    </div>
-    <div class="select-container">
-      <div class="select">
-        <div class="desc">国家</div>
-        <el-select
-          style="margin-left: 20px"
-          v-model="value1"
-          clearable
-          placeholder="请选择"
-          @change="currentBookNation($event)"
-          @clear="noSelect(1)"
-        >
-          <el-option
-            v-for="item in nationData"
-            :key="item.id"
-            :label="item.nation"
-            :value="item.id"
-          >
-          </el-option>
-        </el-select>
-        <div class="desc">类型</div>
-        <el-select
-          style="margin-left: 20px"
-          v-model="value2"
-          clearable
-          placeholder="请选择"
-          @change="currentBookType($event)"
-          @clear="noSelect(2)"
-        >
-          <el-option
-            v-for="item in typeData"
-            :key="item.id"
-            :label="item.type"
-            :value="item.id"
-          >
-          </el-option>
-        </el-select>
-        <div class="desc">篇幅</div>
-        <el-select
-          style="margin-left: 20px"
-          v-model="value3"
-          clearable
-          placeholder="请选择"
-          @change="currentBookLength($event)"
-          @clear="noSelect(3)"
-        >
-          <el-option
-            v-for="item in lengthData"
-            :key="item.id"
-            :label="item.length"
-            :value="item.id"
-          >
-          </el-option>
-        </el-select>
-        <div class="desc">主题</div>
-        <el-select
-          style="margin-left: 20px"
-          v-model="value4"
-          clearable
-          placeholder="请先选择类型"
-          @change="currentBookTheme($event)"
-          @clear="noSelect(4)"
-        >
-          <el-option
-            v-for="item in themeData"
-            :key="item.id"
-            :label="item.theme"
-            :value="item.id"
-          >
-          </el-option>
-        </el-select>
+      <div class="headImg">
+        <el-avatar
+          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+        ></el-avatar>
+        <span class="name">{{ userName }}</span>
       </div>
-      <div class="check">
-        <el-button type="success" v-on:click="queryBook">查询</el-button>
+    </el-header>
+    <el-main>
+      <div class="navigator-container">
+        <div class="item">
+          <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/' }"
+              ><el-link class="item-class"
+                ><i class="el-icon-s-home"></i>首页</el-link
+              ></el-breadcrumb-item
+            >
+            <el-breadcrumb-item :to="{ path: '/UserPage' }"
+              ><el-link class="item-class"
+                ><i class="el-icon-s-custom"></i>个人主页</el-link
+              ></el-breadcrumb-item
+            >
+            <el-breadcrumb-item class="item-class"
+              ><i class="el-icon-ship"></i>图书库</el-breadcrumb-item
+            >
+          </el-breadcrumb>
+        </div>
       </div>
-    </div>
-    <div class="search-container">
-      <div class="item">
-        <el-input v-model="book.bookName" placeholder="请输入关键字"></el-input>
-      </div>
-      <div class="search">
-        <el-button type="success" v-on:click="queryBook">搜索</el-button>
-      </div>
-    </div>
-    <div class="show-container">
-      <el-dialog :visible.sync="dialogTableVisible" top="10%">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <span>简介</span>
+      <div class="select-container">
+        <div class="select">
+          <span class="desc">国家</span>
+          <el-select
+            v-model="value1"
+            style="width: 150px"
+            clearable
+            placeholder="请选择"
+            @change="currentBookNation($event)"
+            @clear="noSelect(1)"
+          >
+            <el-option
+              v-for="item in nationData"
+              :key="item.id"
+              :label="item.nation"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+          <span class="desc">类型</span>
+          <el-select
+            v-model="value2"
+            style="width: 150px"
+            clearable
+            placeholder="请选择"
+            @change="currentBookType($event)"
+            @clear="noSelect(2)"
+          >
+            <el-option
+              v-for="item in typeData"
+              :key="item.id"
+              :label="item.type"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+          <span class="desc">篇幅</span>
+          <el-select
+            v-model="value3"
+            style="width: 150px"
+            clearable
+            placeholder="请选择"
+            @change="currentBookLength($event)"
+            @clear="noSelect(3)"
+          >
+            <el-option
+              v-for="item in lengthData"
+              :key="item.id"
+              :label="item.length"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+          <span class="desc">主题</span>
+          <el-select
+            v-model="value4"
+            style="width: 150px"
+            clearable
+            placeholder="请先选择类型"
+            @change="currentBookTheme($event)"
+            @clear="noSelect(4)"
+          >
+            <el-option
+              v-for="item in themeData"
+              :key="item.id"
+              :label="item.theme"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+          <div class="check">
+            <el-button
+              size="medium"
+              icon="el-icon-search"
+              type="primary"
+              round
+              v-on:click="queryBook"
+              >查询</el-button
+            >
           </div>
-          <div class="text item">
-            {{ borrowBook.summary }}
-          </div>
-        </el-card>
-        <el-button type="success" @click="borrow">借阅</el-button>
-      </el-dialog>
-      <div class="booktable">
-        <el-table v-model="tableData" :data="tableData" stripe>
-          <el-table-column
-            prop="book.bookName"
-            label="书名"
-            width="130"
-            align="center"
+        </div>
+      </div>
+      <div class="search-container">
+        <div class="item">
+          <el-input v-model="book.bookName" placeholder="请输入书名/作者"
+            ><i slot="prefix" class="el-input__icon el-icon-search"></i
+          ></el-input>
+        </div>
+        <div class="search">
+          <el-button type="primary" v-on:click="queryBook">搜索</el-button>
+        </div>
+      </div>
+      <div class="show-container">
+        <el-dialog :visible.sync="dialogTableVisible" top="10%">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span>简介</span>
+            </div>
+            <div class="text item">
+              {{ borrowBook.summary }}
+            </div>
+          </el-card>
+          <el-button style="margin-top: 20px" type="success" @click="borrow"
+            >借阅</el-button
           >
-          </el-table-column>
+          <el-button
+            style="margin-top: 20px"
+            @click="dialogTableVisible = false"
+            >取消</el-button
+          >
+        </el-dialog>
+        <div class="booktable">
+          <el-table v-model="tableData" :data="tableData" stripe border>
+            <el-table-column
+              prop="book.bookName"
+              fixed
+              label="书名"
+              width="150"
+              align="center"
+            >
+            </el-table-column>
 
-          <el-table-column prop="book.nation" label="国家" width="130">
-          </el-table-column>
-          <el-table-column prop="book.type" label="类型" width="130">
-          </el-table-column>
-          <el-table-column prop="book.length" label="篇幅" width="130">
-          </el-table-column>
-          <el-table-column prop="book.theme" label="主题" width="130">
-          </el-table-column>
-          <el-table-column prop="book.author" label="作者" width="180">
-          </el-table-column>
-          <el-table-column
-            align="center"
-            prop="book.storeDate"
-            label="上架时间"
-            width="200"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="status"
-            label="状态"
-            width="100"
-            header-align="center"
-          >
-            <template slot-scope="scope">
-              <div v-if="scope.row.status == '1'">
-                <el-button type="success" disabled>已借</el-button>
-              </div>
-              <div v-if="scope.row.book.leftAmount == '0'">
-                <el-button type="info" disabled>无货</el-button>
-              </div>
-              <div
-                v-if="
-                  scope.row.status == '0' && scope.row.book.leftAmount != '0'
-                "
-              >
-                <el-button
-                  type="primary"
-                  round
-                  v-on:click="showBook(scope.row), (dialogTableVisible = true)"
-                  >借阅</el-button
+            <el-table-column
+              prop="book.nation"
+              label="国家"
+              width="100"
+              align="center"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="book.type"
+              label="类型"
+              width="150"
+              align="center"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="book.length"
+              label="篇幅"
+              width="100"
+              align="center"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="book.theme"
+              label="主题"
+              width="100"
+              align="center"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="book.author"
+              label="作者"
+              width="180"
+              align="center"
+            >
+            </el-table-column>
+            <el-table-column
+              align="center"
+              prop="book.storeDate"
+              label="上架时间"
+              width="230"
+            >
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              prop="status"
+              label="状态"
+              width="100"
+              header-align="center"
+            >
+              <template slot-scope="scope">
+                <div v-if="scope.row.status == '1'">
+                  <el-button type="success" disabled>已借</el-button>
+                </div>
+                <div v-if="scope.row.book.leftAmount == '0'">
+                  <el-button type="info" disabled>无货</el-button>
+                </div>
+                <div
+                  v-if="
+                    scope.row.status == '0' && scope.row.book.leftAmount != '0'
+                  "
                 >
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
+                  <el-button
+                    type="primary"
+                    round
+                    v-on:click="
+                      showBook(scope.row), (dialogTableVisible = true)
+                    "
+                    >借阅</el-button
+                  >
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
       </div>
-    </div>
-    <div class="page-container">
-      <div class="block">
-        <el-pagination
-          @current-change="handleCurrentChange"
-          :current-page.sync="currentPage"
-          :page-size="pagesize"
-          layout="prev, pager, next, jumper"
-          :total="count"
-        >
-        </el-pagination>
+      <div class="page-container">
+        <div class="block">
+          <el-pagination
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage"
+            :page-size="pagesize"
+            layout="prev, pager, next, jumper"
+            :total="count"
+          >
+          </el-pagination>
+        </div>
       </div>
-    </div>
-  </div>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
@@ -192,6 +252,8 @@ export default {
   name: "Bookroom",
   data() {
     return {
+      userName: sessionStorage.getItem("userName"),
+
       count: null,
       book: {
         bookId: null,
@@ -228,7 +290,11 @@ export default {
     getBookTable() {
       this.$axios({
         method: "post",
-        url: "/BookType/" + sessionStorage.getItem("userId") + "/" + (this.currentPage - 1),
+        url:
+          "/BookType/" +
+          sessionStorage.getItem("userId") +
+          "/" +
+          (this.currentPage - 1),
         data: this.book,
       })
         .then((res) => {
@@ -245,7 +311,11 @@ export default {
       this.count = this.getTypeCount();
       this.$axios({
         method: "post",
-        url: "/BookType/" + sessionStorage.getItem("userId") + "/" + (this.currentPage - 1),
+        url:
+          "/BookType/" +
+          sessionStorage.getItem("userId") +
+          "/" +
+          (this.currentPage - 1),
         data: { bookName: this.book.bookName },
       })
         .then((res) => {
@@ -384,7 +454,11 @@ export default {
       this.count = this.getTypeCount();
       this.$axios({
         method: "post",
-        url: "/BookType/" + sessionStorage.getItem("userId") + "/" + (this.currentPage - 1),
+        url:
+          "/BookType/" +
+          sessionStorage.getItem("userId") +
+          "/" +
+          (this.currentPage - 1),
         data: this.book,
       })
         .then((res) => {
@@ -401,6 +475,7 @@ export default {
       } else if (e == "2") {
         this.book.type = null;
         this.currentType = null;
+        this.themeData = null;
         console.log("传入后端的类型：" + this.book.type);
         console.log("当前书的类型ID：" + this.currentType);
       } else if (e == "3") {
@@ -442,6 +517,7 @@ export default {
         message: "恭喜你，借书成功",
         type: "success",
       });
+      this.dialogTableVisible = false;
       this.getBookTable();
     },
     borrowFailed() {
@@ -459,6 +535,23 @@ export default {
     noBook() {
       this.$message("这本书库存不足！");
     },
+    alert() {
+      this.$confirm("正在选择退出当前用户, 是否继续?", "退出登录......", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          sessionStorage.removeItem("userId");
+          this.$router.push("/");
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消退出操作",
+          });
+        });
+    },
   },
   created() {
     this.getBookTable();
@@ -472,32 +565,74 @@ export default {
 
 
 <style scoped>
-.main-container {
-  position: absolute;
+.el-header {
+  background-color: rgb(198, 226, 255);
+  /* color: rgb(160, 207, 255); */
+  text-align: center;
+  line-height: 50px;
+}
+
+.el-main {
+  background-color: rgb(217, 236, 255);
+  color: #333;
+  text-align: center;
+  /* line-height: 200px; */
+}
+
+body > .el-container {
+  margin: 0;
+  padding: 0;
   width: 100%;
 }
 
 @font-face {
-  font-family: "FZZhaoMFXSJF";
-  src: url("../assets/font/FZZhaoMFXSJF.TTF");
+  font-family: "FZQuSJW";
+  src: url("../assets/font/FZQuSJW.TTF");
 }
 
-.main-container .desc {
+.el-header .desc {
   font-family: "FZQuSJW";
   font-size: 30px;
   font-weight: bold;
   letter-spacing: 5px;
-  color: cadetblue;
+  color: rgb(102, 177, 255);
   margin-top: 10px;
   float: left;
   margin-left: 10px;
   cursor: default;
 }
 
-.navigator-container {
-  display: flex;
+.el-header .bottom {
+  float: right;
+  margin-top: 5px;
+  font-size: 40px;
+  cursor: pointer;
+  /* text-align: center; */
+}
+
+.el-header .item {
+  margin: 4px;
+}
+
+.headImg {
+  position: relative;
+  width: 200px;
   height: 50px;
-  margin-top: 60px;
+  margin-left: 1200px;
+  margin-top: 10px;
+}
+
+.name {
+  position: absolute;
+  font-family: "FZQuSJW";
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 15px;
+  letter-spacing: 1px;
+}
+
+.navigator-container {
+  /* display: flex; */
   align-items: center;
 }
 
@@ -507,53 +642,48 @@ export default {
 
 .item-class {
   font-size: 20px;
-  color: black;
-}
-
-.el-breadcrumb__separator {
-  margin: 0 9px;
-  font-weight: 700;
-  color: #031436;
+  color: rgb(140, 197, 255);
 }
 
 .select-container {
-  margin-top: 10px;
+  margin-top: 15px;
+
+  /* margin-left: 20px; */
 }
 
 .select-container .select {
+  margin-left: 20%;
   display: flex;
-  width: 80%;
-  margin-left: 10%;
+  width: 1000px;
   justify-content: space-around;
 }
 
 .select-container .desc {
   color: black;
-  font-size: 30px;
-  margin-top: 2px;
-  margin-right: -40px;
+  font-size: 25px;
+  margin-top: 5px;
+  margin-right: -20px;
   letter-spacing: -5px;
   font-family: "FZZhaoMFXSJF";
 }
 
 .select-container .check {
-  margin-left: 70%;
-  margin-top: 5px;
+  margin-left: -10px;
 }
 
 .search-container {
-  margin-top: 100px;
+  margin-top: 80px;
   margin-left: 60%;
 }
 
 .search-container .item {
-  width: 200px;
-  margin-left: 10%;
+  width: 150px;
+  margin-left: 30%;
 }
 
 .search-container .search {
   margin-top: -40px;
-  margin-left: -10px;
+  margin-left: 130px;
 }
 
 .show-container {
@@ -569,8 +699,8 @@ export default {
 
 .page-container {
   margin-top: 10px;
-  margin-bottom: 100px;
   margin-left: 40%;
+  margin-bottom: 0;
 }
 
 .bookinfo-container {
