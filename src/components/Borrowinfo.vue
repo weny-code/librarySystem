@@ -33,7 +33,7 @@
       <div v-show="xianshi" class="xiangqingyemian transition-box">
         <el-row :gutter="12">
           <el-col :span="8">
-            <el-card shadow="hover"> 用户编号：{{ userId }} </el-card>
+            <el-card shadow="hover"> 用户编号：{{ sessionStorage.getItem("userId") }} </el-card>
           </el-col>
           <el-col :span="8">
             <el-card shadow="hover"> 用户姓名：{{ userName }} </el-card>
@@ -130,8 +130,7 @@ export default {
       // 总条数
       total: 0,
       userName: "",
-      userId: sessionStorage.getItem("userId")
-      //this.$userId.userId,
+      
     };
   },
   methods: {
@@ -145,7 +144,7 @@ export default {
       });
     },
     getCount() {
-      this.$axios.get("/borrowCount/1011").then((res) => {
+      this.$axios.get("/borrowCount/" + sessionStorage.getItem("userId")).then((res) => {
         this.total = res.data.num;
         this.userName = res.data.name;
         console.log("yonghuming");
@@ -164,7 +163,7 @@ export default {
         method:'post',
         url: '/borrowUserLikeSearchCount',
         data:{
-          userId:1011,
+          userId: sessionStorage.getItem("userId"),
           bookName: this.input2
         }
       }).then((res)=>{
@@ -180,12 +179,8 @@ export default {
         method: "post",
         url: "/borrowUserLikeSearch",
         data: {
-<<<<<<< HEAD
           userId: sessionStorage.getItem("userId"),
-=======
           index: (this.currentPage-1),
-          userId: 1011,
->>>>>>> d2db70200b0ca5cbc464d821babeef9da904d486
           bookName: this.input2,
         },
       }).then((res) => {
@@ -198,13 +193,8 @@ export default {
         method: "post",
         url: "/borrowPage",
         data: {
-<<<<<<< HEAD
           userId: sessionStorage.getItem("userId"),
           index: this.currentPage - 1,
-=======
-          userId: 1011,
-          index: (this.currentPage - 1),
->>>>>>> d2db70200b0ca5cbc464d821babeef9da904d486
         },
       }).then((res) => {
         this.bookData = res.data;
