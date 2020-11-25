@@ -9,7 +9,7 @@
       >返回</el-button
     >
     <section class="form_container">
-      <el-form
+      <el-form  
         :model="signIn"
         :rules="rules"
         class="signInForm"
@@ -44,6 +44,7 @@
     <div class="img">
       <img src="../assets/img/login.png" alt />
     </div>
+
   </div>
 </template>
 <script>

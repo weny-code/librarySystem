@@ -126,7 +126,6 @@ router.beforeEach((to, from, next) => {
             next();
         } else {
             alert("请先登录")
-
             next({
                 path: '/SignIn', // 未登录则跳转至login页面 
             });

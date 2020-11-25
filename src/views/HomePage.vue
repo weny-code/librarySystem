@@ -188,11 +188,11 @@ body > .el-container {
 }
 
 .text {
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .item {
-  padding: 18px 0;
+  padding: 0;
   text-align: center;
 }
 

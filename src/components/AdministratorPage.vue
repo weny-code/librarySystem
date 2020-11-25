@@ -152,6 +152,8 @@ export default {
         type: "warning",
       })
         .then(() => {
+          sessionStorage.removeItem("userId");
+          console.log(sessionStorage.getItem("userId"));
           this.$router.push("/");
         })
         .catch(() => {

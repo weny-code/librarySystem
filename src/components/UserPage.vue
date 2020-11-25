@@ -71,7 +71,12 @@ export default {
     })
       .then((res) => {
         console.log(res);
-        this.text.Notice = res.data;
+        this.textconent = res.data.content;
+        if (res.data.title === "") {
+          console.log("w");
+        } else {
+          this.text.Notice = res.data.title;
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -79,6 +84,8 @@ export default {
   },
   data() {
     return {
+      dialogVisible: false,
+      textconent: "",
       text: {
         Notice: "图书管理系统",
       },
@@ -275,7 +282,7 @@ body > .el-container {
 }
 
 .notice-container .item {
-  padding: 18px 0;
+  padding: 0;
   text-align: center;
 }
 

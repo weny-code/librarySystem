@@ -1,7 +1,8 @@
 <template>
-  <div class="container">
-    <div class="demo-input-suffix">
-      <el-input class="input" placeholder="主题" v-model="textarea.title">
+  <div >
+    <div  >
+    
+     <el-input class="input" placeholder="公告标题" v-model="textarea.title">
       </el-input>
     
     </div>
@@ -33,14 +34,7 @@ export default {
     
   },
   methods: {
-    issue() {
-      alert("点击了发布");
-    //   this.$axios
-    //   .get("url/textarea")
-    //   .then((res) => {
-    //       comsole.log("修改成功")
-    //   })
-    },
+ 
     open() {
       this.textarea.publisherId=sessionStorage.getItem("userId");
         this.$confirm('此操作将修改公告, 是否继续?', '提示', {
@@ -48,7 +42,8 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-            
+            let stringReplace=this.textarea.content.replace(/\n|\r\n/g,"<br/>");
+             this.textarea.content=stringReplace;
             this.$axios({
               method: "post",
               url: "/addAnnouncement",
@@ -80,6 +75,14 @@ export default {
 </script>
 
 <style scoped>
+p{
+  color:#000;
+  font-family: "FZZhaoMFXSJF";
+  font-size: 24px;
+}
+.titleTip{
+  margin-top:100px;
+}
 @font-face {
   font-family: "FZZhaoMFXSJF";
   src: url("../assets/font/FZZhaoMFXSJF.TTF");
@@ -88,7 +91,7 @@ export default {
   width: 30%;
   margin-top: 50px;
   margin-left: auto;
-  margin-right: 80px;
+  margin-right: 225px;
   font-size: 16px;
   font-family: "FZZhaoMFXSJF";
 }
