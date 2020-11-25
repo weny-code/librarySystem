@@ -76,7 +76,7 @@
         </el-table-column>
         <el-table-column prop="userAccount" label="账号" width="100" align="center">
         </el-table-column>
-        <el-table-column prop="email" label="邮箱" width="180" align="center">
+        <el-table-column prop="email" label="邮箱" width="150" align="center">
         </el-table-column>
         <el-table-column prop="age" label="年龄" width="50" align="center">
         </el-table-column>
@@ -96,7 +96,7 @@
         <el-table-column
           prop="description"
           label="描述"
-          width="300"
+          width="250"
           align="center"
         >
         </el-table-column>
@@ -361,11 +361,9 @@ export default {
 }
 .demo-input-suffix {
   margin-left: 600px;
-  margin-top: 100px;
+  margin-top: 50px;
 }
-.list {
-  margin-top: 20px;
-}
+
 .page {
   margin-left: 400px;
 }

@@ -438,7 +438,7 @@ export default {
 
 <style scoped>
 .multiSelector {
-  margin-top: 50px;
+  margin-top: 20px;
   margin-left: -10%;
 }
 .multiSelector .pre {
