@@ -234,14 +234,10 @@ body > .el-container {
 
 .operation-container {
   display: flex;
-  margin-top: 40px;
-  margin-left: 20%;
-  width: 1000px;
-  /* height: 450px; */
-  /* flex-direction: column; */
+  margin: 40px auto;
+  width: 900px;
   flex-wrap: wrap;
-  /* justify-content: center; */
-  align-content: flex-start;
+  justify-content: center;
 }
 
 .item2 {
@@ -249,12 +245,6 @@ body > .el-container {
 }
 
 .box-card {
-  width: 40%;
-  height: 160px;
-  margin: 10px;
-}
-
-.box-card:last-child {
   width: 40%;
   height: 160px;
   margin: 10px;

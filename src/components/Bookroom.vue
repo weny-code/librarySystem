@@ -41,7 +41,8 @@
             v-model="value1"
             style="width: 150px"
             clearable
-            placeholder="请选择"
+            filterable
+            placeholder="请选择国家"
             @change="currentBookNation($event)"
             @clear="noSelect(1)"
           >
@@ -58,7 +59,8 @@
             v-model="value2"
             style="width: 150px"
             clearable
-            placeholder="请选择"
+            filterable
+            placeholder="请选择类型"
             @change="currentBookType($event)"
             @clear="noSelect(2)"
           >
@@ -75,7 +77,7 @@
             v-model="value3"
             style="width: 150px"
             clearable
-            placeholder="请选择"
+            placeholder="请选择篇幅"
             @change="currentBookLength($event)"
             @clear="noSelect(3)"
           >
@@ -93,6 +95,7 @@
             style="width: 150px"
             clearable
             placeholder="请先选择类型"
+            no-data-text="请先选择书籍类型"
             @change="currentBookTheme($event)"
             @clear="noSelect(4)"
           >

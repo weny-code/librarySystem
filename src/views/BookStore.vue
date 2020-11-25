@@ -8,7 +8,8 @@
             v-model="value1"
             style="width: 150px"
             clearable
-            placeholder="请选择"
+            filterable
+            placeholder="请选择国家"
             @change="currentBookNation($event)"
             @clear="noSelect(1)"
           >
@@ -25,7 +26,8 @@
             v-model="value2"
             style="width: 150px"
             clearable
-            placeholder="请选择"
+            filterable
+            placeholder="请选择类型"
             @change="currentBookType($event)"
             @clear="noSelect(2)"
           >
@@ -42,7 +44,7 @@
             v-model="value3"
             style="width: 150px"
             clearable
-            placeholder="请选择"
+            placeholder="请选择篇幅"
             @change="currentBookLength($event)"
             @clear="noSelect(3)"
           >
@@ -60,6 +62,7 @@
             style="width: 150px"
             clearable
             placeholder="请先选择类型"
+            no-data-text="请先选择书籍类型"
             @change="currentBookTheme($event)"
             @clear="noSelect(4)"
           >
@@ -213,6 +216,7 @@
                 placeholder="请选择书籍类型"
                 @change="currentBookType2($event)"
                 clearable
+                filterable
                 style="width: 200px"
               >
                 <el-option
@@ -228,6 +232,7 @@
                 v-model="ruleForm.nation"
                 placeholder="请选择书籍国家"
                 clearable
+                filterable
                 style="width: 200px"
               >
                 <el-option
@@ -243,6 +248,7 @@
                 v-model="ruleForm.theme"
                 placeholder="请先选择书籍类型"
                 clearable
+                no-data-text="请先选择书籍类型"
                 style="width: 200px"
               >
                 <el-option
@@ -255,7 +261,7 @@
             </el-form-item>
             <el-form-item label="上架数量" prop="uploadAmount">
               <el-input
-                v-model="ruleForm.uploadAmount"
+                v-model.number="ruleForm.uploadAmount"
                 style="width: 200px"
               ></el-input>
             </el-form-item>
@@ -283,12 +289,15 @@
               ></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">添加</el-button>
+              <el-button type="primary" @click="onSubmit('ruleForm')"
+                >添加</el-button
+              >
               <el-button @click="dialogTableVisible2 = false">取消</el-button>
             </el-form-item>
           </el-form>
         </el-dialog>
       </div>
+      <!-- 编辑书籍 -->
       <div class="dialog-container">
         <el-dialog
           :visible.sync="dialogTableVisible"
@@ -319,6 +328,7 @@
                 placeholder="请选择书籍类型"
                 @change="currentBookType2($event)"
                 clearable
+                filterable
                 style="width: 200px"
               >
                 <el-option
@@ -334,6 +344,7 @@
                 v-model="ruleForm.nation"
                 placeholder="请选择书籍国家"
                 clearable
+                filterable
                 style="width: 200px"
               >
                 <el-option
@@ -349,6 +360,7 @@
                 v-model="ruleForm.theme"
                 placeholder="请先选择书籍类型"
                 clearable
+                no-data-text="请先选择书籍类型"
                 style="width: 200px"
               >
                 <el-option
@@ -361,7 +373,7 @@
             </el-form-item>
             <el-form-item label="上架数量" prop="uploadAmount">
               <el-input
-                v-model="ruleForm.uploadAmount"
+                v-model.number="ruleForm.uploadAmount"
                 style="width: 200px"
               ></el-input>
             </el-form-item>
@@ -388,7 +400,9 @@
               ></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="onSubmit2">保存</el-button>
+              <el-button type="primary" @click="onSubmit2(ruleForm)"
+                >保存</el-button
+              >
               <el-button @click="dialogTableVisible = false">取消</el-button>
             </el-form-item>
           </el-form>
@@ -402,6 +416,22 @@
 export default {
   name: "bookstore",
   data() {
+    var checkUploadAmount = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("年龄不能为空"));
+      }
+      setTimeout(() => {
+        if (!Number.isInteger(value)) {
+          callback(new Error("请输入数字值"));
+        } else {
+          if (value <= 0) {
+            callback(new Error("上架数量必须大于0！"));
+          } else {
+            callback();
+          }
+        }
+      }, 1000);
+    };
     return {
       count: null,
       userId: sessionStorage.getItem("userId"),
@@ -470,12 +500,7 @@ export default {
         ],
         uploadAmount: [
           { required: true, message: "请输入上架数量", trigger: "blur" },
-          {
-            min: 1,
-            max: 10,
-            message: "长度在 1 到 10 个字符",
-            trigger: "blur",
-          },
+          { validator: checkUploadAmount, trigger: "blur" },
         ],
         author: [
           { required: true, message: "请输入书籍作者", trigger: "blur" },
@@ -516,6 +541,7 @@ export default {
     },
     searchBook() {
       this.count = this.getTypeCount();
+      this.currentPage = 1;
       this.$axios({
         method: "post",
         url: "/BookType/" + this.userId + "/" + (this.currentPage - 1),
@@ -673,6 +699,7 @@ export default {
     },
     queryBook() {
       this.count = this.getTypeCount();
+      this.currentPage = 1;
       this.$axios({
         method: "post",
         url: "/BookType/" + this.userId + "/" + (this.currentPage - 1),
@@ -700,52 +727,67 @@ export default {
         this.book.theme = null;
       }
     },
-    onSubmit() {
-      this.$axios({
-        method: "post",
-        url: "/BookInsert",
-        data: this.ruleForm,
-      })
-        .then((res) => {
-          if (res.data == "1") {
-            this.$message({
-              message: "添加成功！",
-              type: "success",
+    onSubmit(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$axios({
+            method: "post",
+            url: "/BookInsert",
+            data: this.ruleForm,
+          })
+            .then((res) => {
+              if (res.data == "1") {
+                this.$message({
+                  message: "添加成功！",
+                  type: "success",
+                });
+                this.getBookTable();
+                this.dialogTableVisible = false;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
             });
-            this.getBookTable();
-            this.dialogTableVisible = false;
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
     },
-    onSubmit2() {
-      this.$axios({
-        method: "post",
-        url: "/BookInfoUpdate",
-        data: this.ruleForm,
-      })
-        .then((res) => {
-          if (res.data == "1") {
-            this.$message({
-              message: "修改成功",
-              type: "success",
+    onSubmit2(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$axios({
+            method: "post",
+            url: "/BookInfoUpdate",
+            data: this.ruleForm,
+          })
+            .then((res) => {
+              if (res.data == "1") {
+                this.$message({
+                  message: "修改成功",
+                  type: "success",
+                });
+                this.getBookTable();
+                this.dialogTableVisible = false;
+              } else {
+                this.$message.error("修改失败，不能超过剩余数量！");
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
             });
-            this.getBookTable();
-            this.dialogTableVisible = false;
-          } else {
-            this.$message.error("修改失败，不能超过剩余数量！");
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
     },
     addBook() {
       for (let key in this.ruleForm) {
         this.ruleForm[key] = "";
       }
+      this.themeData = null;
       this.dialogTableVisible2 = true;
       setTimeout(() => {
         this.$nextTick(function () {
