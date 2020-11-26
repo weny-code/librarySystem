@@ -26,7 +26,7 @@
         </div>
       </div>
       <!-- 详情页面 -->
-      <transition name="el-fade-in-linear">
+      <transition name="el-fade-in-linear"> 
         <div v-show="show" class="showDetail transition-box">
           <el-row :gutter="12">
             <el-col :span="8">
@@ -41,6 +41,20 @@
               </el-card>
             </el-col>
           </el-row>
+           <el-row :gutter="12">
+            <el-col :span="8">
+              <el-card shadow="hover"> 书籍名称：{{ detail.bookName }} </el-card>
+            </el-col>
+            <el-col :span="8">
+              <el-card shadow="hover"> 借阅时间：{{ detail.borrowTime }} </el-card>
+            </el-col>
+            <el-col :span="8">
+              <el-card shadow="hover">
+                借阅有效期：30天
+              </el-card>
+            </el-col>
+          </el-row>
+          <el-button type="primary" @click="show=false">点击隐藏</el-button>
         </div>
         <div class="demo-input-suffix">
           <el-input
@@ -145,7 +159,6 @@ export default {
       total: 0,
       userName: "",
       userId: sessionStorage.getItem("userId"),
-      //this.$userId.userId,
     };
   },
   methods: {
