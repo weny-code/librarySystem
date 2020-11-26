@@ -6,7 +6,7 @@
       <span class="pre1">国家</span>
       <el-select
         v-model="value1"
-        placeholder="请选择"
+        placeholder="请选择国家"
         clearable
         filterable
         @change="currentBookNation($event)"
@@ -24,7 +24,7 @@
       <span class="pre"> 类型</span>
       <el-select
         v-model="value2"
-        placeholder="请选择"
+        placeholder="请选择类型"
         clearable
         filterable
         @change="currentBookType($event)"
@@ -42,7 +42,7 @@
       <span class="pre"> 篇幅</span>
       <el-select
         v-model="value3"
-        placeholder="请选择"
+        placeholder="请选择篇幅"
         clearable
         @change="currentBookLength($event)"
         @clear="noSelect(3)"
@@ -59,7 +59,7 @@
       <span class="pre"> 主题</span>
       <el-select
         v-model="value4"
-        placeholder="请选择"
+        placeholder="请选择主题"
         clearable
         filterable
         @change="currentBookTheme($event)"
@@ -73,6 +73,7 @@
         >
         </el-option>
       </el-select>
+      <!--搜索按钮 -->
       <el-button
         class="searchButton"
         type="primary"
@@ -86,41 +87,36 @@
       <el-input
         class="inputText"
         v-model="book.bookName"
-        placeholder="请输入内容"
+        placeholder="请输入书名或者作者"
       ></el-input>
       <el-button type="primary" @click="searchByType"> 搜索</el-button>
     </div>
-    <!-- 借阅详情 -->
+    <!-- 书本详情表格 -->
     <div class="borrowInfo">
-      <el-table
-        :data="bookData"
-        :cell-style="{ textAlign: 'center' }"
-        :header-cell-style="{ textAlign: 'center' }"
-        class="table"
-      >
-        <el-table-column prop="bookName" label="书名" width="150">
-        </el-table-column>
-        <el-table-column prop="nation" label="国家" width="150">
-        </el-table-column>
-        <el-table-column prop="type" label="类型" width="150">
-        </el-table-column>
+      <div class="table">
+        <el-table
+          :data="bookData"
+          :cell-style="{ textAlign: 'center' }"
+          :header-cell-style="{ textAlign: 'center' }"
+        >
+          <el-table-column prop="bookName" label="书名" width="130">
+          </el-table-column>
+          <el-table-column prop="nation" label="国家" width="110">
+          </el-table-column>
+          <el-table-column prop="author" label="作者" width="150">
+          </el-table-column>
+          <el-table-column prop="type" label="类型" width="110">
+          </el-table-column>
+          <el-table-column prop="length" label="篇幅" width="110">
+          </el-table-column>
+          <el-table-column prop="theme" label="主题" width="110">
+          </el-table-column>
+          <el-table-column prop="storeDate" label="上架日期" width="200">
+          </el-table-column>
 
-        <el-table-column prop="length" label="篇幅" width="150">
-        </el-table-column>
-        <el-table-column prop="theme" label="主题" width="150">
-        </el-table-column>
-        <el-table-column prop="storeDate" label="上架日期" width="200">
-        </el-table-column>
-        <!-- 按钮 -->
-        <el-table-column width="150" label="操作">
-          <template slot-scope="scope">
-            <el-popover
-              placement="top-start"
-              title="提示"
-              width="100"
-              trigger="hover"
-              content="点击查看借阅详情"
-            >
+          <!-- 按钮 -->
+          <el-table-column width="120" label="操作">
+            <template slot-scope="scope">
               <el-button
                 @click="handleClick(scope.row)"
                 type="primary"
@@ -128,16 +124,17 @@
                 slot="reference"
                 >{{ boorowStatus }}</el-button
               >
-            </el-popover>
-          </template>
-        </el-table-column>
-      </el-table>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
       <!-- 对话框 -->
       <div class="dialog">
         <el-dialog
           title="书本借阅详情"
           :visible.sync="dialogVisible"
           width="50%"
+          :close-on-click-modal="false"
         >
           <div>
             <el-row :gutter="20">
@@ -158,13 +155,17 @@
               >
             </el-row>
 
-            <el-table :data="borrowInfo" style="width: 100%" height="250">
+            <el-table
+              :data="borrowInfo"
+              :header-cell-style="{ textAlign: 'center' }"
+              :cell-style="{ textAlign: 'center' }"
+            >
               <el-table-column prop="name" label="借阅人" width="100">
               </el-table-column>
               <el-table-column prop="borrowTime" label="借阅日期" width="150">
               </el-table-column>
 
-              <el-table-column prop="retTime" label="归还日期" width="150">
+              <el-table-column prop="retTime" label="应归还日期" width="150">
               </el-table-column>
               <el-table-column prop="validTime" label="距归还还剩" width="150">
               </el-table-column>
@@ -196,12 +197,13 @@
 export default {
   data() {
     return {
-      input: "",
-      currentPage: 1,
-      dialogVisible: false,
-      boorowStatus: "借阅详情",
-      total: 0,
-      currentType: null,
+      input: "", //绑定搜索输入框
+      currentPage: 1, //当前页
+      dialogVisible: false, //对话框默认不显示
+      boorowStatus: "借阅详情", //按钮显示的文字
+      total: 0, //信息总数
+      currentType: null, //当前书本类型
+
       book: {
         bookId: null,
         bookName: null,
@@ -240,7 +242,7 @@ export default {
     //点击换页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-      if (this.book == null && this.input) {
+      if (this.book == null && this.input == null) {
         this.getBookData();
       } else {
         this.searchByTypePage();
@@ -287,7 +289,7 @@ export default {
           console.log(error);
         });
     },
-    //根据类型搜搜
+    //根据类型搜索
     searchByType() {
       this.book.nation = this.value1;
       this.book.type = this.value2;
@@ -364,7 +366,7 @@ export default {
           console.log(error);
         });
     },
-
+    //取得类型选择框当前信息
     currentBookType(e) {
       this.value4 = null;
       let obj = {};
@@ -397,7 +399,7 @@ export default {
       });
       this.value4 = obj.theme;
     },
-    //获取分类之后得到的数据总数
+    //获取分类之后搜索得到的数据总数
     getTypeCount() {
       this.$axios({
         method: "post",
@@ -464,13 +466,17 @@ export default {
   width: 250px;
 }
 .keywordSearch {
-  margin-left: 400px;
+  margin-left: 700px;
+  margin-top: 80px;
+}
+.borrowInfo {
+  display: flex;
   margin-top: 20px;
+  width: 100%;
+  justify-content: center;
 }
 .table {
-  width: 1100px;
-  margin-left: 10%;
-  margin-top: 10px;
+  width: auto;
 }
 .block {
   margin-left: 15%;

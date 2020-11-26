@@ -66,7 +66,7 @@ export default {
   methods: {
     handleCommand(command) {
       if (command == "a") {
-        this.$router.push({ path: "/MyInfo" });
+        this.$router.push({ path: "/infoModifyStudent" });
       } else if (command == "b") {
         this.alert();
       }

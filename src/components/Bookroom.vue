@@ -445,6 +445,7 @@ export default {
       this.book.length = this.value3;
       this.book.theme = this.value4;
       this.count = this.getTypeCount();
+      this.currentPage = 1;
       this.$axios({
         method: "post",
         url:
@@ -651,5 +652,16 @@ body > .el-container {
 
 .bookinfo-container {
   margin-top: 50%;
+}
+
+.clearfix {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.box-card .text {
+  text-align: left;
+  text-indent: 50px;
+  font-size: 15px;
 }
 </style>

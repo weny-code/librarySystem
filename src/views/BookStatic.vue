@@ -3,7 +3,7 @@
     <!-- 走马灯 -->
     <div class="carousel">
       <el-carousel :interval="4000" type="card" height="200px">
-        <el-carousel-item v-for="item in lists" :key="item">
+        <el-carousel-item v-for="(item,index) in lists" :key="index">
           <h2 class="medium">{{ item.name }}</h2>
           <span>借出数量: {{ item.valueBorrow }}</span> <br />
           <span>归还数量:{{ item.valueRet }}</span>
@@ -12,11 +12,11 @@
     </div>
     <!-- 报表 -->
     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-    <div id="main" class="mainReport" style="width: 600px; height: 450px"></div>
+    <div id="main" class="mainReport" style="width: 500px; height: 350px"></div>
     <div
       id="main1"
       class="mainReport1"
-      style="width: 600px; height: 450px"
+      style="width: 500px; height: 350px"
     ></div>
   </div>
 </template>
@@ -29,9 +29,9 @@ export default {
   data() {
     return {
       lists: [
-        { name: "今日统计", valueBorrow: null, valueRet: null },
-        { name: "本月统计", valueBorrow: null, valueRet: null },
-        { name: "年度统计", valueBorrow: null, valueRet: null },
+        { name: "今日统计", valueBorrow: null, valueRet: null ,id:1},
+        { name: "本月统计", valueBorrow: null, valueRet: null ,id:2},
+        { name: "年度统计", valueBorrow: null, valueRet: null ,id:3},
       ],
     };
   },
@@ -64,8 +64,7 @@ export default {
         left: 10,
         data: [],
       },
-      // color : ['#B22222', 'yellow', 'green', 'steelblue', 'orange' ],
-      color : [ 'DarkGreen','Yellow','#00EE76','#FF6A6A','#8B1C62' ],
+      color : ['LightPink','CornflowerBlue','#00EE76','#FF6A6A','Magenta' ],
       series: [
         {
           name: "归还数量",
@@ -198,7 +197,7 @@ export default {
           legend: {
             data: name,
           },
-          color : ['#B22222', 'yellow', 'green', 'steelblue', 'orange' ],
+          color : ['#B22222', 'MediumOrchid', 'green', 'steelblue', 'orange' ],
           series: [
             {
               data: value,
@@ -332,11 +331,10 @@ export default {
 .mainReport,
 .mainReport1 {
   float: left;
-  margin-top: 20px;
 }
 
 .mainReport {
-  margin-left: 50px;
+  margin-left: 100px;
 }
 
 .mainReport1 {

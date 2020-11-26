@@ -112,7 +112,7 @@ export default {
 }
 
 .announcementCard {
-  height: 800px;
+  height: auto;
 }
 
 .titleTip {
