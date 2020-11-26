@@ -9,7 +9,7 @@
       >返回</el-button
     >
     <section class="form_container">
-      <el-form  
+      <el-form
         :model="signIn"
         :rules="rules"
         class="signInForm"
@@ -21,6 +21,7 @@
             v-model="signIn.account"
             placeholder="请输入ID"
             maxlength="30"
+            clearable
           ></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
@@ -29,6 +30,7 @@
             placeholder="请输入密码"
             type="password"
             maxlength="30"
+            show-password
           ></el-input>
         </el-form-item>
         <el-form-item>
@@ -44,7 +46,6 @@
     <div class="img">
       <img src="../assets/img/login.png" alt />
     </div>
-
   </div>
 </template>
 <script>
@@ -116,7 +117,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style  scoped>
 @font-face {
   font-family: "FZQuSJW";
   src: url("../assets/font/FZQuSJW.TTF");

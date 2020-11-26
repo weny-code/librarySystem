@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="announcementCard">
     <div>
       <el-input class="input" placeholder="公告标题" v-model="textarea.title">
       </el-input>
@@ -15,6 +15,25 @@
       </el-input>
       <el-button type="primary" @click="open()" class="juli">发布</el-button>
     </div>
+    <div class="noticeShow">
+      <el-card class="box-card">
+        <div class="text item" v-html="text.Notice"></div>
+        <el-button type="text" @click="dialogVisible = true"
+          >公告详情</el-button
+        >
+      </el-card>
+    </div>
+    <el-dialog
+      title="公告"
+      :visible.sync="dialogVisible"
+      style="text-align: left; padding-bottom: 100px"
+    >
+      <span
+        style="font-size: 1em; margin-top: -2em; text-indent: 2em"
+        v-html="textconent"
+      ></span>
+      <div style="height: 60px"></div>
+    </el-dialog>
   </div>
 </template>
 
@@ -22,6 +41,12 @@
 export default {
   data() {
     return {
+      dialogVisible: false,
+      textconent: "",
+      oldAnnouncement: "",
+      text: {
+        Notice: "图书管理系统",
+      },
       textarea: {
         title: "",
         content: "",
@@ -38,12 +63,21 @@ export default {
         type: "warning",
       })
         .then(() => {
+          this.oldAnnouncement = this.textarea.content;
+          let stringReplace = this.textarea.content.replace(
+            /\n|\r\n/g,
+            "<br/>"
+          );
+          this.textarea.content = stringReplace;
           this.$axios({
             method: "post",
             url: "/addAnnouncement",
             data: this.textarea,
           }).then((res) => {
             if (res.data == 1) {
+              this.text.Notice = this.textarea.title;
+              this.textconent = this.textarea.content;
+              this.textarea.content = this.oldAnnouncement;
               this.$message({
                 type: "success",
                 message: "添加成功!",
@@ -66,12 +100,21 @@ export default {
 };
 </script>
 
-<style scoped>
-p {
-  color: #000;
-  font-family: "FZZhaoMFXSJF";
-  font-size: 24px;
+<style>
+.noticeShow {
+  margin-top: 5%;
+  display: flex;
+  justify-content: center;
 }
+.noticeShow .box-card {
+  width: 800px;
+  height: 100px;
+}
+
+.announcementCard {
+  height: 800px;
+}
+
 .titleTip {
   margin-top: 100px;
 }

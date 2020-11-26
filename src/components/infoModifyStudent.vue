@@ -329,6 +329,7 @@ export default {
       this.readonly = false;
     },
     Confirm() {
+      console.log(this.infoModeify);
       this.flag = 1;
       this.readonly = true;
       this.$axios({
@@ -476,6 +477,9 @@ td {
   width: 30%;
   margin: 2% auto;
 }
+label{
+  font-size:1em;
+}
 .signInForm .el-button {
   margin: 1%;
 }
@@ -491,9 +495,7 @@ td {
   border: 0;
   margin-left: 50%;
 }
-table {
-  font-size: 1.2em;
-}
+
 table th:nth-child(even) {
   background-color: burlywood;
 }
@@ -506,11 +508,12 @@ td {
 }
 td input {
   outline: none;
-
+  font-size:1em;
   border: 0;
   width: 95%;
   height: 95%;
 }
+
 .signInForm {
   margin: 3% 0;
 }
@@ -518,13 +521,14 @@ td input {
   width: 100%;
 }
 td textarea {
-  width: 761px;
-  height: 89px;
+  width: 973px;   
+  height: 91px;
   line-height: 1em;
   margin: 0;
-  padding: 0;
+  padding: 4px;
   outline: none;
   border: 0;
+   font-size:1.2em;
 }
 td input {
   text-align: center;
