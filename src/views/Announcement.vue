@@ -1,17 +1,18 @@
 <template>
   <div  class="announcementCard">
     <div>  
-     <el-input class="input" placeholder="公告标题" v-model="textarea.title">
+     <el-input class="input" placeholder="公告标题" v-model="textarea.title" clearable>
       </el-input>
     
     </div>
     <div >
       <el-input
         class="textarea"
-        type="textarea"
+        type="textarea" 
         placeholder="请输入内容"
         v-model="textarea.content"
       :autosize="{ minRows: 8, maxRows: 10}"
+      
       >
       </el-input>
         <el-button type="primary" @click="open()"  class="juli">发布</el-button>
@@ -51,9 +52,9 @@ export default {
               console.log(res);
               console.log(res.data.content)
               this.textarea.title=res.data.title
-              this.textarea.content=res.data.content;
+              this.textarea.content=res.data.content.replace(/<br\/>/g, "\n");
               this.textconent=res.data.content;
-                if(res.data.title===""){
+                if(res.data.title===""){ 
                 console.log("w")
               }
               else{
