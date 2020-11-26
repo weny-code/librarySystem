@@ -12,11 +12,11 @@
     </div>
     <!-- 报表 -->
     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-    <div id="main" class="mainReport" style="width: 500px; height: 350px"></div>
+    <div id="main" class="mainReport" style="width: 500px; height: 400px"></div>
     <div
       id="main1"
       class="mainReport1"
-      style="width: 500px; height: 350px"
+      style="width: 500px; height: 400px"
     ></div>
   </div>
 </template>
