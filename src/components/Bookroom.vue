@@ -311,6 +311,7 @@ export default {
     },
     searchBook() {
       console.log("------------" + this.book.bookName);
+      this.currentPage  = 1;
       this.count = this.getTypeCount();
       this.$axios({
         method: "post",
@@ -455,6 +456,7 @@ export default {
     },
     queryBook() {
       this.count = this.getTypeCount();
+      this.currentPage  = 1;
       this.$axios({
         method: "post",
         url:
@@ -686,7 +688,7 @@ body > .el-container {
 
 .search-container .search {
   margin-top: -40px;
-  margin-left: 130px;
+  margin-left: 140px;
 }
 
 .show-container {
@@ -697,7 +699,7 @@ body > .el-container {
 }
 
 .show-container .booktable {
-  width: 75%;
+  width: 76%;
 }
 
 .page-container {

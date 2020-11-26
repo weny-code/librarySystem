@@ -1,8 +1,9 @@
 <template>
   <div class="container">
+    <!--搜索框-->
     <div class="demo-input-suffix">
       <el-input
-        placeholder="请输入用户名或者ID"
+        placeholder="请输入用户名或者账号"
         class="searchInput"
         v-model="user.name"
       >
@@ -17,6 +18,7 @@
       >
     </div>
     <div class="list">
+    <!-- 对话框 -->
       <el-dialog title="借阅详情" :visible.sync="dialogTableVisible">
         <div class="user">用户名:{{ userName }}</div>
         <!-- 弹出框中的表格 -->
@@ -46,16 +48,15 @@
           <el-button @click="dialogTableVisible = false">取 消</el-button>
         </div>
         <!-- 对话框内分页器 -->
-        <div class="block">
           <el-pagination
             @current-change="diaHandleCurrentChange"
             :current-page.sync="currentPage1"
             :page-size="5"
+            background
             layout="prev, pager, next, jumper"
             :total="total1"
           >
           </el-pagination>
-        </div>
       </el-dialog>
       <!-- 用户信息主体 -->
       <el-table
@@ -63,7 +64,7 @@
         :data="userData"
         border
         style="width: 82%"
-        highlight-current-row="true"
+        :highlight-current-row="true"
       >
         <el-table-column
           fixed
@@ -134,13 +135,13 @@
 export default {
   data() {
     return {
-      keyWord: "",
-      currentPage: 1,
-      total: 0,
-      total1: 0,
+      keyWord: "", //搜索关键字
+      currentPage: 1, 
+      total: 0,  //用户信息总数
+      total1: 0,  //对话框内的数据总数
       dialogTableVisible: false,
-      currentPage1: 1,
-      pageSize: 5,
+      currentPage1: 1,  //对话框内的当前页
+      pageSize: 5,  
       userName: "",
       userId: sessionStorage.getItem("userId"),
       userAccount:"",
@@ -148,12 +149,13 @@ export default {
         name: null,
         index: null,
       },
-      user1: {},
+      user1: {},  //暂存当前行的用户信息
       userData: [],
       gridData: [],
     };
   },
   methods: {
+    //换页方法
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
@@ -163,10 +165,11 @@ export default {
         this.getUserData();
       }
     },
+    //对话框内的换页
     diaHandleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage1 = val;
-      this.checkUser(this.user1);
+      this.getInforByPage();
     },
     // 搜索
     search() {
@@ -212,30 +215,37 @@ export default {
       this.$axios
         .get("/borrowCount/" + this.userId)
         .then((res) => {
-          this.total1 = res.data;
+          this.total1 = res.data.num;
+          console.log("得到用户借阅历史总数")
           console.log(this.total1);
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    //查看用户信息
+    //点击查看用户信息按钮
     checkUser(user) {
+      this.gridData =null;
+      this.currentPage1 = 1;
       this.dialogTableVisible = true;
       this.userName = user.name;
       this.user1 = user;
       this.userId = user.userId;
       console.log(user);
+      this.getUserBorrCount();
+      this.getInforByPage();
+    },
+    //用户借阅记录分页
+    getInforByPage(){
       this.$axios({
         method: "post",
         url: "/borrowPage",
         data: {
-          userId: user.userId,
+          userId: this.userId,
           index: this.currentPage1 - 1,
         },
       })
         .then((res) => {
-          this.getUserBorrCount();
           this.gridData = res.data;
           console.log("得到用户借阅详情");
         })

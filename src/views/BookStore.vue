@@ -175,7 +175,6 @@
       <div class="page-container">
         <div class="block">
           <el-pagination
-            @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page.sync="currentPage"
             :page-size="pagesize"

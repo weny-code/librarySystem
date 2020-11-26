@@ -45,7 +45,7 @@
       <div v-show="show" class="showDetail transition-box">
         <el-row :gutter="12">
           <el-col :span="8">
-            <el-card shadow="hover"> 用户编号：{{userId}}} </el-card>
+            <el-card shadow="hover"> 用户编号：{{userId}} </el-card>
           </el-col>
           <el-col :span="8">
             <el-card shadow="hover"> 用户姓名：{{ userName }} </el-card>
@@ -76,9 +76,10 @@
       </div>
     </transition>
 
+    <!--搜索框-->
     <div class="demo-input-suffix">
       <el-input
-        class="sousuokuang"
+        class="searchFrame"
         placeholder="请输入关键词"
         prefix-icon="el-icon-search"
         v-model="input2"
@@ -118,7 +119,6 @@
         background
         layout="total,prev, pager, next"
         @current-change="handleCurrentChange"
-        @size-change="handleSizeChange"
         :current-page.sync="currentPage"
         :page-size="pageSize"
         :total="total"
@@ -132,7 +132,7 @@
 export default {
   data() {
     return {
-      userName1: sessionStorage.getItem("userName"),
+      userName1: sessionStorage.getItem("userName"), 
       input2: null,
       show: false,
       bookData: [],
@@ -148,6 +148,7 @@ export default {
     };
   },
   methods: {
+
     onLook(book) {
       this.show = true;
       console.log(book.id);
@@ -161,7 +162,7 @@ export default {
       this.$axios.get("/borrowCount/" + sessionStorage.getItem('userId')).then((res) => {
         this.total = res.data.num;
         this.userName = res.data.name;
-        console.log("yonghuming");
+        console.log("用户名");
         console.log(this.userName);
         console.log(this.total)
         console.log(sessionStorage.getItem('userId'))
@@ -241,7 +242,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          this.$userId.userId = null;
+           sessionStorage.removeItem("userId");
           this.$router.push("/");
         })
         .catch(() => {
@@ -262,7 +263,6 @@ export default {
 <style scoped>
 .el-header {
   background-color: rgb(198, 226, 255);
-  /* color: rgb(160, 207, 255); */
   text-align: center;
   line-height: 50px;
 }
@@ -271,7 +271,6 @@ export default {
   background-color: rgb(217, 236, 255);
   color: #333;
   text-align: center;
-  /* line-height: 200px; */
 }
 
 body > .el-container {
@@ -302,7 +301,6 @@ body > .el-container {
   margin-top: 5px;
   font-size: 40px;
   cursor: pointer;
-  /* text-align: center; */
 }
 
 .el-header .item {
@@ -327,7 +325,6 @@ body > .el-container {
 }
 
 .navigator-container {
-  /* display: flex; */
   height: 50px;
   align-items: center;
 }
@@ -350,7 +347,7 @@ body > .el-container {
   width: 500px;
   margin-left: 600px;
 }
-.sousuokuang {
+.searchFrame {
   width: 200px;
 }
 .showDetail {

@@ -6,7 +6,7 @@
       <span class="pre1">国家</span>
       <el-select
         v-model="value1"
-        placeholder="请选择"
+        placeholder="请选择国家"
         clearable
         filterable 
         @change="currentBookNation($event)"
@@ -24,7 +24,7 @@
       <span class="pre"> 类型</span>
       <el-select
         v-model="value2"
-        placeholder="请选择"
+        placeholder="请选择类型"
         clearable
         filterable
         @change="currentBookType($event)"
@@ -42,7 +42,7 @@
       <span class="pre"> 篇幅</span>
       <el-select
         v-model="value3"
-        placeholder="请选择"
+        placeholder="请选择篇幅"
         clearable
         @change="currentBookLength($event)"
         @clear="noSelect(3)"
@@ -59,7 +59,7 @@
       <span class="pre"> 主题</span>
       <el-select
         v-model="value4"
-        placeholder="请选择"
+        placeholder="请选择主题"
         clearable
         filterable
         @change="currentBookTheme($event)"
@@ -73,6 +73,7 @@
         >
         </el-option>
       </el-select>
+      <!--搜索按钮 -->
       <el-button
         class="searchButton"
         type="primary"
@@ -86,11 +87,11 @@
       <el-input
         class="inputText"
         v-model="book.bookName"
-        placeholder="请输入内容"
+        placeholder="请输入书名"
       ></el-input>
       <el-button type="primary" @click="searchByType"> 搜索</el-button>
     </div>
-    <!-- 借阅详情 -->
+    <!-- 书本详情表格 -->
     <div class="borrowInfo">
       <el-table
         :data="bookData"
@@ -114,13 +115,6 @@
         <!-- 按钮 -->
         <el-table-column width="150" label="操作">
           <template slot-scope="scope">
-            <el-popover
-              placement="top-start"
-              title="提示"
-              width="100"
-              trigger="hover"
-              content="点击查看借阅详情"
-            >
               <el-button
                 @click="handleClick(scope.row)"
                 type="primary"
@@ -128,7 +122,6 @@
                 slot="reference"
                 >{{ boorowStatus }}</el-button
               >
-            </el-popover>
           </template>
         </el-table-column>
       </el-table>
@@ -138,6 +131,7 @@
           title="书本借阅详情"
           :visible.sync="dialogVisible"
           width="50%"
+          :close-on-click-modal="false"
         >
           <div>
             <el-row :gutter="20">
@@ -158,13 +152,15 @@
               >
             </el-row>
 
-            <el-table :data="borrowInfo" style="width: 100%" height="250">
+            <el-table :data="borrowInfo" style="width: 100%" 
+            height="250" :header-cell-style="{ textAlign: 'center' }"
+            :cell-style="{ textAlign: 'center' }">
               <el-table-column prop="name" label="借阅人" width="100">
               </el-table-column>
               <el-table-column prop="borrowTime" label="借阅日期" width="150">
               </el-table-column>
 
-              <el-table-column prop="retTime" label="归还日期" width="150">
+              <el-table-column prop="retTime" label="应归还日期" width="150">
               </el-table-column>
               <el-table-column prop="validTime" label="距归还还剩" width="150">
               </el-table-column>
@@ -196,12 +192,13 @@
 export default {
   data() {
     return {
-      input: "",
-      currentPage: 1,
-      dialogVisible: false,
-      boorowStatus: "借阅详情",
-      total: 0,
-      currentType: null,
+      input: "", //绑定搜索输入框
+      currentPage: 1, //当前页
+      dialogVisible: false,  //对话框默认不显示
+      boorowStatus: "借阅详情", //按钮显示的文字
+      total: 0,  //信息总数
+      currentType: null,   //当前书本类型
+      
       book: {
         bookId: null,
         bookName: null,
@@ -216,20 +213,14 @@ export default {
         downloadAmount: null,
         author: null,
       },
-      book1: {},
-      currentSelected: {
-        nation: null,
-        type: null,
-        length: null,
-        theme: null,
-      },
-      nation: [],
-      type: [],
-      length: [],
-      theme: [],
-      bookData: [],
-      borrowInfo: [],
-      value1: [],
+      book1: {}, //本行书本信息
+      nation: [], //所有的国家
+      type: [],  //所有的类型
+      length: [],  // 所有的篇幅
+      theme: [],  //所有的主题
+      bookData: [],  //当页书本信息
+      borrowInfo: [],  //书本借阅详情
+      value1: [],    //第一个搜索框选中的数据
       value2: [],
       value3: [],
       value4: [],
@@ -240,7 +231,7 @@ export default {
     //点击换页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-      if (this.book == null && this.input) {
+      if (this.book == null && this.input==null) {
         this.getBookData();
       } else {
         this.searchByTypePage();
@@ -287,7 +278,7 @@ export default {
           console.log(error);
         });
     },
-    //根据类型搜搜
+    //根据类型搜索
     searchByType() {
       this.total = this.getTypeCount();
       this.searchByTypePage();
@@ -361,7 +352,7 @@ export default {
           console.log(error);
         });
     },
-
+    //取得类型选择框当前信息
     currentBookType(e) {
       let obj = {};
       obj = this.type.find((item) => {
@@ -397,7 +388,7 @@ export default {
       this.book.theme = obj.theme;
       console.log("传入后端的主题：" + this.book.theme);
     },
-    //获取分类之后得到的数据总数
+    //获取分类之后搜索得到的数据总数
     getTypeCount() {
       console.log("------------" + this.book.bookName);
       this.$axios({
