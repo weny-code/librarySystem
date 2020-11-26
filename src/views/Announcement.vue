@@ -39,6 +39,30 @@
 
 <script>
 export default {
+  created(){
+    // this.getParams()
+    this.$axios({
+            method: "get",
+            url: "/showAnnouncement",
+          })
+            .then((res) => {
+              console.log(res);
+              console.log(res.data.content)
+              this.textarea.title=res.data.title
+              this.textarea.content=res.data.content;
+              this.textconent=res.data.content;
+                if(res.data.title===""){
+                console.log("w")
+              }
+              else{
+                   this.text.Notice=res.data.title;
+              }
+             
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+  },
   data() {
     return {
       dialogVisible: false,
