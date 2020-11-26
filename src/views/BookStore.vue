@@ -79,7 +79,7 @@
             <el-button
               type="primary"
               icon="el-icon-plus"
-              v-on:click="addBook"
+              v-on:click="addBook(ruleForm)"
             ></el-button>
           </div>
         </div>
@@ -661,6 +661,7 @@ export default {
       this.book.type = obj.type;
       console.log("传入后端的类型：" + this.book.type);
       console.log("当前书的类型ID：" + this.currentType);
+      this.themeData = null;
       this.getSelectTheme();
     },
     currentBookType2(e) {
@@ -670,6 +671,7 @@ export default {
       });
       this.currentType = obj.id;
       this.ruleForm.type = obj.type;
+      this.themeData = null;
       console.log("当前书的类型ID：" + this.currentType);
       this.getSelectTheme2();
     },
@@ -743,6 +745,8 @@ export default {
                 });
                 this.getBookTable();
                 this.dialogTableVisible = false;
+              } else if (res.data == "-1") {
+                this.$message.error("添加失败！已存在重名书籍！");
               }
             })
             .catch(function (error) {
@@ -783,17 +787,18 @@ export default {
         }
       });
     },
-    addBook() {
+    addBook(formName) {
       for (let key in this.ruleForm) {
         this.ruleForm[key] = "";
       }
-      this.themeData = null;
-      this.dialogTableVisible2 = true;
       setTimeout(() => {
         this.$nextTick(function () {
+          this.$refs[formName].resetFields();
           this.$refs.ruleForm.resetFields();
         });
       }, 100);
+      this.themeData = null;
+      this.dialogTableVisible2 = true;
     },
   },
   created() {

@@ -46,7 +46,7 @@ export default {
     })
       .then((res) => {
         console.log(res.data);
-        this.text.Notice = res.data;
+        this.text.Notice = res.data.content;
       })
       .catch(function (error) {
         console.log(error);
