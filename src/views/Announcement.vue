@@ -1,7 +1,12 @@
 <template>
   <div class="announcementCard">
     <div>
-      <el-input class="input" placeholder="公告标题" v-model="textarea.title">
+      <el-input
+        class="input"
+        placeholder="公告标题"
+        v-model="textarea.title"
+        clearable
+      >
       </el-input>
     </div>
     <div>
@@ -39,29 +44,27 @@
 
 <script>
 export default {
-  created(){
+  created() {
     // this.getParams()
     this.$axios({
-            method: "get",
-            url: "/showAnnouncement",
-          })
-            .then((res) => {
-              console.log(res);
-              console.log(res.data.content)
-              this.textarea.title=res.data.title
-              this.textarea.content=res.data.content;
-              this.textconent=res.data.content;
-                if(res.data.title===""){
-                console.log("w")
-              }
-              else{
-                   this.text.Notice=res.data.title;
-              }
-             
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
+      method: "get",
+      url: "/showAnnouncement",
+    })
+      .then((res) => {
+        console.log(res);
+        console.log(res.data.content);
+        this.textarea.title = res.data.title;
+        this.textarea.content = res.data.content.replace(/<br\/>/g, "\n");
+        this.textconent = res.data.content;
+        if (res.data.title === "") {
+          console.log("w");
+        } else {
+          this.text.Notice = res.data.title;
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   },
   data() {
     return {

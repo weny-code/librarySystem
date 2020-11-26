@@ -28,9 +28,25 @@
       </div>
       <div class="notice-container">
         <el-card class="box-card">
-          <div class="text item">{{ text.Notice }}</div>
+          <!--<input type="text" class="text item" v-model="text.Notice" >-->
+          <div class="text item" v-html="text.Notice"></div>
+          <el-button type="text" @click="dialogVisible = true"
+            >公告详情</el-button
+          >
         </el-card>
       </div>
+      <!--提示框-->
+      <el-dialog
+        title="公告"
+        :visible.sync="dialogVisible"
+        style="text-align: left; padding-bottom: 100px"
+      >
+        <span
+          style="font-size: 1em; margin-top: -2em"
+          v-html="textconent"
+        ></span>
+        <div style="height: 40px"></div>
+      </el-dialog>
     </el-main>
   </el-container>
 </template>
@@ -45,8 +61,14 @@ export default {
       url: "/showAnnouncement",
     })
       .then((res) => {
-        console.log(res.data);
-        this.text.Notice = res.data.content;
+        console.log(res);
+        console.log(res.data.content);
+        this.textconent = res.data.content;
+        if (res.data.title === "") {
+          console.log("w");
+        } else {
+          this.text.Notice = res.data.title;
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -54,8 +76,10 @@ export default {
   },
   data() {
     return {
+      dialogVisible: false,
+      textconent: "",
       text: {
-        Notice: "图书管理系统",
+        Notice: "公告标题",
       },
     };
   },

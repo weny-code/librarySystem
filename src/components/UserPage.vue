@@ -47,9 +47,25 @@
       </div>
       <div class="notice-container">
         <el-card class="box-card">
-          <div class="text item">{{ text.Notice }}</div>
+          <!--<input type="text" class="text item" v-model="text.Notice" >-->
+          <div class="text item" v-html="text.Notice"></div>
+          <el-button type="text" @click="dialogVisible = true"
+            >公告详情</el-button
+          >
         </el-card>
       </div>
+      <!--提示框-->
+      <el-dialog
+        title="公告"
+        :visible.sync="dialogVisible"
+        style="text-align: left; padding-bottom: 100px"
+      >
+        <span
+          style="font-size: 1em; margin-top: -2em"
+          v-html="textconent"
+        ></span>
+        <div style="height: 40px"></div>
+      </el-dialog>
     </el-main>
   </el-container>
 </template>
@@ -64,6 +80,7 @@ export default {
     })
       .then((res) => {
         console.log(res);
+        console.log(res.data.content);
         this.textconent = res.data.content;
         if (res.data.title === "") {
           console.log("w");
@@ -241,6 +258,6 @@ a {
 .notice-container .box-card {
   width: 1000px;
   cursor: default;
-  background-color: #c7faff;
+  background-color: #ffffff;
 }
 </style>
