@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header
+    <!-- <el-header
       ><div class="desc">GBA图书管理系统</div>
       <div class="bottom">
         <el-tooltip class="item" content="退出登录" placement="bottom-end">
@@ -13,7 +13,7 @@
         ></el-avatar>
         <span class="name">{{ userName }}</span>
       </div>
-    </el-header>
+    </el-header> -->
     <el-main>
       <div class="navigator-container">
         <div class="item">

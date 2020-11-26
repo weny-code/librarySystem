@@ -79,7 +79,7 @@
             <el-button
               type="primary"
               icon="el-icon-plus"
-              v-on:click="addBook(ruleForm)"
+              v-on:click="addBook"
             ></el-button>
           </div>
         </div>
@@ -193,26 +193,26 @@
         >
           <el-form
             label-width="80px"
-            :model="ruleForm"
+            :model="ruleForm2"
             :rules="rules"
-            ref="ruleForm"
+            ref="ruleForm2"
             inline="true"
           >
             <el-form-item label="书名" prop="bookName">
               <el-input
                 style="width: 500px"
-                v-model="ruleForm.bookName"
+                v-model="ruleForm2.bookName"
               ></el-input>
             </el-form-item>
             <el-form-item label="作者" prop="author">
               <el-input
-                v-model="ruleForm.author"
+                v-model="ruleForm2.author"
                 style="width: 200px"
               ></el-input>
             </el-form-item>
             <el-form-item label="类型" prop="type">
               <el-select
-                v-model="ruleForm.type"
+                v-model="ruleForm2.type"
                 placeholder="请选择书籍类型"
                 @change="currentBookType2($event)"
                 clearable
@@ -229,7 +229,7 @@
             </el-form-item>
             <el-form-item label="国家" prop="nation">
               <el-select
-                v-model="ruleForm.nation"
+                v-model="ruleForm2.nation"
                 placeholder="请选择书籍国家"
                 clearable
                 filterable
@@ -245,7 +245,7 @@
             </el-form-item>
             <el-form-item label="主题" prop="theme">
               <el-select
-                v-model="ruleForm.theme"
+                v-model="ruleForm2.theme"
                 placeholder="请先选择书籍类型"
                 clearable
                 no-data-text="请先选择书籍类型"
@@ -261,13 +261,13 @@
             </el-form-item>
             <el-form-item label="上架数量" prop="uploadAmount">
               <el-input
-                v-model.number="ruleForm.uploadAmount"
+                v-model.number="ruleForm2.uploadAmount"
                 style="width: 200px"
               ></el-input>
             </el-form-item>
             <el-form-item label="篇幅" prop="length">
               <el-select
-                v-model="ruleForm.length"
+                v-model="ruleForm2.length"
                 placeholder="请选择书籍篇幅"
                 clearable
                 style="width: 200px"
@@ -283,13 +283,13 @@
             <el-form-item label="简介" prop="summary">
               <el-input
                 type="textarea"
-                v-model="ruleForm.summary"
+                v-model="ruleForm2.summary"
                 style="width: 500px"
                 :rows="4"
               ></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="onSubmit('ruleForm')"
+              <el-button type="primary" @click="onSubmit('ruleForm2')"
                 >添加</el-button
               >
               <el-button @click="dialogTableVisible2 = false">取消</el-button>
@@ -400,7 +400,7 @@
               ></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="onSubmit2(ruleForm)"
+              <el-button type="primary" @click="onSubmit2('ruleForm')"
                 >保存</el-button
               >
               <el-button @click="dialogTableVisible = false">取消</el-button>
@@ -459,11 +459,24 @@ export default {
       themeData: [],
       typeData: [],
       tableData: [],
-      value1: [],
-      value2: [],
-      value3: [],
-      value4: [],
+      value1: null,
+      value2: null,
+      value3: null,
+      value4: null,
       ruleForm: {
+        bookId: "",
+        bookName: "",
+        nation: "",
+        type: "",
+        length: "",
+        theme: "",
+        status: "",
+        leftAmount: "",
+        summary: "",
+        uploadAmount: "",
+        author: "",
+      },
+      ruleForm2: {
         bookId: "",
         bookName: "",
         nation: "",
@@ -494,9 +507,6 @@ export default {
         ],
         length: [
           { required: true, message: "请选择书籍篇幅", trigger: "change" },
-        ],
-        theme: [
-          { required: true, message: "请选择书籍主题", trigger: "change" },
         ],
         uploadAmount: [
           { required: true, message: "请输入上架数量", trigger: "blur" },
@@ -557,9 +567,16 @@ export default {
     },
     showBook(e) {
       this.ruleForm = Object.assign({}, e.book);
-      console.log("类型为：" + typeof this.ruleForm);
+      let obj = {};
+      obj = this.typeData.find((item) => {
+        return item.type === this.ruleForm.type;
+      });
+      this.currentType = obj.id;
+      this.getSelectTheme2();
+      console.log("类型为：" + this.currentType);
       console.log("当前行的书名：" + this.ruleForm.bookName);
       console.log("当前行的国家：" + this.ruleForm.nation);
+      console.log("当前行的类型：" + this.ruleForm.type);
     },
     handleCurrentChange(val) {
       this.currentPage = val;
@@ -653,24 +670,32 @@ export default {
         });
     },
     currentBookType(e) {
+      this.ruleForm.theme = null;
+      this.ruleForm2.theme = null;
+      this.value4 = null;
       let obj = {};
       obj = this.typeData.find((item) => {
         return item.id === e;
       });
       this.currentType = obj.id;
-      this.book.type = obj.type;
-      console.log("传入后端的类型：" + this.book.type);
+      if (this.value2 == null) {
+        this.themeData = null;
+      }
+      this.value2 = obj.type;
       console.log("当前书的类型ID：" + this.currentType);
       this.themeData = null;
       this.getSelectTheme();
     },
     currentBookType2(e) {
+      this.ruleForm.theme = null;
+      this.ruleForm2.theme = null;
       let obj = {};
       obj = this.typeData.find((item) => {
         return item.id === e;
       });
       this.currentType = obj.id;
       this.ruleForm.type = obj.type;
+      this.ruleForm2.type = obj.type;
       this.themeData = null;
       console.log("当前书的类型ID：" + this.currentType);
       this.getSelectTheme2();
@@ -680,15 +705,15 @@ export default {
       obj = this.nationData.find((item) => {
         return item.id === e;
       });
-      this.book.nation = obj.nation;
-      console.log("传入后端的国家：" + this.book.nation);
+      this.value1 = obj.nation;
+      console.log("传入后端的国家：" + this.value1);
     },
     currentBookLength(e) {
       let obj = {};
       obj = this.lengthData.find((item) => {
         return item.id === e;
       });
-      this.book.length = obj.length;
+      this.value3 = obj.length;
       console.log("传入后端的篇幅：" + this.book.length);
     },
     currentBookTheme(e) {
@@ -696,12 +721,16 @@ export default {
       obj = this.themeData.find((item) => {
         return item.id === e;
       });
-      this.book.theme = obj.theme;
-      console.log("传入后端的主题：" + this.book.theme);
+      this.value4 = obj.theme;
     },
     queryBook() {
-      this.count = this.getTypeCount();
       this.currentPage = 1;
+      this.book.nation = this.value1;
+      this.book.type = this.value2;
+      this.book.length = this.value3;
+      this.book.theme = this.value4;
+      this.count = this.getTypeCount();
+      console.log("传入的国家为：" + this.book.nation);
       this.$axios({
         method: "post",
         url: "/BookType/" + this.userId + "/" + (this.currentPage - 1),
@@ -717,16 +746,15 @@ export default {
     },
     noSelect(e) {
       if (e == "1") {
-        this.book.nation = null;
+        this.value1 = null;
       } else if (e == "2") {
-        this.book.type = null;
+        this.value2 = null;
         this.currentType = null;
-        console.log("传入后端的类型：" + this.book.type);
         console.log("当前书的类型ID：" + this.currentType);
       } else if (e == "3") {
-        this.book.length = null;
+        this.value3 = null;
       } else if (e == "4") {
-        this.book.theme = null;
+        this.value4 = null;
       }
     },
     onSubmit(formName) {
@@ -735,7 +763,7 @@ export default {
           this.$axios({
             method: "post",
             url: "/BookInsert",
-            data: this.ruleForm,
+            data: this.ruleForm2,
           })
             .then((res) => {
               if (res.data == "1") {
@@ -744,7 +772,7 @@ export default {
                   type: "success",
                 });
                 this.getBookTable();
-                this.dialogTableVisible = false;
+                this.dialogTableVisible2 = false;
               } else if (res.data == "-1") {
                 this.$message.error("添加失败！已存在重名书籍！");
               }
@@ -787,14 +815,10 @@ export default {
         }
       });
     },
-    addBook(formName) {
-      for (let key in this.ruleForm) {
-        this.ruleForm[key] = "";
-      }
+    addBook() {
       setTimeout(() => {
         this.$nextTick(function () {
-          this.$refs[formName].resetFields();
-          this.$refs.ruleForm.resetFields();
+          this.$refs.ruleForm2.resetFields();
         });
       }, 100);
       this.themeData = null;

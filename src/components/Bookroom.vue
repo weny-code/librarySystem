@@ -1,19 +1,5 @@
 <template>
   <el-container>
-    <el-header
-      ><div class="desc">GBA图书管理系统</div>
-      <div class="bottom">
-        <el-tooltip class="item" content="退出登录" placement="bottom-end">
-          <i class="el-icon-switch-button" v-on:click="alert()"></i>
-        </el-tooltip>
-      </div>
-      <div class="headImg">
-        <el-avatar
-          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-        ></el-avatar>
-        <span class="name">{{ userName }}</span>
-      </div>
-    </el-header>
     <el-main>
       <div class="navigator-container">
         <div class="item">
@@ -130,7 +116,11 @@
         </div>
       </div>
       <div class="show-container">
-        <el-dialog :visible.sync="dialogTableVisible" top="10%">
+        <el-dialog
+          :visible.sync="dialogTableVisible"
+          top="10%"
+          :close-on-click-modal="false"
+        >
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span>简介</span>
@@ -205,8 +195,8 @@
               fixed="right"
               prop="status"
               label="状态"
-              width="100"
-              header-align="center"
+              width="120"
+              align="center"
             >
               <template slot-scope="scope">
                 <div v-if="scope.row.status == '1'">
@@ -283,10 +273,10 @@ export default {
       themeData: [],
       typeData: [],
       tableData: [],
-      value1: [],
-      value2: [],
-      value3: [],
-      value4: [],
+      value1: null,
+      value2: null,
+      value3: null,
+      value4: null,
     };
   },
   methods: {
@@ -310,8 +300,8 @@ export default {
         });
     },
     searchBook() {
-      console.log("------------" + this.book.bookName);
       this.count = this.getTypeCount();
+      this.currentPage = 1;
       this.$axios({
         method: "post",
         url:
@@ -333,9 +323,6 @@ export default {
     },
     showBook(e) {
       this.borrowBook = e.book;
-      // this.borrowBookSummary=
-      // this.borrowBookSummary = e.book.summary;
-      // console.log("----------" + typeof e.book.bookName);
       console.log("当前行的书籍名：" + this.borrowBook);
     },
     handleCurrentChange(val) {
@@ -419,13 +406,14 @@ export default {
         });
     },
     currentBookType(e) {
+      this.value4 = null;
       let obj = {};
       obj = this.typeData.find((item) => {
         return item.id === e;
       });
       this.currentType = obj.id;
-      this.book.type = obj.type;
-      console.log("传入后端的类型：" + this.book.type);
+      this.value2 = obj.type;
+      this.themeData = null;
       console.log("当前书的类型ID：" + this.currentType);
       this.getSelectTheme();
     },
@@ -434,26 +422,28 @@ export default {
       obj = this.nationData.find((item) => {
         return item.id === e;
       });
-      this.book.nation = obj.nation;
-      console.log("传入后端的国家：" + this.book.nation);
+      this.value1 = obj.nation;
     },
     currentBookLength(e) {
       let obj = {};
       obj = this.lengthData.find((item) => {
         return item.id === e;
       });
-      this.book.length = obj.length;
-      console.log("传入后端的篇幅：" + this.book.length);
+      this.value3 = obj.length;
     },
     currentBookTheme(e) {
       let obj = {};
       obj = this.themeData.find((item) => {
         return item.id === e;
       });
-      this.book.theme = obj.theme;
-      console.log("传入后端的主题：" + this.book.theme);
+      this.value4 = obj.theme;
     },
     queryBook() {
+      this.currentPage = 1;
+      this.book.nation = this.value1;
+      this.book.type = this.value2;
+      this.book.length = this.value3;
+      this.book.theme = this.value4;
       this.count = this.getTypeCount();
       this.$axios({
         method: "post",
@@ -474,17 +464,17 @@ export default {
     },
     noSelect(e) {
       if (e == "1") {
-        this.book.nation = null;
+        this.value1 = null;
       } else if (e == "2") {
-        this.book.type = null;
+        this.value2 = null;
         this.currentType = null;
-        this.themeData = null;
+        this.value3 = null;
         console.log("传入后端的类型：" + this.book.type);
         console.log("当前书的类型ID：" + this.currentType);
       } else if (e == "3") {
-        this.book.length = null;
+        this.value3 = null;
       } else if (e == "4") {
-        this.book.theme = null;
+        this.value4 = null;
       }
     },
     borrow() {
@@ -568,13 +558,6 @@ export default {
 
 
 <style scoped>
-.el-header {
-  background-color: rgb(198, 226, 255);
-  /* color: rgb(160, 207, 255); */
-  text-align: center;
-  line-height: 50px;
-}
-
 .el-main {
   background-color: rgb(217, 236, 255);
   color: #333;
@@ -593,49 +576,9 @@ body > .el-container {
   src: url("../assets/font/FZQuSJW.TTF");
 }
 
-.el-header .desc {
-  font-family: "FZQuSJW";
-  font-size: 30px;
-  font-weight: bold;
-  letter-spacing: 5px;
-  color: rgb(102, 177, 255);
-  margin-top: 10px;
-  float: left;
-  margin-left: 10px;
-  cursor: default;
-}
-
-.el-header .bottom {
-  float: right;
-  margin-top: 5px;
-  font-size: 40px;
-  cursor: pointer;
-  /* text-align: center; */
-}
-
-.el-header .item {
-  margin: 4px;
-}
-
-.headImg {
-  position: relative;
-  width: 200px;
-  height: 50px;
-  margin-left: 1200px;
-  margin-top: 10px;
-}
-
-.name {
-  position: absolute;
-  font-family: "FZQuSJW";
-  font-size: 18px;
-  font-weight: bold;
-  margin-left: 15px;
-  letter-spacing: 1px;
-}
-
 .navigator-container {
   /* display: flex; */
+  margin-top: 0px;
   align-items: center;
 }
 
@@ -676,17 +619,17 @@ body > .el-container {
 
 .search-container {
   margin-top: 80px;
-  margin-left: 60%;
+  margin-left: 850px;
 }
 
 .search-container .item {
   width: 150px;
-  margin-left: 30%;
+  margin-left: 230px;
 }
 
 .search-container .search {
   margin-top: -40px;
-  margin-left: 130px;
+  margin-left: 200px;
 }
 
 .show-container {
@@ -697,13 +640,13 @@ body > .el-container {
 }
 
 .show-container .booktable {
-  width: 75%;
+  width: auto;
 }
 
 .page-container {
   margin-top: 10px;
   margin-left: 40%;
-  margin-bottom: 0;
+  /* margin-bottom: 0; */
 }
 
 .bookinfo-container {

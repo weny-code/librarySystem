@@ -1,19 +1,5 @@
 <template>
   <el-container>
-    <el-header
-      ><div class="desc">GBA图书管理系统</div>
-      <div class="bottom">
-        <el-tooltip class="item" content="退出登录" placement="bottom-end">
-          <i class="el-icon-switch-button" v-on:click="alert()"></i>
-        </el-tooltip>
-      </div>
-      <div class="headImg">
-        <el-avatar
-          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-        ></el-avatar>
-        <span class="name">{{ userName }}</span>
-      </div>
-    </el-header>
     <el-main
       ><div class="navigator-container">
         <div class="item">
@@ -30,27 +16,34 @@
         </div>
       </div>
       <div class="operation-container">
-        <div class="myinfo" v-on:click="MyInfo()">
-          <el-image
-            :src="require('../assets/img/myinfo.png')"
-            class="myinfo-img"
-          ></el-image>
-          <div class="desc">个人信息</div>
-        </div>
-        <div class="myinfo" v-on:click="MyBook()">
-          <el-image
-            :src="require('../assets/img/mybook.png')"
-            class="myinfo-img"
-          ></el-image>
-          <div class="desc">个人书架</div>
-        </div>
-        <div class="bookroom" v-on:click="BookRoom()">
-          <el-image
-            :src="require('../assets/img/bookroom.png')"
-            class="bookroom-img"
-          ></el-image>
-          <div class="desc">图书库</div>
-        </div>
+        <router-link to="/MyInfo">
+          <div class="myinfo">
+            <el-image
+              :src="require('../assets/img/myinfo.png')"
+              class="myinfo-img"
+            ></el-image>
+            <div class="desc">个人信息</div>
+          </div>
+        </router-link>
+        <router-link to="/Mybookshelf">
+          <div class="myinfo">
+            <el-image
+              :src="require('../assets/img/mybook.png')"
+              class="myinfo-img"
+            ></el-image>
+            <div class="desc">个人书架</div>
+          </div>
+        </router-link>
+        <router-link to="/Bookroom">
+          <div class="bookroom">
+            <el-image
+              :src="require('../assets/img/bookroom.png')"
+              class="bookroom-img"
+            ></el-image>
+            <div class="desc">图书库</div>
+          </div>
+        </router-link>
+        <router-view></router-view>
       </div>
       <div class="notice-container">
         <el-card class="box-card">
@@ -95,7 +88,7 @@ export default {
   name: "UserPage",
   methods: {
     MyInfo() {
-      this.$router.push({ path: "/MyInfo", query: { key: this.msg } });
+      this.$router.push({ path: "/MyInfo" });
     },
 
     MyBook() {
@@ -128,13 +121,6 @@ export default {
 </script>
 
 <style scoped>
-.el-header {
-  background-color: rgb(198, 226, 255);
-  /* color: rgb(160, 207, 255); */
-  text-align: center;
-  line-height: 50px;
-}
-
 .el-main {
   background-color: rgb(217, 236, 255);
   color: #333;
@@ -153,51 +139,17 @@ body > .el-container {
   src: url("../assets/font/FZQuSJW.TTF");
 }
 
-.el-header .desc {
-  font-family: "FZQuSJW";
-  font-size: 30px;
-  font-weight: bold;
-  letter-spacing: 5px;
-  color: rgb(102, 177, 255);
-  margin-top: 10px;
-  float: left;
-  margin-left: 10px;
-  cursor: default;
-}
-
-.el-header .bottom {
-  float: right;
-  margin-top: 5px;
-  font-size: 40px;
-  cursor: pointer;
-  /* text-align: center; */
-}
-
-.el-header .item {
-  margin: 4px;
-}
-
-.headImg {
-  position: relative;
-  width: 200px;
-  height: 50px;
-  margin-left: 1200px;
-  margin-top: 10px;
-}
-
-.name {
-  position: absolute;
-  font-family: "FZQuSJW";
-  font-size: 18px;
-  font-weight: bold;
-  margin-left: 15px;
-  letter-spacing: 1px;
-}
-
 .navigator-container {
   /* display: flex; */
   height: 50px;
   align-items: center;
+}
+
+.router-link-active {
+  text-decoration: none;
+}
+a {
+  text-decoration: none;
 }
 
 .navigator-container .item {
@@ -273,7 +225,7 @@ body > .el-container {
 .notice-container {
   height: 100px;
   display: flex;
-  margin-top: 150px;
+  margin-top: 140px;
   justify-content: center;
 }
 

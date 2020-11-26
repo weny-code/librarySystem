@@ -106,13 +106,13 @@ body > .el-container {
   height: 100px;
   width: 100%;
   display: flex;
-  margin-top: 50px;
+  margin-top: 80px;
   justify-content: center;
 }
 
 .operation-container {
   display: flex;
-  margin-top: 5%;
+  margin-top: 50px;
   justify-content: space-around;
 }
 
@@ -140,8 +140,8 @@ body > .el-container {
 }
 
 .theme-img {
-  width: auto;
-  height: auto;
+  width: 90%;
+  height: 90%;
 }
 
 .login-img {

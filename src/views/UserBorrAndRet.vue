@@ -8,7 +8,7 @@
         v-model="value1"
         placeholder="请选择"
         clearable
-        filterable 
+        filterable
         @change="currentBookNation($event)"
         @clear="noSelect(1)"
       >
@@ -229,10 +229,10 @@ export default {
       theme: [],
       bookData: [],
       borrowInfo: [],
-      value1: [],
-      value2: [],
-      value3: [],
-      value4: [],
+      value1: null,
+      value2: null,
+      value3: null,
+      value4: null,
     };
   },
 
@@ -289,6 +289,10 @@ export default {
     },
     //根据类型搜搜
     searchByType() {
+      this.book.nation = this.value1;
+      this.book.type = this.value2;
+      this.book.length = this.value3;
+      this.book.theme = this.value4;
       this.total = this.getTypeCount();
       this.searchByTypePage();
     },
@@ -310,16 +314,15 @@ export default {
     //清空选择框
     noSelect(e) {
       if (e == "1") {
-        this.book.nation = null;
+        this.value1 = null;
       } else if (e == "2") {
-        this.book.type = null;
+        this.value2 = null;
         this.currentType = null;
-        console.log("传入后端的类型：" + this.book.type);
         console.log("当前书的类型ID：" + this.currentType);
       } else if (e == "3") {
-        this.book.length = null;
+        this.value3 = null;
       } else if (e == "4") {
-        this.book.theme = null;
+        this.value4 = null;
       }
     },
     //获取所有的篇幅信息
@@ -363,13 +366,13 @@ export default {
     },
 
     currentBookType(e) {
+      this.value4 = null;
       let obj = {};
       obj = this.type.find((item) => {
         return item.id === e;
       });
       this.currentType = obj.id;
-      this.book.type = obj.type;
-      console.log("传入后端的类型：" + this.book.type);
+      this.value2 = obj.type;
       console.log("当前书的类型ID：" + this.currentType);
       this.getSelectTheme();
     },
@@ -378,28 +381,24 @@ export default {
       obj = this.nation.find((item) => {
         return item.id === e;
       });
-      this.book.nation = obj.nation;
-      console.log("传入后端的国家：" + this.book.nation);
+      this.value1 = obj.nation;
     },
     currentBookLength(e) {
       let obj = {};
       obj = this.length.find((item) => {
         return item.id === e;
       });
-      this.book.length = obj.length;
-      console.log("传入后端的篇幅：" + this.book.length);
+      this.value3 = obj.length;
     },
     currentBookTheme(e) {
       let obj = {};
       obj = this.theme.find((item) => {
         return item.id === e;
       });
-      this.book.theme = obj.theme;
-      console.log("传入后端的主题：" + this.book.theme);
+      this.value4 = obj.theme;
     },
     //获取分类之后得到的数据总数
     getTypeCount() {
-      console.log("------------" + this.book.bookName);
       this.$axios({
         method: "post",
         url: "/BookTypeCount",
@@ -455,7 +454,7 @@ export default {
   font-family: "FZZhaoMFXSJF";
   color: black;
 }
-.el-select{
+.el-select {
   width: 180px;
 }
 .searchButton {

@@ -1,19 +1,5 @@
 <template>
   <el-container>
-    <el-header
-      ><div class="desc">GBA图书管理系统</div>
-      <div class="bottom">
-        <el-tooltip class="item" content="退出登录" placement="bottom-end">
-          <i class="el-icon-switch-button" v-on:click="alert()"></i>
-        </el-tooltip>
-      </div>
-      <div class="headImg">
-        <el-avatar
-          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-        ></el-avatar>
-        <span class="name">{{ userName1 }}</span>
-      </div>
-    </el-header>
     <el-main>
       <div class="navigator-container">
         <div class="item">
@@ -38,93 +24,115 @@
             >
           </el-breadcrumb>
         </div>
-      </div></el-main
-    >
-    <!-- 详情页面 -->
-    <transition name="el-fade-in-linear">
-      <div v-show="show" class="showDetail transition-box">
-        <el-row :gutter="12">
-          <el-col :span="8">
-            <el-card shadow="hover"> 用户编号：{{userId}}} </el-card>
-          </el-col>
-          <el-col :span="8">
-            <el-card shadow="hover"> 用户姓名：{{ userName }} </el-card>
-          </el-col>
-          <el-col :span="8">
-            <el-card shadow="hover">
-              距归还还剩：{{ detail.validTime }}
-            </el-card>
-          </el-col>
-        </el-row>
+      </div>
+      <!-- 详情页面 -->
+      <transition name="el-fade-in-linear">
+        <div v-show="show" class="showDetail transition-box">
+          <el-row :gutter="12">
+            <el-col :span="8">
+              <el-card shadow="hover"> 用户编号：{{ userId }}} </el-card>
+            </el-col>
+            <el-col :span="8">
+              <el-card shadow="hover"> 用户姓名：{{ userName }} </el-card>
+            </el-col>
+            <el-col :span="8">
+              <el-card shadow="hover">
+                距归还还剩：{{ detail.validTime }}
+              </el-card>
+            </el-col>
+          </el-row>
 
-        <el-row :gutter="12">
-          <el-col :span="8">
-            <el-card shadow="hover"> 书籍名称：{{ detail.bookName }} </el-card>
-          </el-col>
-          <el-col :span="8">
-            <el-card shadow="hover">
-              借阅时间：{{ detail.borrowTime }}
-            </el-card>
-          </el-col>
-          <el-col :span="8">
-            <el-card shadow="hover"> 借阅有效期：30天 </el-card>
-          </el-col>
-        </el-row>
-        <el-button type="primary" round @click="show = false"
-          >点击隐藏</el-button
+          <el-row :gutter="12">
+            <el-col :span="8">
+              <el-card shadow="hover">
+                书籍名称：{{ detail.bookName }}
+              </el-card>
+            </el-col>
+            <el-col :span="8">
+              <el-card shadow="hover">
+                借阅时间：{{ detail.borrowTime }}
+              </el-card>
+            </el-col>
+            <el-col :span="8">
+              <el-card shadow="hover"> 借阅有效期：30天 </el-card>
+            </el-col>
+          </el-row>
+          <el-button type="primary" round @click="show = false"
+            >点击隐藏</el-button
+          >
+        </div>
+      </transition>
+
+      <div class="demo-input-suffix">
+        <el-input
+          class="sousuokuang"
+          placeholder="请输入关键词"
+          prefix-icon="el-icon-search"
+          v-model="input2"
+        >
+        </el-input>
+        <el-button type="primary" icon="el-icon-search" @click="search"
+          >搜索</el-button
         >
       </div>
-    </transition>
-
-    <div class="demo-input-suffix">
-      <el-input
-        class="sousuokuang"
-        placeholder="请输入关键词"
-        prefix-icon="el-icon-search"
-        v-model="input2"
-      >
-      </el-input>
-      <el-button type="primary" icon="el-icon-search" @click="search"
-        >搜索</el-button
-      >
-    </div>
-    <!-- 所有借阅历史 -->
-    <div class="tb">
-      <el-table :data="bookData" style="width: 100%" border>
-        <el-table-column prop="bookName" label="书籍名" width="150" align="center">
-        </el-table-column>
-        <el-table-column prop="nation" label="国家" width="150" align="center">
-        </el-table-column>
-        <el-table-column prop="type" label="类型" width="150" align="center">
-        </el-table-column>
-        <el-table-column prop="length" label="篇幅" width="150" align="center">
-        </el-table-column>
-        <el-table-column prop="theme" label="主题" width="150" align="center">
-        </el-table-column>
-        <el-table-column prop="retTime" label="归还日期" width="200" align="center">
-        </el-table-column>
-        <el-table-column label="详情" width="150" align="center">
-          <template slot-scope="scope">
-            <el-button v-on:click="onLook(scope.row)" type="primary" round
-              >查看详情</el-button
-            ></template
-          ></el-table-column
+      <!-- 所有借阅历史 -->
+      <div class="tb">
+        <el-table :data="bookData" style="width: 100%" border>
+          <el-table-column
+            prop="bookName"
+            label="书籍名"
+            width="150"
+            align="center"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="nation"
+            label="国家"
+            width="150"
+            align="center"
+          >
+          </el-table-column>
+          <el-table-column prop="type" label="类型" width="150" align="center">
+          </el-table-column>
+          <el-table-column
+            prop="length"
+            label="篇幅"
+            width="150"
+            align="center"
+          >
+          </el-table-column>
+          <el-table-column prop="theme" label="主题" width="150" align="center">
+          </el-table-column>
+          <el-table-column
+            prop="retTime"
+            label="归还日期"
+            width="200"
+            align="center"
+          >
+          </el-table-column>
+          <el-table-column label="详情" width="150" align="center">
+            <template slot-scope="scope">
+              <el-button v-on:click="onLook(scope.row)" type="primary" round
+                >查看详情</el-button
+              ></template
+            ></el-table-column
+          >
+        </el-table>
+      </div>
+      <!-- 分页器 -->
+      <div class="page">
+        <el-pagination
+          background
+          layout="total,prev, pager, next"
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+          :current-page.sync="currentPage"
+          :page-size="pageSize"
+          :total="total"
         >
-      </el-table>
-    </div>
-    <!-- 分页器 -->
-    <div class="page">
-      <el-pagination
-        background
-        layout="total,prev, pager, next"
-        @current-change="handleCurrentChange"
-        @size-change="handleSizeChange"
-        :current-page.sync="currentPage"
-        :page-size="pageSize"
-        :total="total"
-      >
-      </el-pagination>
-    </div>
+        </el-pagination>
+      </div>
+    </el-main>
   </el-container>
 </template>
 
@@ -158,14 +166,16 @@ export default {
       });
     },
     getCount() {
-      this.$axios.get("/borrowCount/" + sessionStorage.getItem('userId')).then((res) => {
-        this.total = res.data.num;
-        this.userName = res.data.name;
-        console.log("yonghuming");
-        console.log(this.userName);
-        console.log(this.total)
-        console.log(sessionStorage.getItem('userId'))
-      });
+      this.$axios
+        .get("/borrowCount/" + sessionStorage.getItem("userId"))
+        .then((res) => {
+          this.total = res.data.num;
+          this.userName = res.data.name;
+          console.log("yonghuming");
+          console.log(this.userName);
+          console.log(this.total);
+          console.log(sessionStorage.getItem("userId"));
+        });
     },
     search() {
       console.log("点击了搜索");
@@ -175,19 +185,21 @@ export default {
     },
     getSearchCount() {
       this.$axios({
-        method:'post',
-        url: '/borrowUserLikeSearchCount',
-        data:{
-          userId: sessionStorage.getItem('userId'),
-          bookName: this.input2
-        }
-      }).then((res)=>{
-        this.total = res.data
-        console.log("搜索得到的总数")
-        console.log(this.total)
-      }).catch((error)=>{
-        console.log(error)
+        method: "post",
+        url: "/borrowUserLikeSearchCount",
+        data: {
+          userId: sessionStorage.getItem("userId"),
+          bookName: this.input2,
+        },
       })
+        .then((res) => {
+          this.total = res.data;
+          console.log("搜索得到的总数");
+          console.log(this.total);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
         .then((res) => {
           this.total = res.data;
           console.log("搜索得到的总数");
@@ -202,8 +214,8 @@ export default {
         method: "post",
         url: "/borrowUserLikeSearch",
         data: {
-          userId: sessionStorage.getItem('userId'),
-          index: (this.currentPage-1),
+          userId: sessionStorage.getItem("userId"),
+          index: this.currentPage - 1,
           bookName: this.input2,
         },
       }).then((res) => {
@@ -260,13 +272,6 @@ export default {
 </script>
 
 <style scoped>
-.el-header {
-  background-color: rgb(198, 226, 255);
-  /* color: rgb(160, 207, 255); */
-  text-align: center;
-  line-height: 50px;
-}
-
 .el-main {
   background-color: rgb(217, 236, 255);
   color: #333;
@@ -283,47 +288,6 @@ body > .el-container {
 @font-face {
   font-family: "FZQuSJW";
   src: url("../assets/font/FZQuSJW.TTF");
-}
-
-.el-header .desc {
-  font-family: "FZQuSJW";
-  font-size: 30px;
-  font-weight: bold;
-  letter-spacing: 5px;
-  color: rgb(102, 177, 255);
-  margin-top: 10px;
-  float: left;
-  margin-left: 10px;
-  cursor: default;
-}
-
-.el-header .bottom {
-  float: right;
-  margin-top: 5px;
-  font-size: 40px;
-  cursor: pointer;
-  /* text-align: center; */
-}
-
-.el-header .item {
-  margin: 4px;
-}
-
-.headImg {
-  position: relative;
-  width: 200px;
-  height: 50px;
-  margin-left: 1200px;
-  margin-top: 10px;
-}
-
-.name {
-  position: absolute;
-  font-family: "FZQuSJW";
-  font-size: 18px;
-  font-weight: bold;
-  margin-left: 15px;
-  letter-spacing: 1px;
 }
 
 .navigator-container {

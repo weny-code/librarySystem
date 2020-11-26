@@ -1,19 +1,5 @@
 <template>
   <el-container>
-    <el-header
-      ><div class="desc">GBA图书管理系统</div>
-      <div class="bottom">
-        <el-tooltip class="item" content="退出登录" placement="bottom-end">
-          <i class="el-icon-switch-button" v-on:click="alert()"></i>
-        </el-tooltip>
-      </div>
-      <div class="headImg">
-        <el-avatar
-          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-        ></el-avatar>
-        <span class="name">{{ userName }}</span>
-      </div>
-    </el-header>
     <el-main>
       <div class="navigator-container">
         <div class="item">

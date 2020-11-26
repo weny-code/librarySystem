@@ -10,41 +10,70 @@ const routes = [{
     component: HomePage
 },
 {
-    path: '/UserPage',
-    name: 'UserPage',
-    // meta: {
-    //     requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
-    // },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    path: '/Navigation',
+    name: 'Navigation',
+    redirect: '/UserPage',
     component: () =>
-        import( /* webpackChunkName: "about" */ '../components/UserPage.vue')
+        import( /* webpackChunkName: "about" */ '../components/Navigation.vue'),
+    children: [
+        {
+            path: '/UserPage',
+            name: 'UserPage',
+
+            // meta: {
+            //     requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
+            // },
+            component: () =>
+                import( /* webpackChunkName: "about" */ '../components/UserPage.vue'),
+        },
+        {
+            path: '/Mybookshelf',
+            name: 'Mybookshelf',
+            // meta: {
+            //     requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
+            // },
+            component: () =>
+                import( /* webpackChunkName: "about" */ '../components/Mybookshelf.vue')
+        },
+        {
+            path: '/Borrowinfo',
+            name: 'Borrowinfo',
+            // meta: {
+            //     requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
+            // },
+            component: () =>
+                import( /* webpackChunkName: "about" */ '../components/Borrowinfo.vue')
+        },
+        {
+            path: '/infoModifyStudent',
+            name: 'infoModifyStudent',
+            // meta: {
+            //     requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
+            // },
+            component: () =>
+                import( /* webpackChunkName: "about" */ '../components/infoModifyStudent.vue')
+        },
+        {
+            path: '/MyInfo',
+            name: 'MyInfo',
+            // meta: {
+            //     requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
+            // },
+            component: () =>
+                import( /* webpackChunkName: "about" */ '../components/MyInfo.vue')
+        },
+        {
+            path: '/Bookroom',
+            name: 'Bookroom',
+            // meta: {
+            //     requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
+            // },
+            component: () =>
+                import( /* webpackChunkName: "about" */ '../components/Bookroom.vue')
+        },
+    ]
 },
-{
-    path: '/MyInfo',
-    name: 'MyInfo',
-    // meta: {
-    //     requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
-    // },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-        import( /* webpackChunkName: "about" */ '../components/MyInfo.vue')
-},
-{
-    path: '/Bookroom',
-    name: 'Bookroom',
-    // meta: {
-    //     requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
-    // },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-        import( /* webpackChunkName: "about" */ '../components/Bookroom.vue')
-},
+
 {
     path: '/AdministratorPage',
     name: 'AdministratorPage',
@@ -76,42 +105,7 @@ const routes = [{
     component: () =>
         import( /* webpackChunkName: "about" */ '../components/Register.vue')
 },
-{
-    path: '/Mybookshelf',
-    name: 'Mybookshelf',
-    // meta: {
-    //     requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
-    // },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-        import( /* webpackChunkName: "about" */ '../components/Mybookshelf.vue')
-},
-{
-    path: '/Borrowinfo',
-    name: 'Borrowinfo',
-    // meta: {
-    //     requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
-    // },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-        import( /* webpackChunkName: "about" */ '../components/Borrowinfo.vue')
-},
-{
-    path: '/infoModifyStudent',
-    name: 'infoModifyStudent',
-    // meta: {
-    //     requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
-    // },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-        import( /* webpackChunkName: "about" */ '../components/infoModifyStudent.vue')
-},
+
 ]
 
 const router = new VueRouter({
