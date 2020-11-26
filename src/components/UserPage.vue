@@ -39,7 +39,6 @@
   title="公告"
   :visible.sync="dialogVisible"
   style="text-align:left;padding-bottom:100px;">
-  
   <span  style=" font-size: 1em;margin-top: -2em; text-indent:2em;" v-html="textconent" ></span> 
   <div style="height:60px"></div>
 
@@ -76,7 +75,7 @@ export default {
        dialogVisible: false,
       textconent:"",
       text: {
-        Notice:"图书管理系统"
+        Notice:"公告标题"
      },
 
     };

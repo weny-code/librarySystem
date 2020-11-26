@@ -306,4 +306,5 @@ export default {
   font-weight: bold;
   margin-top: 0px;
 }
+
 </style>

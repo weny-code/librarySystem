@@ -11,7 +11,8 @@
         label-width="100px"
       >
         <el-form-item label="账号" prop="account">
-          <el-input v-model="signIn.account" placeholder="请输入ID" maxlength="30"></el-input>
+          <el-input v-model="signIn.account" placeholder="请输入ID" maxlength="30"
+          clearable></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input
@@ -19,6 +20,7 @@
             placeholder="请输入密码"
             type="password"
              maxlength="30"
+              show-password   
           ></el-input>
         </el-form-item>
         <el-form-item>
@@ -108,7 +110,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style  scoped>
 @font-face {
   font-family: "FZQuSJW";
   src: url("../assets/font/FZQuSJW.TTF");
@@ -140,7 +142,7 @@ export default {
   color:#fff;
   font-size: 1.2em;
 }
-img {
+ img {
   height: 60%;
   width: 60%;
 }
@@ -177,4 +179,6 @@ form {
 .signInForm .el-input {
   width: 100%;
 }
+
+
 </style>

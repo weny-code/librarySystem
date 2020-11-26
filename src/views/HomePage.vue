@@ -30,7 +30,7 @@
     <div class="notice-container">
       <el-card class="box-card">
         <!--<input type="text" class="text item" v-model="text.Notice" >-->
-        <div class="text item" >{{text.Notice}}</div>
+        <div class="text item" v-html="text.Notice" ></div>
         <el-button type="text" @click="dialogVisible = true">公告详情</el-button>
       </el-card>
     </div>
@@ -77,9 +77,9 @@ export default {
  data() {
    return{
      dialogVisible: false,
-     textconent:"哈师大就看哈看手机都会卡上打卡上打开撒活动课教案和SD卡合适的卡号的卡号是肯定哈空间都是监测路由变化,只要变化了就调用获取路由参数方法将数据存储本组件即可监测路由变化,只要变化了就调用获取路由参数方法将数据存储本组件即可监测路由变化,只要变化了就调用获取路由参数方法将数据存储本组件即可监测路由变化,只要变化了就调用获取路由参数方法将数据存储本组件即可监测路由变化,只要变化了就调用获取路由参数方法将数据存储本组件即可",
+     textconent:"",
     text: {
-        Notice:"图书管理系统"
+        Notice:"公告标题"
 
      }
      
@@ -98,16 +98,9 @@ export default {
       // this.$router.push("/AdministratorPage");
       this.$router.push("/Register");
     },
-  getParams () {
-    // 取到路由带过来的参数
-    var routerParams = this.$route.params.Notice
-    // 将数据放在当前组件的数据内
-    this.Notice = routerParams
-}
+
   },
-  watch: {
-    '$route': 'getParams'// 监测路由变化,只要变化了就调用获取路由参数方法将数据存储本组件即可
-}
+
 };
 </script>
 
@@ -121,20 +114,13 @@ export default {
   background-color: #c6ddff;
 }
 
-  
-.box-card {
-  background-color: #fff;
-}
 
 .theme-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 300px;
-  width: 100%;
- 
-  
-  
+  width: 100%; 
 }
 
 .notice-container {
@@ -242,5 +228,6 @@ export default {
 .box-card {
   width: 1000px;
   cursor: default;
+   background-color: #fff;
 }
 </style>

@@ -1,7 +1,6 @@
 <template>
-  <div >
-    <div  >
-    
+  <div  class="announcementCard">
+    <div>  
      <el-input class="input" placeholder="公告标题" v-model="textarea.title">
       </el-input>
     
@@ -11,20 +10,46 @@
         class="textarea"
         type="textarea"
         placeholder="请输入内容"
-        v-model="textarea.content"   
+        v-model="textarea.content"
       :autosize="{ minRows: 8, maxRows: 10}"
       >
       </el-input>
         <el-button type="primary" @click="open()"  class="juli">发布</el-button>
+ 
     </div>
+    <div class="noticeShow">
+   <el-card class="box-card">
+       <div class="text item" v-html="text.Notice" ></div>
+        <el-button type="text" @click="dialogVisible = true">公告详情</el-button>
+      </el-card>
+    </div>
+    <el-dialog
+  title="公告"
+  :visible.sync="dialogVisible"
+  style="text-align:left;padding-bottom:100px;">
+  <span  style=" font-size: 1em;margin-top: -2em; text-indent:2em;" v-html="textconent" ></span> 
+  <div style="height:60px"></div>
+
+</el-dialog>
     
-  </div>
+    </div>
+
+   
+    
+ 
 </template>
 
 <script>
 export default {
   data() {
     return {
+    dialogVisible: false,
+    textconent:"",
+    oldAnnouncement:"",
+    text: {
+        Notice:"图书管理系统"
+
+     },
       textarea:{
         title:"",
         content:"",
@@ -42,8 +67,9 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+          this.oldAnnouncement=this.textarea.content;
             let stringReplace=this.textarea.content.replace(/\n|\r\n/g,"<br/>");
-             this.textarea.content=stringReplace;
+            this.textarea.content=stringReplace;
             this.$axios({
               method: "post",
               url: "/addAnnouncement",
@@ -51,9 +77,14 @@ export default {
             })
             .then((res) => {
               if(res.data==1){
+                 this.text.Notice=this.textarea.title;  
+                 this.textconent=this.textarea.content;
+                 this.textarea.content=this.oldAnnouncement;
                 this.$message({
+                
                   type: 'success',
                   message: '添加成功!'
+
                 })
                 .catch(function (error) {
                   console.log(error);
@@ -69,17 +100,26 @@ export default {
             message: '已取消修改'
           });          
         });
-      }
+      },
   },
 };
 </script>
 
-<style scoped>
-p{
-  color:#000;
-  font-family: "FZZhaoMFXSJF";
-  font-size: 24px;
+<style>
+.noticeShow{
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
 }
+.noticeShow  .box-card{
+   width: 800px;
+  height: 100px;
+}
+
+.announcementCard{
+  height:  800px;
+}
+
 .titleTip{
   margin-top:100px;
 }
@@ -109,4 +149,5 @@ p{
   margin: 0 auto;
    margin-top:2%;
 }
+
 </style>

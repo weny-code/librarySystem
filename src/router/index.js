@@ -89,7 +89,7 @@ const routes = [{
         path: '/Borrowinfo',
         name: 'Borrowinfo',
         meta: {
-            requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
+            requireAuth: true
         },
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
@@ -101,7 +101,7 @@ const routes = [{
         path: '/infoModifyStudent',
         name: 'infoModifyStudent',
         meta: {
-            requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
+            requireAuth: true
         },
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
