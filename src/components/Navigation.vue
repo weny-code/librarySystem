@@ -169,10 +169,11 @@ body > .el-container {
 }
 .el-dropdown-link {
   cursor: pointer;
-  color: blue;
+  color: rgb(6, 6, 187)
 }
 .el-icon-arrow-down {
   font-size: 15px;
   font-weight: bold;
 }
+
 </style>

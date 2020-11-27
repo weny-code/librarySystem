@@ -167,7 +167,7 @@ a {
 
 .item-class {
   font-size: 20px;
-  color: rgb(140, 197, 255);
+  color: rgb(127, 198, 245);
 }
 
 .operation-container {
@@ -251,6 +251,7 @@ a {
 .notice-container .item {
   padding: 0;
   text-align: center;
+  font-size: 18px;
 }
 
 .notice-container .box-card {

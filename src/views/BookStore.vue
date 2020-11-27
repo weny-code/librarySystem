@@ -419,7 +419,7 @@ export default {
     // 表单验证
     var checkUploadAmount = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("年龄不能为空"));
+        return callback(new Error("上架数量不能为空"));
       }
       setTimeout(() => {
         if (!Number.isInteger(value)) {
