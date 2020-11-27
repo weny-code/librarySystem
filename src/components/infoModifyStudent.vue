@@ -257,22 +257,6 @@ export default {
             message: "长度在 8 到 30 个字符",
             trigger: "blur",
           },
-          // {
-
-          //   trigger: "blur",
-          //   validateor: (rule, value, callback) => {
-          //     if (
-          //      value !==  this.passwordModeify.userPassword
-          //     ) {
-          //       callback(new Error("两次输入密码不一致!"));
-
-          //     } else {
-          //       callback();
-          //       console.log("密码一致");
-
-          //     }
-          //   },
-          // },
           {
             trigger: "blur",
             validator: (rule, value, callback) => {

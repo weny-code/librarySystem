@@ -79,7 +79,7 @@
         type="primary"
         icon="el-icon-search"
         @click="searchByType"
-        >搜索</el-button
+        >查询</el-button
       >
     </div>
     <!-- 关键字搜索 -->

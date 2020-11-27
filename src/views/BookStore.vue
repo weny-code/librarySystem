@@ -396,7 +396,6 @@
                 type="textarea"
                 v-model="ruleForm.summary"
                 style="width: 500px"
-                :rows="4"
               ></el-input>
             </el-form-item>
             <el-form-item>
@@ -416,10 +415,9 @@
 export default {
   name: "bookstore",
   data() {
-    // 表单验证
     var checkUploadAmount = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error("上架数量不能为空"));
+        return callback(new Error("年龄不能为空"));
       }
       setTimeout(() => {
         if (!Number.isInteger(value)) {
@@ -495,8 +493,8 @@ export default {
           { required: true, message: "请输入书籍名称", trigger: "blur" },
           {
             min: 1,
-            max: 20,
-            message: "长度在 1 到 20 个字符",
+            max: 10,
+            message: "长度在 1 到 10 个字符",
             trigger: "blur",
           },
         ],
@@ -505,6 +503,9 @@ export default {
         ],
         type: [
           { required: true, message: "请选择书籍类型", trigger: "change" },
+        ],
+        theme: [
+          { required: true, message: "书籍主题不能为空", trigger: "change" },
         ],
         length: [
           { required: true, message: "请选择书籍篇幅", trigger: "change" },
@@ -517,8 +518,8 @@ export default {
           { required: true, message: "请输入书籍作者", trigger: "blur" },
           {
             min: 1,
-            max: 20,
-            message: "长度在 1 到 20 个字符",
+            max: 10,
+            message: "长度在 1 到 10 个字符",
             trigger: "blur",
           },
         ],
@@ -551,8 +552,8 @@ export default {
         });
     },
     searchBook() {
-      this.count = this.getTypeCount(); //获取书籍总数
-      this.currentPage = 1; //当前页置1
+      this.count = this.getTypeCount();
+      this.currentPage = 1;
       this.$axios({
         method: "post",
         url: "/BookType/" + this.userId + "/" + (this.currentPage - 1),
@@ -567,12 +568,12 @@ export default {
         });
     },
     showBook(e) {
-      this.ruleForm = Object.assign({}, e.book); //转化格式
+      this.ruleForm = Object.assign({}, e.book);
       let obj = {};
       obj = this.typeData.find((item) => {
         return item.type === this.ruleForm.type;
       });
-      this.currentType = obj.id; //获取当前类型id
+      this.currentType = obj.id;
       this.getSelectTheme2();
       console.log("类型为：" + this.currentType);
       console.log("当前行的书名：" + this.ruleForm.bookName);
@@ -687,7 +688,6 @@ export default {
       this.themeData = null;
       this.getSelectTheme();
     },
-    //获取表单内选择的书籍类型
     currentBookType2(e) {
       this.ruleForm.theme = null;
       this.ruleForm2.theme = null;
@@ -759,7 +759,6 @@ export default {
         this.value4 = null;
       }
     },
-    //提交表单触发
     onSubmit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -818,13 +817,12 @@ export default {
         }
       });
     },
-    //添加书籍
     addBook() {
       setTimeout(() => {
         this.$nextTick(function () {
           this.$refs.ruleForm2.resetFields();
         });
-      }, 100);
+      }, 1000);
       this.themeData = null;
       this.dialogTableVisible2 = true;
     },
