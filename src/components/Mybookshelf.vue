@@ -206,7 +206,6 @@ export default {
 <style scoped>
 .el-header {
   background-color: rgb(198, 226, 255);
-  /* color: rgb(160, 207, 255); */
   text-align: center;
   line-height: 50px;
 }
@@ -215,7 +214,6 @@ export default {
   background-color: rgb(217, 236, 255);
   color: #333;
   text-align: center;
-  /* line-height: 200px; */
 }
 
 body > .el-container {
@@ -246,7 +244,6 @@ body > .el-container {
   margin-top: 5px;
   font-size: 40px;
   cursor: pointer;
-  /* text-align: center; */
 }
 
 .el-header .item {

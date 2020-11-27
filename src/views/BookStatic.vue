@@ -105,7 +105,9 @@ export default {
         console.log(dataRet.fiveMonth.length);
         for (var i = 0; i < dataRet.fiveMonth.length; i++) {
           console.log(dataRet.fiveMonth[i].name);
+          //获得注解
           nameRet.push(dataRet.fiveMonth[i].name + "月");
+          //获取注解和数值
           valueRet.push({
             value: dataRet.fiveMonth[i].value,
             name: dataRet.fiveMonth[i].name + "月",
@@ -212,6 +214,7 @@ export default {
       });
   },
   methods: {
+    //获取当天借出总数
     getCurrentDayCount() {
       this.$axios
         .get("/borrowDay")
@@ -223,6 +226,7 @@ export default {
           console.log(error);
         });
     },
+    //获取本月借出总数
     getCurrentMonthCount() {
       this.$axios
         .get("/borrowMonth")
@@ -234,6 +238,7 @@ export default {
           console.log(error);
         });
     },
+    //获取年度借出总数
     getCurrentYearCount() {
       this.$axios
         .get("/borrowYear")
@@ -245,6 +250,7 @@ export default {
           console.log(error);
         });
     },
+    //获取当天归还总数
     getCurrentDayRetCount() {
       this.$axios
         .get("/borrowRetDay")
@@ -256,6 +262,7 @@ export default {
           console.log(error);
         });
     },
+    //获取本月归还总数
     getCurrentMonthRetCount() {
       this.$axios
         .get("/borrowRetMonth")
@@ -267,7 +274,7 @@ export default {
           console.log(error);
         });
     },
-
+    //获取年度归还总数
     getCurrentYearRetCount() {
       this.$axios
         .get("/borrowRetYear")

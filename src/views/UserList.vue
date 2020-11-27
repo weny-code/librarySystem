@@ -160,7 +160,7 @@ export default {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
       if (this.user.name != null) {
-        this.search();
+        this.getSearchResultPage()
       } else {
         this.getUserData();
       }
@@ -171,12 +171,9 @@ export default {
       this.currentPage1 = val;
       this.getInforByPage();
     },
-    // 搜索
-    search() {
-      console.log("点击了搜索");
-      console.log(this.user.name);
-      this.getSearchUserCount();
-      this.$axios({
+
+    getSearchResultPage(){
+       this.$axios({
         method: "post",
         url: "/findUserByExample/" + (this.currentPage - 1),
         data: {
@@ -191,6 +188,16 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+
+    // 点击搜索
+    search() {
+      if(this.currentPage>1){
+        this.currentPage = 1;
+      }
+      console.log("点击了搜索");
+      console.log(this.user.name);
+      this.getSearchUserCount();
     },
     // 得到搜索结果的总数
     getSearchUserCount() {
@@ -272,6 +279,7 @@ export default {
                   confirmButtonText: "确定",
                 });
                 this.total = this.total - 1;
+                this.getUserData();
               } else if (res.data == 0) {
                 this.$alert("用户还有书没还，注销失败!!", "删除用户", {
                   confirmButtonText: "确定",
@@ -310,6 +318,8 @@ export default {
             .then((res) => {
               if (res.data == 1) {
                 this.total = this.total - 1;
+                this.getUserData();
+                this.dialogTableVisible = false;
                 this.$alert("删除成功", "删除用户", {
                   confirmButtonText: "确定",
                 });
