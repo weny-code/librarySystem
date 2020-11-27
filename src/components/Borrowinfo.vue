@@ -105,7 +105,7 @@
           </el-table-column>
           <el-table-column
             prop="retTime"
-            label="归还日期"
+            label="应归还日期"
             width="200"
             align="center"
           >

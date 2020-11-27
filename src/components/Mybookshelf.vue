@@ -62,7 +62,7 @@
               </div>
             </div>
             <div v-if="!booksList[index].bookName" class="noBorrow">
-              <span>您还没有借入书籍</span>
+              <span>您还可以借入书籍</span>
             </div>
           </el-card>
         </div>

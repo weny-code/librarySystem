@@ -19,7 +19,7 @@
     </div>
     <div class="list">
     <!-- 对话框 -->
-      <el-dialog title="借阅详情" :visible.sync="dialogTableVisible">
+      <el-dialog title="该用户借阅历史详情" :visible.sync="dialogTableVisible">
         <div class="user">用户名:{{ userName }}</div>
         <!-- 弹出框中的表格 -->
         <el-table :data="gridData">

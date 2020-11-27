@@ -102,7 +102,7 @@ export default {
               } else if (res.data.resultCode == 1) {
                 this.$router.push("/UserPage");
               } else {
-                this.$message.error("密码错误");
+                this.$message.error("账号或密码错误");
               }
             })
             .catch(function (error) {

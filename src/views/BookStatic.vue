@@ -323,7 +323,7 @@ export default {
 .el-carousel__item:nth-child(2n) {
   background-color: rgb(238, 215, 202);
   background-color:rgb(250,210,0) ;
-  background: linear-gradient(to top left,mintcream,white,yellow);
+  background: linear-gradient(to top left,turquoise,white,yellow);
 }
 .el-carousel__item:nth-child(2n+1) {
   background-color: #d7f56c;
@@ -346,7 +346,7 @@ export default {
 }
 
 .mainReport {
-  margin-left: 100px;
+  margin-left: 200px;
 }
 
 .mainReport1 {

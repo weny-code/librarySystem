@@ -1,7 +1,8 @@
 <template>
   <div class="announcementCard">
-    <div>
+    <div class="title">
       <!--公告标题和内容-->
+      <span>标题:</span>
       <el-input
         class="input"
         placeholder="公告标题"
@@ -128,6 +129,8 @@ export default {
     },
     cleartext() {
       this.textarea.content = "";
+      this.textarea.title = "";
+      
     },
   },
 };
@@ -167,7 +170,7 @@ export default {
 .input {
   width: 30%;
   margin-top: 50px;
-
+  margin-left: 10px;
   font-size: 16px;
   font-family: "FZZhaoMFXSJF";
 }
@@ -184,4 +187,9 @@ export default {
   margin: 0 auto;
   margin-top: 2%;
 }
+.title span{
+  font-size: 22px;
+  margin-left: -80px;
+}
+
 </style>

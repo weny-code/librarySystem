@@ -502,7 +502,9 @@ export default {
 }
 .grid-content {
   border-radius: 4px;
-  min-height: 36px;
+  line-height: 36px;
+  font-size: 16px;
+  
 }
 .row-bg {
   padding: 10px 0;
