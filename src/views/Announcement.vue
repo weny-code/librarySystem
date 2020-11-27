@@ -1,9 +1,10 @@
 <template>
   <div  class="announcementCard">
     <div>  
+    <!--公告标题和内容-->
      <el-input class="input" placeholder="公告标题" v-model="textarea.title" clearable>
       </el-input>
-    
+
     </div>
     <div >
       <el-input
@@ -11,11 +12,14 @@
         type="textarea" 
         placeholder="请输入内容"
         v-model="textarea.content"
-      :autosize="{ minRows: 8, maxRows: 10}"
+      :autosize="{ minRows: 10, maxRows: 14}"
       
       >
       </el-input>
-        <el-button type="primary" @click="open()"  class="juli">发布</el-button>
+      <div>
+              <el-button type="primary" @click="open()"  class="juli">发布</el-button>
+              <el-button type="primary" @click="cleartext()" class="cleantext">清空内容</el-button>
+      </div>
  
     </div>
     <div class="noticeShow">
@@ -28,15 +32,12 @@
   title="公告"
   :visible.sync="dialogVisible"
   style="text-align:left;padding-bottom:100px;">
-  <span  style=" font-size: 1em;margin-top: -2em; text-indent:2em;" v-html="textconent" ></span> 
-  <div style="height:60px"></div>
+  <div class="textcontent" v-html="textconent" ></div> 
+  <div style="height:60px"></div> 
 
 </el-dialog>
     
     </div>
-
-   
-    
  
 </template>
 
@@ -126,13 +127,25 @@ export default {
           });          
         });
       },
+      cleartext(){
+         this.textarea.content="";  
+      }
   },
 };
 </script>
 
 <style>
+.cleantext{
+  margin-left:16px;
+}
+.textcontent{
+  font-size: 1.2em;
+  margin-top: -2em; 
+  text-indent:2em;
+   padding:20px 40px 10px
+}
 .noticeShow{
-    margin-top: 5%;
+    margin-top: 2%;
     display: flex;
     justify-content: center;
 }
@@ -142,7 +155,7 @@ export default {
 }
 
 .announcementCard{
-  height:  800px;
+  height:  auto;
 }
 
 .titleTip{
@@ -155,8 +168,7 @@ export default {
 .input {
   width: 30%;
   margin-top: 50px;
-  margin-left: auto;
-  margin-right: 225px;
+
   font-size: 16px;
   font-family: "FZZhaoMFXSJF";
 }
@@ -166,10 +178,9 @@ export default {
     margin-top: 30px;
     font-size: 18px;
     font-family: "FZZhaoMFXSJF";
-    height: 329px;
+    height: auto;
 }
 .juli{
- 
   text-align: center;
   margin: 0 auto;
    margin-top:2%;

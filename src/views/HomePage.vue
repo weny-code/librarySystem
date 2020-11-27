@@ -34,13 +34,13 @@
         <el-button type="text" @click="dialogVisible = true">公告详情</el-button>
       </el-card>
     </div>
-   <!--提示框-->
+   <!--详情-->
     <el-dialog
   title="公告"
   :visible.sync="dialogVisible"
-  style="text-align:left;padding-bottom:100px;">
+ class="details">
   
-  <span  style=" font-size: 1em;margin-top: -2em;" v-html="textconent"></span> 
+  <div  class="textcontent" v-html="textconent"></div> 
   <div style="height:40px"></div>
 
 </el-dialog>
@@ -60,7 +60,7 @@ export default {
           })
             .then((res) => {
               console.log(res);
-              console.log(res.data.content)
+              console.log(res.data.content)               
               this.textconent=res.data.content;
                 if(res.data.title===""){
                 console.log("w")
@@ -164,6 +164,12 @@ export default {
   margin-top: -30px;
   transition: all 0.6s ease;
 }
+.textcontent{
+  font-size: 1.2em;
+  margin-top: -2em; 
+  text-indent:2em;
+   padding:20px 40px 10px
+}
 
 .register-item:hover {
   transform: scale(1.2);
@@ -229,5 +235,9 @@ export default {
   width: 1000px;
   cursor: default;
    background-color: #fff;
+}
+.details{
+text-align:left;
+padding-bottom:100px;
 }
 </style>

@@ -35,11 +35,13 @@
         <el-button type="text" @click="dialogVisible = true">公告详情</el-button>
       </el-card>
     </div>
+    <!--详情-->
     <el-dialog
   title="公告"
   :visible.sync="dialogVisible"
-  style="text-align:left;padding-bottom:100px;">
-  <span  style=" font-size: 1em;margin-top: -2em; text-indent:2em;" v-html="textconent" ></span> 
+  class="details"
+  >
+  <div  class="textcontent"  v-html="textconent"></div> 
   <div style="height:60px"></div>
 
 </el-dialog>
@@ -229,6 +231,12 @@ export default {
   justify-content: center;
   margin-top: 50px;
 }
+.textcontent{
+  font-size: 1.2em;
+  margin-top: -2em; 
+  text-indent:2em;
+   padding:20px 40px 10px
+}
 
 .notice-container .text {
   font-size: 18px;
@@ -242,5 +250,9 @@ export default {
 .notice-container .box-card {
   width: 1000px;
   cursor: default;
+}
+.details{
+text-align:left;
+padding-bottom:100px;
 }
 </style>

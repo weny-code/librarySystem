@@ -43,6 +43,7 @@
               :readonly="readonly"
               onKeypress="return(/[\d\.]/.test(String.fromCharCode(event.keyCode)))"
               oninput="if(value.length>5)value=value.slice(0,5)"
+               font-size:1.2em;
             />
           </td>
         </tr>
@@ -393,6 +394,7 @@ table th:nth-child(odd) {
 td {
   padding: 0;
   margin: 0;
+  font-size:1.2em;
 }
 td input {
   outline: none;
