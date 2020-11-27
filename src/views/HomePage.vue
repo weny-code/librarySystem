@@ -36,15 +36,8 @@
         </el-card>
       </div>
       <!--提示框-->
-      <el-dialog
-        title="公告"
-        :visible.sync="dialogVisible"
-        style="text-align: left; padding-bottom: 100px"
-      >
-        <span
-          style="font-size: 1em; margin-top: -2em"
-          v-html="textconent"
-        ></span>
+      <el-dialog title="公告" :visible.sync="dialogVisible" class="details">
+        <div class="textcontent" v-html="textconent"></div>
         <div style="height: 40px"></div>
       </el-dialog>
     </el-main>
@@ -157,6 +150,12 @@ body > .el-container {
   margin-top: -20px;
   transition: all 0.6s ease;
 }
+.textcontent {
+  font-size: 1.2em;
+  margin-top: -2em;
+  text-indent: 2em;
+  padding: 20px 40px 10px;
+}
 
 .register-item:hover {
   transform: scale(1.2);
@@ -224,5 +223,9 @@ body > .el-container {
   width: 1000px;
   cursor: default;
   background-color: #ffffff;
+}
+.details {
+  text-align: left;
+  padding-bottom: 100px;
 }
 </style>

@@ -57,16 +57,9 @@
         </el-card>
       </div>
       <!--提示框-->
-      <el-dialog
-        title="公告"
-        :visible.sync="dialogVisible"
-        style="text-align: left; padding-bottom: 100px"
-      >
-        <span
-          style="font-size: 1em; margin-top: -2em"
-          v-html="textconent"
-        ></span>
-        <div style="height: 40px"></div>
+      <el-dialog title="公告" :visible.sync="dialogVisible" class="details">
+        <div class="textcontent" v-html="textconent"></div>
+        <div style="height: 60px"></div>
       </el-dialog>
     </el-main>
   </el-container>
@@ -244,6 +237,12 @@ a {
   margin-top: 140px;
   justify-content: center;
 }
+.textcontent {
+  font-size: 1.2em;
+  margin-top: -2em;
+  text-indent: 2em;
+  padding: 20px 40px 10px;
+}
 
 .notice-container .text {
   font-size: 14px;
@@ -258,5 +257,9 @@ a {
   width: 1000px;
   cursor: default;
   background-color: #ffffff;
+}
+.details {
+  text-align: left;
+  padding-bottom: 100px;
 }
 </style>

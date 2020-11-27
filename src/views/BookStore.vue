@@ -396,6 +396,7 @@
                 type="textarea"
                 v-model="ruleForm.summary"
                 style="width: 500px"
+                :rows="4"
               ></el-input>
             </el-form-item>
             <el-form-item>

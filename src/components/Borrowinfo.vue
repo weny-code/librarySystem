@@ -318,7 +318,8 @@ body > .el-container {
 
 .page {
   width: 500px;
-  margin-left: 600px;
+  margin-top: 10px;
+  margin-left: 800px;
 }
 .searchFrame {
   width: 200px;

@@ -8,6 +8,7 @@
       class="siginReturn"
       >返回</el-button
     >
+    <!--登录表单-->
     <section class="form_container">
       <el-form
         :model="signIn"
@@ -43,6 +44,7 @@
         </el-form-item>
       </el-form>
     </section>
+    <!--图片-->
     <div class="img">
       <img src="../assets/img/login.png" alt />
     </div>
@@ -57,6 +59,7 @@ export default {
         account: "",
         password: "",
       },
+      //验证规则
       rules: {
         // 要以数组形式展示
         account: [
@@ -81,6 +84,7 @@ export default {
     };
   },
   methods: {
+    //点击传数据到后台
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -111,6 +115,7 @@ export default {
         }
       });
     },
+    //返回首页
     backHome() {
       this.$router.push("/");
     },
