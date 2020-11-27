@@ -159,6 +159,7 @@
               :data="borrowInfo"
               :header-cell-style="{ textAlign: 'center' }"
               :cell-style="{ textAlign: 'center' }"
+              height="250"
             >
               <el-table-column prop="name" label="借阅人" width="100">
               </el-table-column>
@@ -300,6 +301,7 @@ export default {
     },
     //对搜出来的数据进行分页
     searchByTypePage() {
+      
       this.$axios({
         method: "post",
         url: "/managerFindBookByType/" + (this.currentPage - 1),
@@ -401,6 +403,7 @@ export default {
     },
     //获取分类之后搜索得到的数据总数
     getTypeCount() {
+      this.currentPage = 1;
       this.$axios({
         method: "post",
         url: "/BookTypeCount",
@@ -443,7 +446,7 @@ export default {
 <style scoped>
 .multiSelector {
   margin-top: 20px;
-  margin-left: -10%;
+  margin-left: -5%;
 }
 .multiSelector .pre {
   margin-left: 5px;

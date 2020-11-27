@@ -465,6 +465,7 @@ body > .el-container {
 }
 td {
   height: 40px;
+  font-size: 1.2em;
 }
 .modifyReturn {
   background-color: #ffffff;

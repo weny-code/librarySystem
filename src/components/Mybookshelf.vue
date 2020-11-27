@@ -1,19 +1,5 @@
 <template>
   <el-container>
-    <!-- <el-header
-      ><div class="desc">GBA图书管理系统</div>
-      <div class="bottom">
-        <el-tooltip class="item" content="退出登录" placement="bottom-end">
-          <i class="el-icon-switch-button" v-on:click="alert()"></i>
-        </el-tooltip>
-      </div>
-      <div class="headImg">
-        <el-avatar
-          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-        ></el-avatar>
-        <span class="name">{{ userName }}</span>
-      </div>
-    </el-header> -->
     <el-main>
       <div class="navigator-container">
         <div class="item">
@@ -206,7 +192,6 @@ export default {
 <style scoped>
 .el-header {
   background-color: rgb(198, 226, 255);
-  /* color: rgb(160, 207, 255); */
   text-align: center;
   line-height: 50px;
 }
@@ -215,7 +200,6 @@ export default {
   background-color: rgb(217, 236, 255);
   color: #333;
   text-align: center;
-  /* line-height: 200px; */
 }
 
 body > .el-container {
@@ -246,7 +230,6 @@ body > .el-container {
   margin-top: 5px;
   font-size: 40px;
   cursor: pointer;
-  /* text-align: center; */
 }
 
 .el-header .item {

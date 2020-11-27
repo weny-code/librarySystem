@@ -182,6 +182,9 @@ export default {
               } else if (res.data === 0) {
                 alert("账号已经存在");
               }
+              else if(res.data===-1){
+                alert("邮箱已经存在") 
+              }
             })
             .catch(function (error) {
               console.log(error);

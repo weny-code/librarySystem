@@ -1,6 +1,7 @@
 <template>
   <el-container>
     <el-main>
+      <!-- 导航栏 -->
       <div class="navigator-container">
         <div class="item">
           <el-breadcrumb separator="/">
@@ -27,6 +28,7 @@
       </div>
       <!-- 详情页面 -->
       <transition name="el-fade-in-linear">
+        <!-- 某条借阅历史详情 -->
         <div v-show="show" class="showDetail transition-box">
           <el-row :gutter="12">
             <el-col :span="8">
@@ -57,18 +59,6 @@
             </el-col>
           </el-row>
           <el-button type="primary" @click="show = false">点击隐藏</el-button>
-        </div>
-        <div class="demo-input-suffix">
-          <el-input
-            class="sousuokuang"
-            placeholder="请输入关键词"
-            prefix-icon="el-icon-search"
-            v-model="input2"
-          >
-          </el-input>
-          <el-button type="primary" icon="el-icon-search" @click="search"
-            >搜索</el-button
-          >
         </div>
       </transition>
 
@@ -150,10 +140,10 @@ export default {
   data() {
     return {
       userName1: sessionStorage.getItem("userName"),
-      input2: null,
+      input2: null, //搜索框绑定的数据
       show: false,
-      bookData: [],
-      detail: {},
+      bookData: [],  //分页得到的数据
+      detail: {},    //详情
       currentPage: 1, // 当前页码
       // 每页的数据条数
       pageSize: 5,
@@ -164,6 +154,7 @@ export default {
     };
   },
   methods: {
+    // 点击查看按钮后
     onLook(book) {
       this.show = true;
       console.log(book.id);
@@ -173,6 +164,7 @@ export default {
         console.log(this.detail);
       });
     },
+    // 获取借阅历史总数
     getCount() {
       this.$axios
         .get("/borrowCount/" + sessionStorage.getItem("userId"))
@@ -185,12 +177,15 @@ export default {
           console.log(sessionStorage.getItem("userId"));
         });
     },
+    // 搜索
     search() {
       console.log("点击了搜索");
+      this.currentPage = 1;
       this.total = 1;
       this.getSearchCount();
       this.searchAndPage();
     },
+    //获取搜索得到的总数
     getSearchCount() {
       this.$axios({
         method: "post",
@@ -217,6 +212,7 @@ export default {
           console.log(error);
         });
     },
+    //把分页获取搜索结果
     searchAndPage() {
       this.$axios({
         method: "post",
@@ -231,6 +227,7 @@ export default {
         console.log(this.bookData);
       });
     },
+    //分页获取借阅信息
     getBookData() {
       this.$axios({
         method: "post",
@@ -244,6 +241,7 @@ export default {
         console.log(this.bookData);
       });
     },
+    //分页方法
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
