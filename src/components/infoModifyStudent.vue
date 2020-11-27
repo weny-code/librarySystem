@@ -345,6 +345,7 @@ export default {
             type: "success",
             message: "修改成功!",
           });
+          sessionStorage.setItem("userName", this.infoModeify.name);
           // this.flag=0;
         })
         .catch(function (error) {
