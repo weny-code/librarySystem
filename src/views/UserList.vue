@@ -192,12 +192,11 @@ export default {
 
     // 点击搜索
     search() {
-      if(this.currentPage>1){
-        this.currentPage = 1;
-      }
+      this.currentPage = 1;
       console.log("点击了搜索");
       console.log(this.user.name);
       this.getSearchUserCount();
+      this.getSearchResultPage();
     },
     // 得到搜索结果的总数
     getSearchUserCount() {

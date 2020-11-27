@@ -61,6 +61,7 @@
                 :readonly="readonly"
                 onKeypress="return(/[\d\.]/.test(String.fromCharCode(event.keyCode)))"
                 oninput="if(value.length>5)value=value.slice(0,5)"
+                
               />
             </td>
           </tr>
@@ -81,6 +82,7 @@
                 v-model="infoModeify.birthday"
                 :readonly="readonly"
                 maxlength="30"
+                style="font-size:1.2em;  font-weight:4px;"
               />
             </td>
             <td class="changdu">借阅ID</td>
@@ -397,6 +399,7 @@ body > .el-container {
   margin: 0;
   padding: 0;
   width: 100%;
+
 }
 
 @font-face {
@@ -464,6 +467,7 @@ body > .el-container {
 }
 td {
   height: 40px;
+  font-size: 1.2em;
 }
 .modifyReturn {
   background-color: #ffffff;

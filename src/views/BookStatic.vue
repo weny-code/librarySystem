@@ -322,9 +322,13 @@ export default {
 
 .el-carousel__item:nth-child(2n) {
   background-color: rgb(238, 215, 202);
+  background-color:rgb(250,210,0) ;
+  background: linear-gradient(to top left,mintcream,white,yellow);
 }
 .el-carousel__item:nth-child(2n+1) {
   background-color: #d7f56c;
+  background-color:rgb(230,0,255) ;
+  background: linear-gradient(to top left,pink,white,slateblue);
 }
 .carousel {
   width: 1000px;
@@ -333,6 +337,7 @@ export default {
 .el-carousel__item{
   box-shadow: rgb(250, 102, 18) 10px 10px 10px; 
   border-radius: 20px;
+  
 }
 
 .mainReport,
