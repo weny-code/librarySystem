@@ -196,13 +196,13 @@ body > .el-container {
 
 .el-header .desc {
   font-family: "FZQuSJW";
-  font-size: 30px;
+  font-size: 38px;
   font-weight: bold;
   letter-spacing: 5px;
-  color: rgb(102, 177, 255);
+  color: rgb(3, 53, 107);
   margin-top: 10px;
   float: left;
-  margin-left: 10px;
+  margin-left: 5px;
   cursor: default;
 }
 
@@ -287,5 +287,4 @@ body > .el-container {
   font-weight: bold;
   margin-top: 0px;
 }
-
 </style>

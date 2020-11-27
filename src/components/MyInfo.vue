@@ -45,12 +45,12 @@ export default {
   data() {
     return {
       userName: sessionStorage.getItem("userName"),
-
       msg: "",
     };
   },
   name: "MyInfo",
   methods: {
+    // 跳转借阅历史页面
     borrowInfo() {
       this.$router.push({ path: "/Borrowinfo" });
     },

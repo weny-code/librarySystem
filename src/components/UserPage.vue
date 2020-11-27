@@ -15,6 +15,7 @@
           </el-breadcrumb>
         </div>
       </div>
+      <!-- 嵌套路由跳转页面 -->
       <div class="operation-container">
         <router-link to="/MyInfo">
           <div class="myinfo">
@@ -45,6 +46,7 @@
         </router-link>
         <router-view></router-view>
       </div>
+      <!-- 公告 -->
       <div class="notice-container">
         <el-card class="box-card">
           <!--<input type="text" class="text item" v-model="text.Notice" >-->
@@ -107,15 +109,12 @@ export default {
     MyInfo() {
       this.$router.push({ path: "/MyInfo" });
     },
-
     MyBook() {
       this.$router.push({ path: "/Mybookshelf" });
     },
-
     BookRoom() {
       this.$router.push({ path: "/Bookroom" });
     },
-
     alert() {
       this.$confirm("正在选择退出当前用户, 是否继续?", "退出登录......", {
         confirmButtonText: "确定",

@@ -12,9 +12,10 @@ const routes = [{
 {
     path: '/Navigation',
     name: 'Navigation',
-    redirect: '/UserPage',
+    redirect: '/UserPage',//默认
     component: () =>
         import( /* webpackChunkName: "about" */ '../components/Navigation.vue'),
+    //路由嵌套
     children: [
         {
             path: '/UserPage',

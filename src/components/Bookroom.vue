@@ -1,6 +1,7 @@
 <template>
   <el-container>
     <el-main>
+      <!-- 面包屑导航 -->
       <div class="navigator-container">
         <div class="item">
           <el-breadcrumb separator="/">
@@ -20,6 +21,7 @@
           </el-breadcrumb>
         </div>
       </div>
+      <!-- 下拉选择器 -->
       <div class="select-container">
         <div class="select">
           <span class="desc">国家</span>
@@ -115,6 +117,7 @@
           <el-button type="primary" v-on:click="queryBook">搜索</el-button>
         </div>
       </div>
+      <!-- 展示书籍信息表格 -->
       <div class="show-container">
         <el-dialog
           :visible.sync="dialogTableVisible"
@@ -224,6 +227,7 @@
           </el-table>
         </div>
       </div>
+      <!-- 分页器 -->
       <div class="page-container">
         <div class="block">
           <el-pagination
@@ -246,7 +250,6 @@ export default {
   data() {
     return {
       userName: sessionStorage.getItem("userName"),
-
       count: null,
       book: {
         bookId: null,
@@ -280,6 +283,7 @@ export default {
     };
   },
   methods: {
+    // 获取书籍
     getBookTable() {
       this.$axios({
         method: "post",
@@ -299,6 +303,7 @@ export default {
           console.log(error);
         });
     },
+    // 关键字搜索书籍
     searchBook() {
       this.count = this.getTypeCount();
       this.currentPage = 1;
@@ -325,10 +330,12 @@ export default {
       this.borrowBook = e.book;
       console.log("当前行的书籍名：" + this.borrowBook);
     },
+    // 点击分页器触发
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getBookTable();
     },
+    // 获取书籍数量
     getBookCount() {
       this.$axios({
         method: "post",
@@ -341,8 +348,8 @@ export default {
           console.log(error);
         });
     },
+    // 获取用户选择查询的书籍数量
     getTypeCount() {
-      console.log("------------" + this.book.bookName);
       this.$axios({
         method: "post",
         url: "/BookTypeCount",
@@ -356,6 +363,7 @@ export default {
           console.log(error);
         });
     },
+    // 获取下拉选择器的国家总数
     getSelectNation() {
       this.$axios({
         method: "get",
@@ -405,6 +413,7 @@ export default {
           console.log(error);
         });
     },
+    // 获取当前选择的国家
     currentBookType(e) {
       this.value4 = null;
       let obj = {};
@@ -438,6 +447,7 @@ export default {
       });
       this.value4 = obj.theme;
     },
+    // 查询书籍
     queryBook() {
       this.currentPage = 1;
       this.book.nation = this.value1;
@@ -463,6 +473,7 @@ export default {
           console.log(error);
         });
     },
+    // 清空选择器时触发
     noSelect(e) {
       if (e == "1") {
         this.value1 = null;
@@ -478,6 +489,7 @@ export default {
         this.value4 = null;
       }
     },
+    // 借书
     borrow() {
       console.log("书名：" + this.borrowBookName);
       console.log("简介：" + this.borrowBookSummary);

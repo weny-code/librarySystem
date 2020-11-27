@@ -154,7 +154,7 @@ body > .el-container {
 .register-item {
   width: 250px;
   height: 200px;
-  margin-top: -30px;
+  margin-top: -20px;
   transition: all 0.6s ease;
 }
 
@@ -223,6 +223,6 @@ body > .el-container {
 .box-card {
   width: 1000px;
   cursor: default;
-  background-color: #c7faff;
+  background-color: #ffffff;
 }
 </style>

@@ -2,20 +2,18 @@
   <el-container>
     <el-header
       ><span class="desc">GBA图书管理系统</span>
-      <!-- <div class="bottom">
-        <el-tooltip class="item" content="退出登录" placement="bottom-end">
-          <i class="el-icon-switch-button" v-on:click="alert()"></i>
-        </el-tooltip>
-      </div> -->
+      <!-- 头像 -->
       <div class="headImg">
         <el-avatar
           style="margin-top: 8px"
           src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
         ></el-avatar>
+        <!-- 用户名显示 -->
         <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link">
             {{ userName }}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
+          <!-- 下拉选择 -->
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="a">个人信息</el-dropdown-item>
             <el-dropdown-item command="b">退出登录</el-dropdown-item>
@@ -25,6 +23,7 @@
     </el-header>
     <el-main>
       <div>
+        <!-- 默认路由指向'/UserPage' -->
         <router-view></router-view>
       </div>
     </el-main>
@@ -126,10 +125,10 @@ body > .el-container {
 
 .el-header .desc {
   font-family: "FZQuSJW";
-  font-size: 30px;
+  font-size: 38px;
   font-weight: bold;
   letter-spacing: 5px;
-  color: rgb(102, 177, 255);
+  color: rgb(5, 53, 104);
   margin-top: 10px;
   float: left;
   margin-left: 10px;
