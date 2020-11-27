@@ -251,6 +251,7 @@ a {
 .notice-container .item {
   padding: 0;
   text-align: center;
+  font-size: 18px;
 }
 
 .notice-container .box-card {

@@ -128,7 +128,7 @@ body > .el-container {
   font-size: 38px;
   font-weight: bold;
   letter-spacing: 5px;
-  color: rgb(5, 53, 104);
+  color: rgb(102, 177, 255);
   margin-top: 10px;
   float: left;
   margin-left: 10px;
